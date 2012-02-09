@@ -1,23 +1,12 @@
 package com.github.Monofraps.MonoBoxel;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.World.Environment;
-import org.bukkit.WorldType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 
 public class MBBoxelCommandExecutor implements CommandExecutor {
@@ -38,39 +27,65 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		}
 
 		Player player = (Player) sender;
-		
-		if(!player.hasPermission("monoboxel.boxel.visit") && !player.hasPermission("monoboxel.boxel.create"))
-		{
-			player.sendMessage("You don't have permissions to create or visit a boxel. :(");
-			return false;
-		}
-		
-				
-		if(master.GetMVCore() == null)
-		{
+		MVWorldManager wm = null;
+		String boxelName = "";
+		World target = null;
+		boolean playersOwnBoxel = true;
+
+		// is the player allowed to visit/create a boxel? - it not, we can exit
+		// here
+		/*
+		 * if ( (!player.hasPermission("monoboxel.boxel.visit") &&
+		 * !master.getConfig().getBoolean("per-boxel-permissions", false)) &&
+		 * !player.hasPermission("monoboxel.boxel.create")) {
+		 * player.sendMessage(
+		 * "You don't have permissions to create or visit a boxel. :("); return
+		 * false; }
+		 */
+		// get the MV Core
+		if (master.GetMVCore() == null) {
 			master.log.info("Failed to get Muliverse-Core.");
 			player.sendMessage("Failed to get Multiverse-Core. Please contact a server admin.");
 			return false;
 		}
-		MVWorldManager wm = master.GetMVCore().getMVWorldManager();			
+		// ...and it's world manager
+		wm = master.GetMVCore().getMVWorldManager();
 
-		String boxelName = "BOXEL_" + player.getName();
+		// boxel names are alwas: BOXEL_<playername>
+		boxelName = "BOXEL_" + player.getName();
 
 		if (args.length > 0) {
+			playersOwnBoxel = false;
 			boxelName = "BOXEL_" + args[0];
-			
-			if(args[0] == "getmeout")
-			{
-				master.log.info(args[0]);
+
+			if (args[0].equals("getmeout")) {
 				player.teleport(wm.getSpawnWorld().getSpawnLocation());
 				return true;
 			}
 		}
 
-		World target = null;
+		// validate access permissions for the user per boxel
+		if (master.getConfig().getBoolean("per-boxel-permissions", false)) {
 
+			// per boxel permissions
+			if (!player.hasPermission("monoboxel.boxel.visit." + boxelName) && !playersOwnBoxel) {
+				player.sendMessage("You don't have permissions to visit this boxel.");
+				return false;
+			}
+		} else {
+			// global visit permissions
+			if (!player.hasPermission("monoboxel.boxel.visit")
+					&& !playersOwnBoxel) {
+				
+				player.sendMessage("You don't have permissions to visit this boxel.");
+				return false;
+			}
+		}
+
+		// create or load the world
 		target = master.worldManager.CreateWorld(boxelName, player, wm);
 
+		// something went wrong...
 		if (target == null) {
 			master.log.info("Boxel \"" + boxelName
 					+ "\" could not be found or created.");
@@ -78,10 +93,10 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 			return false;
 		}
 
+		// port the player
 		if (player.teleport(new Location(target, 0, 7, 0)))
 			return true;
 
 		return false;
 	}
-
 }

@@ -23,13 +23,14 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 
 		boolean senderIsPlayer = false;
 		Player player = null;
+		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
+		;
+		String boxelName = "";
 
 		if (sender instanceof Player) {
 			player = (Player) sender;
 			senderIsPlayer = true;
 		}
-
-		String boxelName = "";
 
 		// get the boxels name
 		if (args.length == 0) {
@@ -63,19 +64,27 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 			}
 		}
 
-		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
-		if (wm.getMVWorld(boxelName) == null) {
+		// check if the boxel exists (loaded and unloaded worlds)
+		boolean[] boxlupResult = master.worldManager.IsBoxel(boxelName);
+		if (!boxlupResult[0]) {
 			sender.sendMessage("Boxel \"" + boxelName + "\" does not exists.");
 			return false;
 		}
 
-		// Are there still players in this boxel?
-		List<Player> players = wm.getMVWorld(boxelName).getCBWorld()
-				.getPlayers();
-		if (players != null) {
-			for (Player p : players) {
-				p.sendMessage("Ooops... seems like you are in a boxel that is supposed to be deleted... will port you to the spawn world...");
-				p.teleport(wm.getSpawnWorld().getSpawnLocation());
+		// load the boxel if it was not loaded
+		if (!boxlupResult[1])
+			wm.loadWorld(boxelName);
+
+		// Are there still players in this boxel? (there can't be some if the
+		// boxel was unloaded
+		if (boxlupResult[1]) {
+			List<Player> players = wm.getMVWorld(boxelName).getCBWorld()
+					.getPlayers();
+			if (players != null) {
+				for (Player p : players) {
+					p.sendMessage("Ooops... seems like you are in a boxel that is supposed to be deleted... will port you to the spawn world...");
+					p.teleport(wm.getSpawnWorld().getSpawnLocation());
+				}
 			}
 		}
 
@@ -87,6 +96,8 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 				sender.sendMessage("Successfully removed boxel \"" + boxelName
 						+ "\".");
 			}
+			
+			master.worldManager.numberOfBoxels--;
 
 			return true;
 		}

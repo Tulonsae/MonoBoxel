@@ -14,21 +14,38 @@ public class MonoBoxel extends JavaPlugin {
 	MBBoxelCommandExecutor boxelCmdExecutor;
 	MBBoxellookupCommandExecutor boxellookupCmdExecutor;
 	MBBoxelremoveCommandExecutor boxelremoveCmdExecutor;
+	MBBoxelinfoCommandExecutor boxelinfoCmdExecutor;
 	MBWorldManager worldManager;
 
 	private MultiverseCore mvCore = null;
 
 	public void onEnable() {
-		getConfig().set("Version", "0.1");
+		getConfig().set("Version", "0.2");
+		saveConfig();
 
 		boxelCmdExecutor = new MBBoxelCommandExecutor(this);
 		boxellookupCmdExecutor = new MBBoxellookupCommandExecutor(this);
 		boxelremoveCmdExecutor = new MBBoxelremoveCommandExecutor(this);
+		boxelinfoCmdExecutor = new MBBoxelinfoCommandExecutor(this);
 		getCommand("boxel").setExecutor(boxelCmdExecutor);
 		getCommand("boxlookup").setExecutor(boxellookupCmdExecutor);
 		getCommand("boxremove").setExecutor(boxelremoveCmdExecutor);
+		getCommand("boxinfo").setExecutor(boxelinfoCmdExecutor);
 
 		worldManager = new MBWorldManager(this);
+		
+		getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+			public void run() {
+				worldManager.LoadWorlds();
+			}
+		}, getConfig().getInt("word-load-delay", 20) * 20);
+		
+		getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+			public void run()
+			{
+				worldManager.CheckForUnusedWorlds();
+			}
+		}, 60 * 20, getConfig().getInt("world-unload-period", 60) * 20);
 		
 		log.info("MonoBoxel enabled!");
 	}
@@ -44,7 +61,7 @@ public class MonoBoxel extends JavaPlugin {
 				}
 			}
 			if (mv == null) {
-				log.info("Multiver-Core *NOT* found! Is it installed and enabled?");
+				log.info("Multiverse-Core *NOT* found! Is it installed and enabled?");
 				return null;
 			}
 
@@ -55,6 +72,7 @@ public class MonoBoxel extends JavaPlugin {
 	}
 
 	public void onDisable() {
+		saveConfig();
 		log.info("MonoBoxel disabled!");
 	}
 

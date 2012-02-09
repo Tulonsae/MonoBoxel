@@ -1,16 +1,27 @@
 package com.github.Monofraps.MonoBoxel;
 
 import java.util.Random;
-import java.util.logging.Logger;
 
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 
 public class MBBoxelGenerator extends ChunkGenerator {
+	
+	byte[] flatChunk;
+	
+	public MBBoxelGenerator () {
+		
+		flatChunk = new byte[32768];
+		int y = 6;
+		
+		for (int x = 0; x < 16; x++) {
+			for (int z = 0; z < 16; z++) {
+				flatChunk[xyzToByte(x, y, z)] = (byte) Material.GRASS.getId();
+			}
+		}
+	}
 
-	// This needs to be set to return true to override minecraft's default
-	// behaviour
 	@Override
 	public boolean canSpawn(World world, int x, int z) {
 		return true;
@@ -24,16 +35,16 @@ public class MBBoxelGenerator extends ChunkGenerator {
 
 	@Override
 	public byte[] generate(World world, Random rand, int chunkx, int chunkz) {
-		
 		byte[] result = new byte[32768];
 		int y = 6;
-		// This will set the floor of each chunk at bedrock level to bedrock
+		
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
 				result[xyzToByte(x, y, z)] = (byte) Material.GRASS.getId();
 			}
 		}
-		return result;
+		
+		return flatChunk;
 	}
 
 }
