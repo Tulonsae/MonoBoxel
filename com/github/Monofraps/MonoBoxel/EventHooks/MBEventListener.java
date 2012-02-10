@@ -3,6 +3,7 @@ package com.github.Monofraps.MonoBoxel.EventHooks;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
@@ -14,7 +15,7 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
  * 
  */
 public class MBEventListener implements Listener {
-	
+
 	private MonoBoxel master = null;
 
 	/**
@@ -33,10 +34,9 @@ public class MBEventListener implements Listener {
 	 * @param event
 	 */
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerChangedWorld(PlayerTeleportEvent event) {
+	public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
 		master.getMBWorldManager().CheckForUnusedWorlds();
 		master.getLogManager().info(event.getPlayer().getWorld().getName());
 	}
-	
-	
+
 }
