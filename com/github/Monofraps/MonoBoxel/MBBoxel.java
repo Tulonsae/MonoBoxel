@@ -326,7 +326,7 @@ public class MBBoxel {
 			return false;
 		
 		if (correspondingWorld.getPlayers().size() == 0) {
-			master.Log("Unloaded world " + correspondingWorldName
+			master.logger.info("Unloaded world " + correspondingWorldName
 					+ " due to inactivity.");
 
 			worldLoaded = false;

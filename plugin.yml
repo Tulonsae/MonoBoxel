@@ -1,0 +1,25 @@
+name: MonoBoxel
+main: com.github.Monofraps.MonoBoxel.MonoBoxel
+version: 0.4
+load: STARTUP
+
+commands:
+    boxel:
+        description: Creates and sends you to your Boxel or the Boxel of <player>
+        permissions: monoboxel.boxel
+        usage: /<command> <player>
+        
+    boxlookup:
+        description: Get the owner of the Boxel your are in
+        permissions: monoboxel.boxlookup
+        usage: /<command>
+       
+    boxremove:
+        description: Removes the Boxel of the given player (or the own if no parameter is given)
+        permissions: monoboxel.boxremove
+        usage: /<command> <player>
+        
+    boxinfo:
+        description: Get global MonoBoxel info
+        permissions: monoboxel.boxinfo
+        usage: /<command>

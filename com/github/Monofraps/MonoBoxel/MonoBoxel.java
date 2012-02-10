@@ -1,18 +1,15 @@
 package com.github.Monofraps.MonoBoxel;
 
-import java.util.logging.Logger;
-
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
 public class MonoBoxel extends JavaPlugin {
 
-	MBLogger logger = new MBLogger("Minecraft", this);	
+	MBLogger logger = null;
 	MBBoxelCommandExecutor boxelCmdExecutor;
 	MBBoxellookupCommandExecutor boxellookupCmdExecutor;
 	MBBoxelremoveCommandExecutor boxelremoveCmdExecutor;
@@ -20,16 +17,18 @@ public class MonoBoxel extends JavaPlugin {
 	MBWorldManager worldManager;
 
 	private MultiverseCore mvCore = null;
-	private Logger log = Logger.getLogger("Minecraft");
-
+	
 	public void onEnable() {
-		// missuse the version to find out if this is the first run
-		String versionInfo = getConfig().getString("Version", "first run");
-		if(versionInfo.equals("first run"))
-			saveDefaultConfig();
+		this.logger = new MBLogger("Minecraft", this);
 		
+		// missuse the version to find out if this is the first run
+		String versionInfo = getConfig().getString("version", "first run");
+		if (versionInfo.equals("first run"))
+			saveDefaultConfig();
+
 		// we may use the version for incompatibility checks later
-		getConfig().set("Version", getDescription().getVersion());
+		reloadConfig();
+		getConfig().set("version", getDescription().getVersion());
 		//saveConfig();
 
 		boxelCmdExecutor = new MBBoxelCommandExecutor(this);

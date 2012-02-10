@@ -56,7 +56,7 @@ public class MBWorldManager {
 		for(MBBoxel box : boxels)
 		{
 			if(box.Unload())
-				master.Log("Unloaded Boxel " + box.correspondingWorldName);
+				master.logger.info("Unloaded Boxel " + box.correspondingWorldName);
 		}
 	}
 
