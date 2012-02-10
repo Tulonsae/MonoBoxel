@@ -10,11 +10,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
-//@TODO[important]: class for Boxels
-
 public class MonoBoxel extends JavaPlugin {
 
-	Logger log = Logger.getLogger("Minecraft");
 	MBBoxelCommandExecutor boxelCmdExecutor;
 	MBBoxellookupCommandExecutor boxellookupCmdExecutor;
 	MBBoxelremoveCommandExecutor boxelremoveCmdExecutor;
@@ -22,10 +19,17 @@ public class MonoBoxel extends JavaPlugin {
 	MBWorldManager worldManager;
 
 	private MultiverseCore mvCore = null;
+	private Logger log = Logger.getLogger("Minecraft");
 
 	public void onEnable() {
-		getConfig().set("Version", "0.2");
-		saveConfig();
+		// missuse the version to find out if this is the first run
+		String versionInfo = getConfig().getString("Version", "first run");
+		if(versionInfo.equals("first run"))
+			saveDefaultConfig();
+		
+		// we may use the version for incompatibility checks later
+		getConfig().set("Version", getDescription().getVersion());
+		//saveConfig();
 
 		boxelCmdExecutor = new MBBoxelCommandExecutor(this);
 		boxellookupCmdExecutor = new MBBoxellookupCommandExecutor(this);
@@ -38,7 +42,6 @@ public class MonoBoxel extends JavaPlugin {
 
 		worldManager = new MBWorldManager(this);
 
-		// @todo: make this functional or delete it
 		getServer().getScheduler().scheduleSyncDelayedTask(this,
 				new Runnable() {
 					public void run() {
@@ -53,7 +56,7 @@ public class MonoBoxel extends JavaPlugin {
 					}
 				}, 60 * 20, getConfig().getInt("world-unload-period", 60) * 20);
 
-		log.info("MonoBoxel enabled!");
+		Log("MonoBoxel enabled!");
 	}
 
 	public MultiverseCore GetMVCore() {
@@ -63,11 +66,11 @@ public class MonoBoxel extends JavaPlugin {
 			for (Plugin p : plugins) {
 				if (p.toString().contains("Multiverse-Core")) {
 					mv = p;
-					log.info("Multiverse Core found.");
+					Log("Multiverse Core found.");
 				}
 			}
 			if (mv == null) {
-				log.info("Multiverse-Core *NOT* found! Is it installed and enabled?");
+				Log("Multiverse-Core *NOT* found! Is it installed and enabled?");
 				return null;
 			}
 
@@ -92,13 +95,12 @@ public class MonoBoxel extends JavaPlugin {
 	}
 
 	public boolean CheckPermCanCreateOther(Player player) {
-		// same permission as createown for the time
 		return player.hasPermission("monoboxel.boxel.create.other");
 	}
 
 	public boolean CheckPermCanVisitOwn(Player player) {
-		// of the player has permissions to create his own Boxel, he will be
-		// able to visit it
+		// if the player has permissions to create his own Boxel, he will also
+		// be able to visit it
 		if (player.hasPermission("monoboxel.boxel.create.own"))
 			return true;
 

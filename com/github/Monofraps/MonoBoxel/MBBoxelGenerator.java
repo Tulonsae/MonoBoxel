@@ -18,7 +18,7 @@ public class MBBoxelGenerator extends ChunkGenerator {
 
 		flatChunk = new byte[32768];
 		borderChunk = new byte[32768];
-		
+
 		this.maxBoxelSize = maxBoxelSize;
 
 		for (int x = 0; x < 16; x++) {
@@ -30,7 +30,8 @@ public class MBBoxelGenerator extends ChunkGenerator {
 		for (int x = 0; x < 16; x++) {
 			for (int y = 1; y < 6; y++) {
 				for (int z = 0; z < 16; z++) {
-					flatChunk[xyzToByte(x, y, z)] = (byte) Material.DIRT.getId();
+					flatChunk[xyzToByte(x, y, z)] = (byte) Material.DIRT
+							.getId();
 				}
 			}
 		}
@@ -44,7 +45,8 @@ public class MBBoxelGenerator extends ChunkGenerator {
 		for (int x = 0; x < 16; x++) {
 			for (int y = 1; y < 127; y++) {
 				for (int z = 0; z < 16; z++) {
-					borderChunk[xyzToByte(x, y, z)] = (byte) Material.BEDROCK.getId();
+					borderChunk[xyzToByte(x, y, z)] = (byte) Material.BEDROCK
+							.getId();
 				}
 			}
 		}
@@ -63,12 +65,14 @@ public class MBBoxelGenerator extends ChunkGenerator {
 
 	@Override
 	public byte[] generate(World world, Random rand, int chunkx, int chunkz) {
-		
-		if(chunkx >= maxBoxelSize)
-			return Arrays.copyOf(borderChunk, borderChunk.length);
-		if(chunkz >= maxBoxelSize)
-			return Arrays.copyOf(borderChunk, borderChunk.length);
-		
+
+		if (maxBoxelSize != 0) {
+			if (chunkx >= maxBoxelSize)
+				return Arrays.copyOf(borderChunk, borderChunk.length);
+			if (chunkz >= maxBoxelSize)
+				return Arrays.copyOf(borderChunk, borderChunk.length);
+		}
+
 		return Arrays.copyOf(flatChunk, flatChunk.length);
 	}
 

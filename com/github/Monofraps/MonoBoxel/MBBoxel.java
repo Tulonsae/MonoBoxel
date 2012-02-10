@@ -14,8 +14,11 @@ public class MBBoxel {
 	World correspondingWorld = null;
 	String correspondingWorldName = "";
 	boolean worldLoaded = false;
+	
+	String boxelGenerator = "MonoBoxel";
+	String boxelSeed = "ThisSeedIsCool";
 
-	public MBBoxel(MonoBoxel plugin, String worldName) {
+	public MBBoxel(MonoBoxel plugin, String worldName, String generator, String seed) {
 		master = plugin;
 		correspondingWorldName = worldName;
 
@@ -24,6 +27,13 @@ public class MBBoxel {
 					.getMVWorld(correspondingWorldName).getCBWorld();
 			worldLoaded = true;
 		}
+		
+		if(generator.isEmpty())
+			boxelGenerator = "MonoBoxel";
+		else
+			boxelGenerator = generator;
+		
+		boxelSeed = seed;
 	}
 
 	public boolean Create(Player player) {
@@ -40,12 +50,12 @@ public class MBBoxel {
 
 		// first check if the Boxel does not exist already
 		if (Exists()) {
-			master.log.info("MB was supposed to create Boxel "
+			master.Log("MB was supposed to create Boxel "
 					+ correspondingWorldName
 					+ " but it already exists. Will load it...");
 			if (!Load()) {
 				// something went wrong
-				master.log.info("Could not load Boxel.");
+				master.Log("Could not load Boxel.");
 				return false;
 			}
 
@@ -60,7 +70,7 @@ public class MBBoxel {
 
 			if (master.CheckPermCanCreateOwn(player)) {
 				if (master.worldManager.CreateWorld(correspondingWorldName,
-						player) != null) {
+						player, boxelGenerator, boxelSeed) != null) {
 
 					correspondingWorld = master.GetMVCore().getMVWorldManager()
 							.getMVWorld(correspondingWorldName).getCBWorld();
@@ -76,7 +86,7 @@ public class MBBoxel {
 			if (master.CheckPermCanCreateOther(player)) {
 
 				if (master.worldManager.CreateWorld(correspondingWorldName,
-						player) != null) {
+						player, boxelGenerator, boxelSeed) != null) {
 
 					correspondingWorld = master.GetMVCore().getMVWorldManager()
 							.getMVWorld(correspondingWorldName).getCBWorld();
@@ -84,7 +94,7 @@ public class MBBoxel {
 
 				} else {
 					player.sendMessage("Failed to create Boxel.");
-					master.log.info("Failed to create Boxel "
+					master.Log("Failed to create Boxel "
 							+ correspondingWorldName);
 					return false;
 				}
@@ -101,24 +111,25 @@ public class MBBoxel {
 	// load the Boxel/world if it was unloaded
 	public boolean Load() {
 		if (!Exists()) {
-			master.log.info("Tried to load a not existsing Boxel.");
+			master.Log("Tried to load a not existsing Boxel.");
 			return false;
 		}
 
 		if (IsLoaded()) {
-			master.log.info("Boxel is already loaded.");
+			master.Log("Boxel is already loaded.");
 			return true;
 		}
 
 		if (!master.GetMVCore().getMVWorldManager()
 				.loadWorld(correspondingWorldName)) {
 			// failed to load Boxel
-			master.log.info("Failed to load Boxel.");
+			master.Log("Failed to load Boxel.");
 			return false;
 		}
 
 		correspondingWorld = master.GetMVCore().getMVWorldManager()
 				.getMVWorld(correspondingWorldName).getCBWorld();
+		
 		return true;
 	}
 
@@ -194,7 +205,7 @@ public class MBBoxel {
 						return player.teleport(new Location(correspondingWorld,
 								0, 7, 0));
 					} else {
-						master.log.info("Failed to load Boxel "
+						master.Log("Failed to load Boxel "
 								+ correspondingWorldName + " to join");
 					}
 
@@ -211,7 +222,7 @@ public class MBBoxel {
 								0, 7, 0));
 					} else {
 
-						master.log.info("Failed to load Boxel "
+						master.Log("Failed to load Boxel "
 								+ correspondingWorldName + " to join");
 					}
 				} else {
@@ -251,8 +262,7 @@ public class MBBoxel {
 
 			// the saved location could not be loaded correctly
 			if (outWorld.isEmpty() || outPosition.isEmpty()) {
-				master.log
-						.info("save-exit-location was set, but no entry location for player "
+				master.Log("save-exit-location was set, but no entry location for player "
 								+ player.getName() + " was found.");
 				player.teleport(wm.getSpawnWorld().getSpawnLocation());
 				return true;
@@ -267,8 +277,7 @@ public class MBBoxel {
 				if (!wm.getUnloadedWorlds().contains(outWorld)) {
 					// the saved world could not be found, so port the
 					// player to the default spawn world
-					master.log
-							.info("save-exit-location was set, but no entry world "
+					master.Log("save-exit-location was set, but no entry world "
 									+ outWorld
 									+ " for player "
 									+ player.getName() + " was found.");
@@ -278,8 +287,7 @@ public class MBBoxel {
 					// the entry world of the player is in the
 					// Multiverse config, but not loaded; load it!
 					if (!wm.loadWorld(outWorld)) {
-						master.log
-								.info("Failed to load entry world for player "
+						master.Log("Failed to load entry world for player "
 										+ player.getName());
 						player.sendMessage("Failed to load entry world");
 						player.teleport(wm.getSpawnWorld().getSpawnLocation());
@@ -293,7 +301,7 @@ public class MBBoxel {
 
 			// DEBUG:
 			if (entryWorld == null) {
-				master.log.info("entryWorld is still null");
+				master.Log("entryWorld is still null");
 				return false;
 			}
 
@@ -315,7 +323,7 @@ public class MBBoxel {
 			return false;
 		
 		if (correspondingWorld.getPlayers().size() == 0) {
-			master.log.info("Unloaded world " + correspondingWorldName
+			master.Log("Unloaded world " + correspondingWorldName
 					+ " due to inactivity.");
 
 			worldLoaded = false;

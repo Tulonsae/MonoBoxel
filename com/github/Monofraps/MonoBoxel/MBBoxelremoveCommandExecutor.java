@@ -35,7 +35,7 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		// get the boxels name
 		if (args.length == 0) {
 			if (!senderIsPlayer) {
-				master.log.info("You have to specify a boxel or player name");
+				master.Log("You have to specify a boxel or player name");
 				return false;
 			}
 
@@ -89,8 +89,7 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		}
 
 		if (wm.deleteWorld(boxelName)) {
-			master.log
-					.info("Successfully removed boxel \"" + boxelName + "\".");
+			master.Log("Successfully removed boxel \"" + boxelName + "\".");
 
 			if (senderIsPlayer) {
 				sender.sendMessage("Successfully removed boxel \"" + boxelName
