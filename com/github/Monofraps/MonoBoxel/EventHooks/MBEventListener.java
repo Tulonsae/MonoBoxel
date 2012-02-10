@@ -1,6 +1,7 @@
 package com.github.Monofraps.MonoBoxel.EventHooks;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
@@ -31,7 +32,7 @@ public class MBEventListener implements Listener {
 	 * 
 	 * @param event
 	 */
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		master.getWorldManager().CheckForUnusedWorlds();
 	}
