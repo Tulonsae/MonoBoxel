@@ -14,11 +14,12 @@ public class MBBoxel {
 	World correspondingWorld = null;
 	String correspondingWorldName = "";
 	boolean worldLoaded = false;
-	
+
 	String boxelGenerator = "MonoBoxel";
 	String boxelSeed = "ThisSeedIsCool";
 
-	public MBBoxel(MonoBoxel plugin, String worldName, String generator, String seed) {
+	public MBBoxel(MonoBoxel plugin, String worldName, String generator,
+			String seed) {
 		master = plugin;
 		correspondingWorldName = worldName;
 
@@ -27,12 +28,12 @@ public class MBBoxel {
 					.getMVWorld(correspondingWorldName).getCBWorld();
 			worldLoaded = true;
 		}
-		
-		if(generator.isEmpty())
+
+		if (generator.isEmpty())
 			boxelGenerator = "MonoBoxel";
 		else
 			boxelGenerator = generator;
-		
+
 		boxelSeed = seed;
 	}
 
@@ -129,7 +130,7 @@ public class MBBoxel {
 
 		correspondingWorld = master.GetMVCore().getMVWorldManager()
 				.getMVWorld(correspondingWorldName).getCBWorld();
-		
+
 		return true;
 	}
 
@@ -322,19 +323,28 @@ public class MBBoxel {
 
 	// unload the Boxel if no player is in
 	public boolean Unload() {
-		if(!worldLoaded)
-			return false;
-		
-		if (correspondingWorld.getPlayers().size() == 0) {
-			master.logger.info("Unloaded world " + correspondingWorldName
-					+ " due to inactivity.");
 
-			worldLoaded = false;
-
-			return master.GetMVCore().getMVWorldManager()
-					.unloadWorld(correspondingWorldName);
-
+		if (isEmpty()) {
+			if (master.GetMVCore().getMVWorldManager()
+					.unloadWorld(correspondingWorldName)) {
+				worldLoaded = false;
+				master.logger.info("Unloaded world " + correspondingWorldName
+						+ " due to inactivity.");
+				return true;
+			} else
+				return false;
 		}
+
 		return false;
+	}
+
+	public boolean isEmpty() {
+		if (!worldLoaded)
+			return true;
+
+		if (correspondingWorld.getPlayers().size() == 0)
+			return true;
+		else
+			return false;
 	}
 }
