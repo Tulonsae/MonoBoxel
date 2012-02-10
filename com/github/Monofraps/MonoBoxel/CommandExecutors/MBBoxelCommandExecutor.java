@@ -1,9 +1,12 @@
-package com.github.Monofraps.MonoBoxel;
+package com.github.Monofraps.MonoBoxel.CommandExecutors;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import com.github.Monofraps.MonoBoxel.MBBoxel;
+import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
 /**
  * Executor class for /boxel commands 
@@ -55,8 +58,8 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 				boxelName = boxelName + player.getName();
 
 			else if (args[0].equals("getmeout") && senderIsPlayer) {
-				for (MBBoxel box : master.worldManager.boxels) {
-					if (box.correspondingWorldName.equals(player.getWorld()
+				for (MBBoxel box : master.getMBWorldManager().getBoxels()) {
+					if (box.getCorrespondingWorldName().equals(player.getWorld()
 							.getName()))
 						return box.Leave(player);
 				}
@@ -70,8 +73,8 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 			boxelName = boxelName + player.getName();
 
 		// check if the Boxel already exists
-		for (MBBoxel box : master.worldManager.boxels) {
-			if (box.correspondingWorldName.equals(boxelName))
+		for (MBBoxel box : master.getMBWorldManager().getBoxels()) {
+			if (box.getCorrespondingWorldName().equals(boxelName))
 				return box.Join(player);
 		}
 		
@@ -85,9 +88,9 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		}
 
 		
-		if (master.worldManager.AddBoxel(boxelName, true, player, boxelGenerator, boxelSeed)) {
-			for (MBBoxel box : master.worldManager.boxels) {
-				if (box.correspondingWorldName.equals(boxelName))
+		if (master.getMBWorldManager().AddBoxel(boxelName, true, player, boxelGenerator, boxelSeed)) {
+			for (MBBoxel box : master.getMBWorldManager().getBoxels()) {
+				if (box.getCorrespondingWorldName().equals(boxelName))
 					return box.Join(player);
 			}
 		}

@@ -196,4 +196,9 @@ public class MBWorldManager {
 
 		return result;
 	}
+	
+	public List<MBBoxel> getBoxels()
+	{
+		return boxels;
+	}
 }

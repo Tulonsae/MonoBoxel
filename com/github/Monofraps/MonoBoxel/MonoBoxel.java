@@ -5,6 +5,10 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelCommandExecutor;
+import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelinfoCommandExecutor;
+import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxellookupCommandExecutor;
+import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelremoveCommandExecutor;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
 /**
@@ -170,5 +174,15 @@ public class MonoBoxel extends JavaPlugin {
 	public String getBoxelPrefix()
 	{
 		return boxelPrefix;
+	}
+	
+	public MBWorldManager getMBWorldManager()
+	{
+		return worldManager;		
+	}
+	
+	public MBLogger getLogManager()
+	{
+		return logger;
 	}
 }
