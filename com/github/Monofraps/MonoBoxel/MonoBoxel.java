@@ -9,10 +9,12 @@ import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelinfoCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxellookupCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelremoveCommandExecutor;
+import com.github.Monofraps.MonoBoxel.EventHooks.MBEventListener;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
 /**
  * Main class of MonoBoxel plugin.
+ * 
  * @version 0.4
  * @author Monofraps
  */
@@ -23,18 +25,20 @@ public class MonoBoxel extends JavaPlugin {
 	MBBoxellookupCommandExecutor boxellookupCmdExecutor;
 	MBBoxelremoveCommandExecutor boxelremoveCmdExecutor;
 	MBBoxelinfoCommandExecutor boxelinfoCmdExecutor;
+
+	private MBEventListener eventListener = null;
+
 	MBWorldManager worldManager;
-	
 
 	private MultiverseCore mvCore = null;
 	private String boxelPrefix = "BOXEL_";
-	
+
 	/**
 	 * Hooks up the command executors and initializes the scheduled tasks
 	 */
 	public void onEnable() {
 		this.logger = new MBLogger("Minecraft", this);
-		
+
 		// missuse the version to find out if this is the first run
 		String versionInfo = getConfig().getString("version", "first run");
 		if (versionInfo.equals("first run"))
@@ -45,7 +49,6 @@ public class MonoBoxel extends JavaPlugin {
 		getConfig().set("version", getDescription().getVersion());
 
 		boxelPrefix = getConfig().getString("boxel-prefix", "BOXEL_");
-		
 
 		boxelCmdExecutor = new MBBoxelCommandExecutor(this);
 		boxellookupCmdExecutor = new MBBoxellookupCommandExecutor(this);
@@ -56,27 +59,16 @@ public class MonoBoxel extends JavaPlugin {
 		getCommand("boxremove").setExecutor(boxelremoveCmdExecutor);
 		getCommand("boxinfo").setExecutor(boxelinfoCmdExecutor);
 
+		eventListener = new MBEventListener(this);
+
 		worldManager = new MBWorldManager(this);
-
-		getServer().getScheduler().scheduleSyncDelayedTask(this,
-				new Runnable() {
-					public void run() {
-						worldManager.LoadWorlds();
-					}
-				}, getConfig().getInt("word-load-delay", 20) * 20);
-
-		getServer().getScheduler().scheduleAsyncRepeatingTask(this,
-				new Runnable() {
-					public void run() {
-						worldManager.CheckForUnusedWorlds();
-					}
-				}, 60 * 20, getConfig().getInt("world-unload-period", 60) * 20);
 
 		logger.info("MonoBoxel enabled!");
 	}
 
 	/**
 	 * Tries to get the MultiverseCore instance
+	 * 
 	 * @return The MultiverCore or null on failure.
 	 */
 	public MultiverseCore GetMVCore() {
@@ -115,7 +107,9 @@ public class MonoBoxel extends JavaPlugin {
 
 	/**
 	 * Checks if the player has permissions to create his own Boxel
-	 * @param player The player that want's to perform the creation.
+	 * 
+	 * @param player
+	 *            The player that want's to perform the creation.
 	 * @return true if the player has permissions, otherwise false
 	 */
 	public boolean CheckPermCanCreateOwn(Player player) {
@@ -124,7 +118,9 @@ public class MonoBoxel extends JavaPlugin {
 
 	/**
 	 * Checks if the player has permissions to create other players Boxels
-	 * @param player The player that want's to perform the creation.
+	 * 
+	 * @param player
+	 *            The player that want's to perform the creation.
 	 * @return true if the player has permissions, otherwise false
 	 */
 	public boolean CheckPermCanCreateOther(Player player) {
@@ -133,7 +129,9 @@ public class MonoBoxel extends JavaPlugin {
 
 	/**
 	 * Checks if the player has permissions visit his own Boxel
-	 * @param player The player that want's to perform the creation.
+	 * 
+	 * @param player
+	 *            The player that want's to perform the creation.
 	 * @return true if the player has permissions, otherwise false
 	 */
 	public boolean CheckPermCanVisitOwn(Player player) {
@@ -153,7 +151,9 @@ public class MonoBoxel extends JavaPlugin {
 
 	/**
 	 * Checks if the player has permissions to visit other players Boxels
-	 * @param player The player that want's to perform the creation.
+	 * 
+	 * @param player
+	 *            The player that want's to perform the creation.
 	 * @return true if the player has permissions, otherwise false
 	 */
 	public boolean CheckPermCanVisitOther(Player player, String boxelName) {
@@ -166,23 +166,20 @@ public class MonoBoxel extends JavaPlugin {
 		else
 			return player.hasPermission("monoboxel.boxel.visit.other");
 	}
-	
+
 	/**
 	 * 
 	 * @return The Boxel prefix
 	 */
-	public String getBoxelPrefix()
-	{
+	public String getBoxelPrefix() {
 		return boxelPrefix;
 	}
-	
-	public MBWorldManager getMBWorldManager()
-	{
-		return worldManager;		
+
+	public MBWorldManager getMBWorldManager() {
+		return worldManager;
 	}
-	
-	public MBLogger getLogManager()
-	{
+
+	public MBLogger getLogManager() {
 		return logger;
 	}
 }
