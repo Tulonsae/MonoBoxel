@@ -388,20 +388,29 @@ public class MBBoxel {
 	 *         are players in this Boxel)
 	 */
 	public boolean Unload() {
-		if (!worldLoaded)
-			return false;
 
-		if (correspondingWorld.getPlayers().size() == 0) {
-			master.logger.info("Unloaded world " + correspondingWorldName
-					+ " due to inactivity.");
-
-			worldLoaded = false;
-
-			return master.GetMVCore().getMVWorldManager()
-					.unloadWorld(correspondingWorldName);
-
+		if (isEmpty()) {
+			if (master.GetMVCore().getMVWorldManager()
+					.unloadWorld(correspondingWorldName)) {
+				worldLoaded = false;
+				master.logger.info("Unloaded world " + correspondingWorldName
+						+ " due to inactivity.");
+				return true;
+			} else
+				return false;
 		}
+
 		return false;
+	}
+
+	public boolean isEmpty() {
+		if (!worldLoaded)
+			return true;
+
+		if (correspondingWorld.getPlayers().size() == 0)
+			return true;
+		else
+			return false;
 	}
 
 	public String getCorrespondingWorldName() {
