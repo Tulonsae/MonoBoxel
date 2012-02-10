@@ -1,6 +1,8 @@
 package com.github.Monofraps.MonoBoxel;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.World;
 import org.bukkit.WorldType;
@@ -11,19 +13,22 @@ import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
 public class MBWorldManager {
 
-	MonoBoxel master;
+	MonoBoxel master = null;	
+	List<MBBoxel> boxels = null;
 
 	int numberOfBoxels = 0;
 	private boolean worldsCounted = false;
 
 	public MBWorldManager(MonoBoxel plugin) {
 		master = plugin;
+		boxels = new ArrayList<MBBoxel>();
 	}
 
 	public int GetNumberOfBoxels() {
 		return numberOfBoxels;
 	}
 
+	// should be called CountWorlds
 	public void LoadWorlds() {
 		if (worldsCounted)
 			return;
@@ -33,16 +38,20 @@ public class MBWorldManager {
 		Collection<MultiverseWorld> worlds = master.GetMVCore()
 				.getMVWorldManager().getMVWorlds();
 		for (MultiverseWorld w : worlds) {
-			if (w.getName().startsWith("BOXEL_"))
+			if (w.getName().startsWith("BOXEL_")) {
+				boxels.add(new MBBoxel(master, w.getName()));
 				numberOfBoxels++;
+			}
 		}
 
 		Collection<String> unloadedWorlds = master.GetMVCore()
 				.getMVWorldManager().getUnloadedWorlds();
 		for (String w : unloadedWorlds) {
 			master.log.info(w);
-			if (w.startsWith("BOXEL_"))
+			if (w.startsWith("BOXEL_")) {
+				boxels.add(new MBBoxel(master, w));
 				numberOfBoxels++;
+			}
 		}
 	}
 
@@ -73,14 +82,11 @@ public class MBWorldManager {
 
 		// @TODO: an option for the Boxel prefix
 		if (!name.startsWith("BOXEL_")) {
-			result[0] = false;
-			result[1] = true;
-			return result;
+			name = "BOXEL_" + name;
 		}
 
 		Collection<MultiverseWorld> worlds = master.GetMVCore()
 				.getMVWorldManager().getMVWorlds();
-
 		for (MultiverseWorld w : worlds) {
 			if (w.getName().equals(name)) {
 				result[0] = true;
@@ -98,6 +104,22 @@ public class MBWorldManager {
 		}
 
 		return result;
+	}
+	
+	
+	public boolean AddBoxel(String name, boolean create, Player player)
+	{
+		if(!name.startsWith("BOXEL_"))
+			name = "BOXEL_" + name;
+		
+		MBBoxel boxel = new MBBoxel(master, name);
+		
+		
+		if(create)
+			if(!boxel.Create(player))
+				return false;
+		
+		return boxels.add(boxel);
 	}
 
 	public World CreateWorld(String name, Player owner) {
