@@ -4,6 +4,9 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+
 public class MBBoxel {
 
 	MonoBoxel master = null;
@@ -15,6 +18,12 @@ public class MBBoxel {
 	public MBBoxel(MonoBoxel plugin, String worldName) {
 		master = plugin;
 		correspondingWorldName = worldName;
+
+		if (master.GetMVCore().getMVWorldManager().getMVWorld(worldName) != null) {
+			correspondingWorld = master.GetMVCore().getMVWorldManager()
+					.getMVWorld(correspondingWorldName).getCBWorld();
+			worldLoaded = true;
+		}
 	}
 
 	public boolean Create(Player player) {
@@ -45,24 +54,19 @@ public class MBBoxel {
 				correspondingWorld = master.GetMVCore().getMVWorldManager()
 						.getMVWorld(correspondingWorldName).getCBWorld();
 			}
-
-			return true;
 		}
 
 		if (isPlayersOwnBoxel) {
 
-			if (master.worldManager.CreateWorld(correspondingWorldName, player) != null) {
+			if (master.CheckPermCanCreateOwn(player)) {
+				if (master.worldManager.CreateWorld(correspondingWorldName,
+						player) != null) {
 
-				if (Create(player)) {
-					return player.teleport(new Location(correspondingWorld, 0,
-							7, 0));
-				} else {
-					player.sendMessage("Failed to create Boxel.");
-					master.log.info("Failed to create Boxel "
-							+ correspondingWorldName);
-					return false;
+					correspondingWorld = master.GetMVCore().getMVWorldManager()
+							.getMVWorld(correspondingWorldName).getCBWorld();
+					return true;
+
 				}
-
 			} else {
 				player.sendMessage("You don't have permissions to create your own Boxel!");
 				return false;
@@ -73,7 +77,11 @@ public class MBBoxel {
 
 				if (master.worldManager.CreateWorld(correspondingWorldName,
 						player) != null) {
+
+					correspondingWorld = master.GetMVCore().getMVWorldManager()
+							.getMVWorld(correspondingWorldName).getCBWorld();
 					return true;
+
 				} else {
 					player.sendMessage("Failed to create Boxel.");
 					master.log.info("Failed to create Boxel "
@@ -86,6 +94,8 @@ public class MBBoxel {
 				return false;
 			}
 		}
+
+		return false;
 	}
 
 	// load the Boxel/world if it was unloaded
@@ -131,6 +141,26 @@ public class MBBoxel {
 		if (boxelOwner.equals(player.getName()))
 			isPlayersOwnBoxel = true;
 
+		// before porting the player, save his location
+		// save the players current location and teleport
+		if (master.getConfig().getBoolean("save-exit-location", true)) {
+			// do not save the return/entry location if the player is in a Boxel
+			if (!master.worldManager.IsBoxel(player.getWorld().getName())[0]) {
+				master.getConfig().set(
+						"playeroloc." + player.getName() + ".world",
+						player.getWorld().getName());
+
+				master.getConfig().set(
+						"playeroloc." + player.getName() + ".position",
+						String.valueOf(player.getLocation().getX()) + ","
+								+ String.valueOf(player.getLocation().getY())
+								+ ","
+								+ String.valueOf(player.getLocation().getZ()));
+
+				master.saveConfig();
+			}
+		}
+
 		// only port the player if the Boxel exists and is loaded and the player
 		// has permissions
 		if (Exists() && IsLoaded()) {
@@ -139,7 +169,7 @@ public class MBBoxel {
 					return player.teleport(new Location(correspondingWorld, 0,
 							7, 0));
 				} else {
-					player.sendMessage("You don't have permissions to visit your own Boxel!");
+					player.sendMessage("You don't have permissions to visit your own Boxel! 1");
 					return false;
 				}
 			} else {
@@ -169,7 +199,7 @@ public class MBBoxel {
 					}
 
 				} else {
-					player.sendMessage("You don't have permissions to visit your own Boxel!");
+					player.sendMessage("You don't have permissions to visit your own Boxel! 2");
 					return false;
 				}
 
@@ -199,9 +229,80 @@ public class MBBoxel {
 		if (!Exists()) {
 
 			player.sendMessage("Boxel does not exists yet. I'll try to create one for you...");
-			if(Create(player))
-				return player.teleport(new Location(correspondingWorld,
-						0, 7, 0));
+			if (Create(player))
+				return player
+						.teleport(new Location(correspondingWorld, 0, 7, 0));
+
+		}
+
+		return false;
+	}
+
+	public boolean Leave(Player player) {
+		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
+		MultiverseWorld entryWorld = null;
+
+		if (master.getConfig().getBoolean("save-exit-location", true)) {
+
+			String outWorld = master.getConfig().getString(
+					"playeroloc." + player.getName() + ".world", "");
+			String outPosition = master.getConfig().getString(
+					"playeroloc." + player.getName() + ".position", "");
+
+			// the saved location could not be loaded correctly
+			if (outWorld.isEmpty() || outPosition.isEmpty()) {
+				master.log
+						.info("save-exit-location was set, but no entry location for player "
+								+ player.getName() + " was found.");
+				player.teleport(wm.getSpawnWorld().getSpawnLocation());
+				return true;
+			}
+
+			// we have load the entry location, now see if the entry
+			// world is loaded
+			entryWorld = wm.getMVWorld(outWorld);
+			if (entryWorld == null) {
+				// Multiverse getMVWorld returned null, check the
+				// unloaded worlds
+				if (!wm.getUnloadedWorlds().contains(outWorld)) {
+					// the saved world could not be found, so port the
+					// player to the default spawn world
+					master.log
+							.info("save-exit-location was set, but no entry world "
+									+ outWorld
+									+ " for player "
+									+ player.getName() + " was found.");
+					player.teleport(wm.getSpawnWorld().getSpawnLocation());
+					return true;
+				} else {
+					// the entry world of the player is in the
+					// Multiverse config, but not loaded; load it!
+					if (!wm.loadWorld(outWorld)) {
+						master.log
+								.info("Failed to load entry world for player "
+										+ player.getName());
+						player.sendMessage("Failed to load entry world");
+						player.teleport(wm.getSpawnWorld().getSpawnLocation());
+						return true;
+					} else {
+						// Multiverse has load the world
+						entryWorld = wm.getMVWorld(outWorld);
+					}
+				}
+			}
+
+			// DEBUG:
+			if (entryWorld == null) {
+				master.log.info("entryWorld is still null");
+				return false;
+			}
+
+			// @TODO: the position does not seem to be the exact player position
+			// we found the world, now extract the position
+			String[] pos = outPosition.split(",");
+			return player.teleport(new Location(entryWorld.getCBWorld(), Double
+					.valueOf(pos[0]), Double.valueOf(pos[1]), Double
+					.valueOf(pos[2])));
 
 		}
 

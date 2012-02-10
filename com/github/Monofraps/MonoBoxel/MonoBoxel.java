@@ -87,22 +87,28 @@ public class MonoBoxel extends JavaPlugin {
 	// returns true if the player has the permission
 	public boolean CheckPermCanCreateOwn(Player player)
 	{
-		return player.hasPermission("monoboxel.boxel.create");
+		return player.hasPermission("monoboxel.boxel.create.own");
 	}
 	
 	public boolean CheckPermCanCreateOther(Player player)
 	{
 		// same permission as createown for the time
-		return player.hasPermission("monoboxel.boxel.create");
+		return player.hasPermission("monoboxel.boxel.create.other");
 	}
 	
 	public boolean CheckPermCanVisitOwn(Player player)
 	{
 		// of the player has permissions to create his own Boxel, he will be able to visit it
-		if( !player.hasPermission("monoboxel.boxel.visit.own"))
-			return player.hasPermission("monoboxel.boxel.create.own");
-		else
-			return false;
+		if(player.hasPermission("monoboxel.boxel.create.own"))
+			return true;
+		
+		if(player.hasPermission("monoboxel.boxel.visit.own"))
+			return true;
+		
+		if(player.hasPermission("monoboxel.boxel.visit." + player.getName()))
+			return true;
+		
+		return false;
 	}
 	
 	public boolean CheckPermCanVisitOther(Player player, String boxelName)
@@ -111,8 +117,8 @@ public class MonoBoxel extends JavaPlugin {
 		if(boxelName.startsWith("BOXEL_"))
 			boxelName = boxelName.substring(6);
 		
-		if(getConfig().getBoolean("per-boxel-permissions"))
-			return player.hasPermission("monoboxel.boxel.visi." + boxelName);
+		if(getConfig().getBoolean("per-boxel-permissions", true))
+			return player.hasPermission("monoboxel.boxel.visit." + boxelName);
 		else
 			return player.hasPermission("monoboxel.boxel.visit.other");
 	}

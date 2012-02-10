@@ -97,7 +97,12 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 						+ "\".");
 			}
 			
-			master.worldManager.numberOfBoxels--;
+			MBBoxel box = null;
+			for (MBBoxel b : master.worldManager.boxels) {
+				if(b.correspondingWorldName.equals(boxelName))
+					box = b;
+			}
+			master.worldManager.boxels.remove(box);
 
 			return true;
 		}

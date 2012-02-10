@@ -16,7 +16,6 @@ public class MBWorldManager {
 	MonoBoxel master = null;	
 	List<MBBoxel> boxels = null;
 
-	int numberOfBoxels = 0;
 	private boolean worldsCounted = false;
 
 	public MBWorldManager(MonoBoxel plugin) {
@@ -25,7 +24,7 @@ public class MBWorldManager {
 	}
 
 	public int GetNumberOfBoxels() {
-		return numberOfBoxels;
+		return boxels.size();
 	}
 
 	// should be called CountWorlds
@@ -40,7 +39,6 @@ public class MBWorldManager {
 		for (MultiverseWorld w : worlds) {
 			if (w.getName().startsWith("BOXEL_")) {
 				boxels.add(new MBBoxel(master, w.getName()));
-				numberOfBoxels++;
 			}
 		}
 
@@ -50,7 +48,6 @@ public class MBWorldManager {
 			master.log.info(w);
 			if (w.startsWith("BOXEL_")) {
 				boxels.add(new MBBoxel(master, w));
-				numberOfBoxels++;
 			}
 		}
 	}
@@ -140,27 +137,27 @@ public class MBWorldManager {
 			}
 		}
 
-		if (!name.endsWith(owner.getName())) {
+		/*if (!name.endsWith(owner.getName())) {
 			owner.sendMessage("You requested a boxel that is not created and does not belong to your username.");
 			return null;
-		}
+		}*/
 
-		if (!owner.hasPermission("monoboxel.boxel.create")) {
+		/*if (!owner.hasPermission("monoboxel.boxel.create")) {
 			owner.sendMessage("You don't seem to have a boxel yet. You also don't have permissions to create one... :(");
 			return null;
-		}
+		}*/
 
-		if (numberOfBoxels >= master.getConfig().getInt("max-boxel-count", 20)) {
+		if (GetNumberOfBoxels() >= master.getConfig().getInt("max-boxel-count", 20)) {
 			owner.sendMessage("The maximum number of boxels on this server is reached. Please contact a server admin.");
 			return null;
 		}
 
 		// we have to create a new boxel, check if the player has the right to
 		// do this
-		if (!owner.hasPermission("monoboxel.boxel.create")) {
+		/*if (!owner.hasPermission("monoboxel.boxel.create")) {
 			owner.sendMessage("You don't have a Boxel and you are not allowed to create one. Please contact a server admin.");
 			return null;
-		}
+		}*/
 
 		owner.sendMessage("You don't seem to have a boxel yet. Will create one for you now...");
 
@@ -178,8 +175,6 @@ public class MBWorldManager {
 			wm.getMVWorld(name).setGameMode("CREATIVE");
 			wm.getMVWorld(name).setPVPMode(false);
 			wm.getMVWorld(name).setAutoLoad(false);
-
-			numberOfBoxels++;
 
 			master.log.info("Boxel created for Player: " + owner.getName());
 			owner.sendMessage("Boxel created! Will port you there now...");
