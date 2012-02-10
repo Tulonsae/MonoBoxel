@@ -464,7 +464,7 @@ public class MBBoxel {
 	 */
 	public boolean Unload() {
 
-		if (isEmpty() && !IsLoaded()) {
+		if (isEmpty() && IsLoaded()) {
 			if (master.GetMVCore().getMVWorldManager()
 					.unloadWorld(correspondingWorldName)) {
 				worldLoaded = false;

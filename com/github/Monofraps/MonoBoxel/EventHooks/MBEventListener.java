@@ -1,7 +1,6 @@
 package com.github.Monofraps.MonoBoxel.EventHooks;
 
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
@@ -32,10 +31,20 @@ public class MBEventListener implements Listener {
 	 * 
 	 * @param event
 	 */
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler
 	public void onPlayerChangedWorld(PlayerTeleportEvent event) {
+		
+		master.getLogManager().info("changedWorld - player is in:" + event.getPlayer().getWorld().getName());
+		
 		master.getMBWorldManager().CheckForUnusedWorlds();
-		master.getLogManager().info(event.getPlayer().getWorld().getName());
+		
+		master.getServer().getScheduler().scheduleSyncDelayedTask(master,
+				new Runnable() {
+					public void run() {
+						master.getMBWorldManager().LoadConfig();
+						master.getMBWorldManager().CheckForUnusedWorlds();
+					}
+				}, 10 * 20);
 	}
 	
 	
