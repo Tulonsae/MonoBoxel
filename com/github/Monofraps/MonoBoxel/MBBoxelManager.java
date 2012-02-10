@@ -75,6 +75,13 @@ public class MBBoxelManager {
 	 */
 	public boolean AddBoxel(String name, boolean create, Player player, String generator, String seed)
 	{
+		// check for duplicates
+		for(MBBoxel b : boxels)
+		{
+			if(b.getCorrespondingWorldName().equals(name))
+				return true;
+		}
+		
 		master.getLogManager().info("Created new entry in boxels.");
 		
 		if(!name.startsWith(master.getBoxelPrefix()))
