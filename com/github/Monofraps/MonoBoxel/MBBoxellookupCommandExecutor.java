@@ -31,7 +31,7 @@ public class MBBoxellookupCommandExecutor implements CommandExecutor {
 			return true;
 		}
 		
-		String boxelOwner = player.getWorld().getName().substring(6);		
+		String boxelOwner = player.getWorld().getName().substring(master.getBoxelPrefix().length());		
 		player.sendMessage("This boxel belongs to " + boxelOwner);
 		
 

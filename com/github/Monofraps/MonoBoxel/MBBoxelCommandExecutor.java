@@ -5,14 +5,31 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * Executor class for /boxel commands 
+ * @version 0.4
+ * @author Monofraps
+ */
 public class MBBoxelCommandExecutor implements CommandExecutor {
 
 	private MonoBoxel master;
 
+	/**
+	 * 
+	 * @param plugin A reference to the plugin class instance
+	 */
 	public MBBoxelCommandExecutor(MonoBoxel plugin) {
 		master = plugin;
 	}
 
+	/**
+	 * Will parse and execute the /boxel commands
+	 * @param sender
+	 * @param command
+	 * @param lable
+	 * @param args
+	 * @return true if the command execution was successful, otherwise false
+	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
@@ -31,7 +48,7 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		if (senderIsPlayer)
 			player = (Player) sender;
 
-		boxelName = "BOXEL_";
+		boxelName = master.getBoxelPrefix();
 
 		if (args.length > 0) {
 			if (args[0].equals("-") && senderIsPlayer)

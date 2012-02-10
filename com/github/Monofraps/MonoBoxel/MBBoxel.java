@@ -7,6 +7,12 @@ import org.bukkit.entity.Player;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
+/**
+ * This class will hold information of a specific Boxel
+ * Boxel name and the corresponding world (if loaded) will be stored here. This class also provides Create/Load/Join/Leave functions.
+ * @version 0.4
+ * @author Monofraps
+ */
 public class MBBoxel {
 
 	MonoBoxel master = null;
@@ -18,6 +24,13 @@ public class MBBoxel {
 	String boxelGenerator = "MonoBoxel";
 	String boxelSeed = "ThisSeedIsCool";
 
+	/**
+	 * 
+	 * @param plugin The reference to the MonoBoxel plugin class
+	 * @param worldName The name of the Boxel
+	 * @param generator The generator to use for Boxel generation (default for the default Minecraft/Bukkit world generator, empty for the MonoBoxel generator)
+	 * @param seed The seed to use for Boxel generation
+	 */
 	public MBBoxel(MonoBoxel plugin, String worldName, String generator, String seed) {
 		master = plugin;
 		correspondingWorldName = worldName;
@@ -36,14 +49,20 @@ public class MBBoxel {
 		boxelSeed = seed;
 	}
 
+	/**
+	 * Will create the Boxel.
+	 * Check if the given player has the right permissions and the perform the create action.
+	 * @param player The player that wants to perform the creation.
+	 * @return true on success, otherwise false
+	 */
 	public boolean Create(Player player) {
 
 		boolean isPlayersOwnBoxel = false;
 		String boxelOwner = "";
 
 		// should always be true
-		if (correspondingWorldName.startsWith("BOXEL_"))
-			boxelOwner = correspondingWorldName.substring(6);
+		if (correspondingWorldName.startsWith(master.getBoxelPrefix()))
+			boxelOwner = correspondingWorldName.substring(master.getBoxelPrefix().length());
 
 		if (boxelOwner.equals(player.getName()))
 			isPlayersOwnBoxel = true;
@@ -94,7 +113,7 @@ public class MBBoxel {
 
 				} else {
 					player.sendMessage("Failed to create Boxel.");
-					master.logger.info("Failed to create Boxel "
+					master.logger.severe("Failed to create Boxel "
 							+ correspondingWorldName);
 					return false;
 				}
@@ -108,7 +127,10 @@ public class MBBoxel {
 		return false;
 	}
 
-	// load the Boxel/world if it was unloaded
+	/**
+	 * Will load the world if it exists and is not loaded.
+	 * @return true on success, otherwise false
+	 */
 	public boolean Load() {
 		if (!Exists()) {
 			master.logger.info("Tried to load a not existsing Boxel.");
@@ -123,7 +145,7 @@ public class MBBoxel {
 		if (!master.GetMVCore().getMVWorldManager()
 				.loadWorld(correspondingWorldName)) {
 			// failed to load Boxel
-			master.logger.info("Failed to load Boxel.");
+			master.logger.severe("Failed to load Boxel.");
 			return false;
 		}
 
@@ -133,21 +155,35 @@ public class MBBoxel {
 		return true;
 	}
 
+	/**
+	 * Checks if the Boxel exists
+	 * @return true if the Boxel exists, otherwise false
+	 */
 	public boolean Exists() {
 		return master.worldManager.IsBoxel(correspondingWorldName)[0];
 	}
 
+	/**
+	 * Checks if the Boxel is loaded
+	 * @return true if the Boxel is loaded, otherwise false
+	 */
 	public boolean IsLoaded() {
 		return master.worldManager.IsBoxel(correspondingWorldName)[1];
 	}
 
+	/**
+	 * Teleports a specific player to the Boxel
+	 * Checks the players permissions and sends him to the Boxel
+	 * @param player The player that should be ported
+	 * @return true on success, otherwise false
+	 */
 	public boolean Join(Player player) {
 		boolean isPlayersOwnBoxel = false;
 		String boxelOwner = "";
 
 		// should always be true
-		if (correspondingWorldName.startsWith("BOXEL_"))
-			boxelOwner = correspondingWorldName.substring(6);
+		if (correspondingWorldName.startsWith(master.getBoxelPrefix()))
+			boxelOwner = correspondingWorldName.substring(master.getBoxelPrefix().length());
 
 		if (boxelOwner.equals(player.getName()))
 			isPlayersOwnBoxel = true;
@@ -180,7 +216,7 @@ public class MBBoxel {
 					return player.teleport(new Location(correspondingWorld, 0,
 							7, 0));
 				} else {
-					player.sendMessage("You don't have permissions to visit your own Boxel! 1");
+					player.sendMessage("You don't have permissions to visit your own Boxel!");
 					return false;
 				}
 			} else {
@@ -210,7 +246,7 @@ public class MBBoxel {
 					}
 
 				} else {
-					player.sendMessage("You don't have permissions to visit your own Boxel! 2");
+					player.sendMessage("You don't have permissions to visit your own Boxel!");
 					return false;
 				}
 
@@ -249,6 +285,11 @@ public class MBBoxel {
 		return false;
 	}
 
+	/**
+	 * Teleports a player back to his original location
+	 * @param player The player to teleport
+	 * @return true on success, otherwise false
+	 */
 	public boolean Leave(Player player) {
 		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
 		MultiverseWorld entryWorld = null;
@@ -320,7 +361,10 @@ public class MBBoxel {
 		return false;
 	}
 
-	// unload the Boxel if no player is in
+	/**
+	 * Unloads the Boxel if no player is inside.
+	 * @return true on success, otherwise false (will also return false if there are players in this Boxel)
+	 */
 	public boolean Unload() {
 		if(!worldLoaded)
 			return false;

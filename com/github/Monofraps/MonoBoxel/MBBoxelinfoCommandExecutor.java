@@ -18,6 +18,7 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 
 		master.worldManager.LoadWorlds();
 		sender.sendMessage(String.valueOf(master.worldManager.GetNumberOfBoxels()) + " Boxels are currently registered on this server.");
+		sender.sendMessage("The current Boxel prefix is: " + master.getBoxelPrefix());
 
 		return true;
 	}

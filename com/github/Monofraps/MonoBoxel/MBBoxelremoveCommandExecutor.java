@@ -39,17 +39,17 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 				return false;
 			}
 
-			boxelName = "BOXEL_" + player.getName();
+			boxelName = master.getBoxelPrefix() + player.getName();
 		} else {
-			if (args[0].startsWith("BOXEL_"))
+			if (args[0].startsWith(master.getBoxelPrefix()))
 				boxelName = args[0];
 			else
-				boxelName = "BOXEL_" + args[0];
+				boxelName = master.getBoxelPrefix() + args[0];
 		}
 
 		if (senderIsPlayer) {
 			// is this the players own boxel?
-			if (boxelName.equals("BOXEL_" + player.getName())) {
+			if (boxelName.equals(master.getBoxelPrefix() + player.getName())) {
 				if (!player.hasPermission("monoboxel.boxremove.own")) {
 					sender.sendMessage("You don't have permissions to do this!");
 					return false;
