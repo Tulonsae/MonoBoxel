@@ -2,6 +2,7 @@ package com.github.Monofraps.MonoBoxel;
 
 import java.util.logging.Logger;
 
+import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -81,6 +82,39 @@ public class MonoBoxel extends JavaPlugin {
 
 	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
 		return new MBBoxelGenerator();
+	}
+	
+	// returns true if the player has the permission
+	public boolean CheckPermCanCreateOwn(Player player)
+	{
+		return player.hasPermission("monoboxel.boxel.create");
+	}
+	
+	public boolean CheckPermCanCreateOther(Player player)
+	{
+		// same permission as createown for the time
+		return player.hasPermission("monoboxel.boxel.create");
+	}
+	
+	public boolean CheckPermCanVisitOwn(Player player)
+	{
+		// of the player has permissions to create his own Boxel, he will be able to visit it
+		if( !player.hasPermission("monoboxel.boxel.visit.own"))
+			return player.hasPermission("monoboxel.boxel.create.own");
+		else
+			return false;
+	}
+	
+	public boolean CheckPermCanVisitOther(Player player, String boxelName)
+	{
+		// do not check for visit.BOXEL_<name> permissions but for visit.<name>
+		if(boxelName.startsWith("BOXEL_"))
+			boxelName = boxelName.substring(6);
+		
+		if(getConfig().getBoolean("per-boxel-permissions"))
+			return player.hasPermission("monoboxel.boxel.visi." + boxelName);
+		else
+			return player.hasPermission("monoboxel.boxel.visit.other");
 	}
 
 }

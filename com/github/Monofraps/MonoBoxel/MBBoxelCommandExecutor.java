@@ -47,7 +47,7 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		boxelName = "BOXEL_" + player.getName();
 
 		if (args.length > 0) {
-			playersOwnBoxel = false;
+			playersOwnBoxel = false; // @TODO: will not work with /boxel <nameOfPlayerCalling>
 			boxelName = "BOXEL_" + args[0];
 
 			// failures in the following block will result in teleporting the
