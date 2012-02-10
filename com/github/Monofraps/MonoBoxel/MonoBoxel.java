@@ -34,6 +34,7 @@ public class MonoBoxel extends JavaPlugin {
 
 		worldManager = new MBWorldManager(this);
 		
+		// @todo: make this functional or delete it
 		getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 			public void run() {
 				worldManager.LoadWorlds();

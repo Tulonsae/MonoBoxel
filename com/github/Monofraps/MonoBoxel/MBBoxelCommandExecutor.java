@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
 public class MBBoxelCommandExecutor implements CommandExecutor {
 
@@ -32,16 +33,7 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		World target = null;
 		boolean playersOwnBoxel = true;
 
-		// is the player allowed to visit/create a boxel? - it not, we can exit
-		// here
-		/*
-		 * if ( (!player.hasPermission("monoboxel.boxel.visit") &&
-		 * !master.getConfig().getBoolean("per-boxel-permissions", false)) &&
-		 * !player.hasPermission("monoboxel.boxel.create")) {
-		 * player.sendMessage(
-		 * "You don't have permissions to create or visit a boxel. :("); return
-		 * false; }
-		 */
+
 		// get the MV Core
 		if (master.GetMVCore() == null) {
 			master.log.info("Failed to get Muliverse-Core.");
@@ -58,8 +50,78 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 			playersOwnBoxel = false;
 			boxelName = "BOXEL_" + args[0];
 
+			// failures in the following block will result in teleporting the
+			// player to the default spawn world and returning "true"
 			if (args[0].equals("getmeout")) {
-				player.teleport(wm.getSpawnWorld().getSpawnLocation());
+
+				// if we have saved the "exit" location, we can load it from the
+				// config
+				if (master.getConfig().getBoolean("save-exit-location", true)) {
+					
+					String outWorld = master.getConfig().getString(
+							"playeroloc." + player.getName() + ".world", "");
+					String outPosition = master.getConfig().getString(
+							"playeroloc." + player.getName() + ".position", "");
+
+					// the saved location could not be loaded correctly
+					if (outWorld.isEmpty() || outPosition.isEmpty()) {
+						master.log
+								.info("save-exit-location was set, but no entry location for player "
+										+ player.getName() + " was found.");
+						player.teleport(wm.getSpawnWorld().getSpawnLocation());
+						return true;
+					}
+
+					// we have load the entry location, now see if the entry
+					// world is loaded
+					MultiverseWorld entryWorld = wm.getMVWorld(outWorld);
+					if (entryWorld == null) {
+						// Multiverse getMVWorld returned null, check the
+						// unloaded worlds
+						if (!wm.getUnloadedWorlds().contains(outWorld)) {
+							// the saved world could not be found, so port the
+							// player to the default spawn world
+							master.log
+									.info("save-exit-location was set, but no entry world "
+											+ outWorld
+											+ " for player "
+											+ player.getName() + " was found.");
+							player.teleport(wm.getSpawnWorld()
+									.getSpawnLocation());
+							return true;
+						} else {
+							// the entry world of the player is in the
+							// Multiverse config, but not loaded; load it!
+							if (!wm.loadWorld(outWorld)) {
+								master.log
+										.info("Failed to load entry world for player "
+												+ player.getName());
+								player.sendMessage("Failed to load entry world");
+								player.teleport(wm.getSpawnWorld()
+										.getSpawnLocation());
+								return true;
+							} else {
+								// Multiverse has load the world
+								entryWorld = wm.getMVWorld(outWorld);
+							}
+						}
+					}
+
+					// DEBUG:
+					if (entryWorld == null) {
+						master.log.info("entryWorld is still null");
+						return false;
+					}
+
+					// @TODO: the position does not seem to be the exact player position
+					// we found the world, now extract the position
+					String[] pos = outPosition.split(",");
+					player.teleport(new Location(entryWorld.getCBWorld(),
+							Double.valueOf(pos[0]), Double.valueOf(pos[1]),
+							Double.valueOf(pos[2])));
+
+				}
+
 				return true;
 			}
 		}
@@ -68,7 +130,8 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		if (master.getConfig().getBoolean("per-boxel-permissions", false)) {
 
 			// per boxel permissions
-			if (!player.hasPermission("monoboxel.boxel.visit." + boxelName) && !playersOwnBoxel) {
+			if (!player.hasPermission("monoboxel.boxel.visit." + boxelName)
+					&& !playersOwnBoxel) {
 				player.sendMessage("You don't have permissions to visit this boxel.");
 				return false;
 			}
@@ -76,7 +139,7 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 			// global visit permissions
 			if (!player.hasPermission("monoboxel.boxel.visit")
 					&& !playersOwnBoxel) {
-				
+
 				player.sendMessage("You don't have permissions to visit this boxel.");
 				return false;
 			}
@@ -89,18 +152,28 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		if (target == null) {
 			master.log.info("Boxel \"" + boxelName
 					+ "\" could not be found or created.");
-			player.sendMessage("The boxel was not found or could not be created. Please contact a server admin.");
+			player.sendMessage("The Boxel was not found or could not be created. Please contact a server admin.");
 			return false;
 		}
 
-		// save the players current location and port
-		if(master.getConfig().getBoolean("save-exit-location", true))
-		{
-			// experimental and not finished yet...
-			master.getConfig().set("playerloc." + player.getName() + ".world", player.getWorld());
-			master.getConfig().set("playerloc." + player.getName() + ".position", player.getWorld());
+		// save the players current location and teleport
+		if (master.getConfig().getBoolean("save-exit-location", true)) {
+			// do not save the return/entry location if the player is in a Boxel
+			if(!master.worldManager.IsBoxel(player.getWorld().getName())[0])
+			{			
+				master.getConfig().set("playeroloc." + player.getName() + ".world",
+						player.getWorld().getName());
+	
+				master.getConfig().set(
+						"playeroloc." + player.getName() + ".position",
+						String.valueOf(player.getLocation().getX()) + ","
+								+ String.valueOf(player.getLocation().getY()) + ","
+								+ String.valueOf(player.getLocation().getZ()));
+	
+				master.saveConfig();
+			}
 		}
-			
+
 		if (player.teleport(new Location(target, 0, 7, 0)))
 			return true;
 

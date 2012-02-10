@@ -70,10 +70,16 @@ public class MBWorldManager {
 	// return[1] -> Boxel is loaded
 	public boolean[] IsBoxel(String name) {
 		boolean[] result = new boolean[2];
-		
+
+		if (!name.startsWith("BOXEL_")) {
+			result[0] = false;
+			result[1] = true;
+			return result;
+		}
+
 		Collection<MultiverseWorld> worlds = master.GetMVCore()
 				.getMVWorldManager().getMVWorlds();
-		
+
 		for (MultiverseWorld w : worlds) {
 			if (w.getName().equals(name)) {
 				result[0] = true;
@@ -84,23 +90,19 @@ public class MBWorldManager {
 		Collection<String> unloadedWorlds = master.GetMVCore()
 				.getMVWorldManager().getUnloadedWorlds();
 		for (String w : unloadedWorlds) {
-			if (w.equals(name))
-			{
+			if (w.equals(name)) {
 				result[0] = true;
 				result[1] = false;
 			}
 		}
-		
+
 		return result;
 	}
-	
-	
 
 	public World CreateWorld(String name, Player owner, MVWorldManager wm) {
 
 		World result = null;
 
-		
 		if (wm.getMVWorld(name) != null) {
 			owner.sendMessage("Found your boxel. Will port you there now...");
 			return wm.getMVWorld(name).getCBWorld();
@@ -129,20 +131,20 @@ public class MBWorldManager {
 			return null;
 		}
 
-		// we have to create a new boxel, check if the player has the right to do this
-		if(!owner.hasPermission("monoboxel.boxel.create"))
-		{
+		// we have to create a new boxel, check if the player has the right to
+		// do this
+		if (!owner.hasPermission("monoboxel.boxel.create")) {
 			owner.sendMessage("You don't have a Boxel and you are not allowed to create one. Please contact a server admin.");
 			return null;
 		}
-		
+
 		owner.sendMessage("You don't seem to have a boxel yet. Will create one for you now...");
 
 		if (wm.addWorld(name, World.Environment.valueOf("NORMAL"), "seed",
 				WorldType.valueOf("FLAT"), false, "MonoBoxel")) {
 
 			result = wm.getMVWorld(name).getCBWorld();
-			if(result == null)
+			if (result == null)
 				master.log.info("failer");
 			master.log.info("Boxel " + name + " created!");
 

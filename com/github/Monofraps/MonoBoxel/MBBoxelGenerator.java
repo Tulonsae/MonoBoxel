@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 
+// This chunk generator will just generate a flat grass surface (on layer 7)
 public class MBBoxelGenerator extends ChunkGenerator {
 	
 	byte[] flatChunk;
