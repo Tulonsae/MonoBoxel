@@ -7,7 +7,16 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 
-// This chunk generator will just generate a flat grass surface (on layer 7)
+/**
+ * This chunk generator will generate a flat chunk
+ * Chunk layers:
+ * 		0 - Bedrock
+ * 		1 - 5 - dirt
+ * 		6 - grass
+ * 
+ * @version 0.4
+ * @author Monofraps
+ */
 public class MBBoxelGenerator extends ChunkGenerator {
 
 	byte[] flatChunk;
@@ -66,10 +75,15 @@ public class MBBoxelGenerator extends ChunkGenerator {
 	@Override
 	public byte[] generate(World world, Random rand, int chunkx, int chunkz) {
 
+		// max-boxel-size set to 0 will result in non-limited worlds
 		if (maxBoxelSize != 0) {
 			if (chunkx >= maxBoxelSize)
 				return Arrays.copyOf(borderChunk, borderChunk.length);
 			if (chunkz >= maxBoxelSize)
+				return Arrays.copyOf(borderChunk, borderChunk.length);
+			if(chunkx <= -maxBoxelSize)
+				return Arrays.copyOf(borderChunk, borderChunk.length);
+			if(chunkz <= -maxBoxelSize)
 				return Arrays.copyOf(borderChunk, borderChunk.length);
 		}
 

@@ -1,9 +1,11 @@
-package com.github.Monofraps.MonoBoxel;
+package com.github.Monofraps.MonoBoxel.CommandExecutors;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
 
 public class MBBoxellookupCommandExecutor implements CommandExecutor {
@@ -25,13 +27,13 @@ public class MBBoxellookupCommandExecutor implements CommandExecutor {
 
 		Player player = (Player) sender;
 
-		if(!master.worldManager.IsBoxel(player.getWorld().getName())[0])
+		if(!master.getMBWorldManager().IsBoxel(player.getWorld().getName())[0])
 		{
 			player.sendMessage("You are not in a Boxel!");
 			return true;
 		}
 		
-		String boxelOwner = player.getWorld().getName().substring(6);		
+		String boxelOwner = player.getWorld().getName().substring(master.getBoxelPrefix().length());		
 		player.sendMessage("This boxel belongs to " + boxelOwner);
 		
 

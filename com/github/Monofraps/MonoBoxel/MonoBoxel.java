@@ -5,8 +5,17 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelCommandExecutor;
+import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelinfoCommandExecutor;
+import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxellookupCommandExecutor;
+import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelremoveCommandExecutor;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
+/**
+ * Main class of MonoBoxel plugin.
+ * @version 0.4
+ * @author Monofraps
+ */
 public class MonoBoxel extends JavaPlugin {
 
 	MBLogger logger = null;
@@ -15,9 +24,14 @@ public class MonoBoxel extends JavaPlugin {
 	MBBoxelremoveCommandExecutor boxelremoveCmdExecutor;
 	MBBoxelinfoCommandExecutor boxelinfoCmdExecutor;
 	MBWorldManager worldManager;
+	
 
 	private MultiverseCore mvCore = null;
+	private String boxelPrefix = "BOXEL_";
 	
+	/**
+	 * Hooks up the command executors and initializes the scheduled tasks
+	 */
 	public void onEnable() {
 		this.logger = new MBLogger("Minecraft", this);
 		
@@ -29,7 +43,9 @@ public class MonoBoxel extends JavaPlugin {
 		// we may use the version for incompatibility checks later
 		reloadConfig();
 		getConfig().set("version", getDescription().getVersion());
-		//saveConfig();
+
+		boxelPrefix = getConfig().getString("boxel-prefix", "BOXEL_");
+		
 
 		boxelCmdExecutor = new MBBoxelCommandExecutor(this);
 		boxellookupCmdExecutor = new MBBoxellookupCommandExecutor(this);
@@ -59,6 +75,10 @@ public class MonoBoxel extends JavaPlugin {
 		logger.info("MonoBoxel enabled!");
 	}
 
+	/**
+	 * Tries to get the MultiverseCore instance
+	 * @return The MultiverCore or null on failure.
+	 */
 	public MultiverseCore GetMVCore() {
 		if (mvCore == null) {
 			Plugin[] plugins = getServer().getPluginManager().getPlugins();
@@ -85,19 +105,37 @@ public class MonoBoxel extends JavaPlugin {
 		logger.info("MonoBoxel disabled!");
 	}
 
+	/**
+	 * 
+	 * @return The MonoBoxel chunk generator
+	 */
 	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
 		return new MBBoxelGenerator(getConfig().getLong("max-boxel-size", 5));
 	}
 
-	// returns true if the player has the permission
+	/**
+	 * Checks if the player has permissions to create his own Boxel
+	 * @param player The player that want's to perform the creation.
+	 * @return true if the player has permissions, otherwise false
+	 */
 	public boolean CheckPermCanCreateOwn(Player player) {
 		return player.hasPermission("monoboxel.boxel.create.own");
 	}
 
+	/**
+	 * Checks if the player has permissions to create other players Boxels
+	 * @param player The player that want's to perform the creation.
+	 * @return true if the player has permissions, otherwise false
+	 */
 	public boolean CheckPermCanCreateOther(Player player) {
 		return player.hasPermission("monoboxel.boxel.create.other");
 	}
 
+	/**
+	 * Checks if the player has permissions visit his own Boxel
+	 * @param player The player that want's to perform the creation.
+	 * @return true if the player has permissions, otherwise false
+	 */
 	public boolean CheckPermCanVisitOwn(Player player) {
 		// if the player has permissions to create his own Boxel, he will also
 		// be able to visit it
@@ -113,14 +151,38 @@ public class MonoBoxel extends JavaPlugin {
 		return false;
 	}
 
+	/**
+	 * Checks if the player has permissions to visit other players Boxels
+	 * @param player The player that want's to perform the creation.
+	 * @return true if the player has permissions, otherwise false
+	 */
 	public boolean CheckPermCanVisitOther(Player player, String boxelName) {
 		// do not check for visit.BOXEL_<name> permissions but for visit.<name>
-		if (boxelName.startsWith("BOXEL_"))
-			boxelName = boxelName.substring(6);
+		if (boxelName.startsWith(getBoxelPrefix()))
+			boxelName = boxelName.substring(getBoxelPrefix().length());
 
 		if (getConfig().getBoolean("per-boxel-permissions", true))
 			return player.hasPermission("monoboxel.boxel.visit." + boxelName);
 		else
 			return player.hasPermission("monoboxel.boxel.visit.other");
+	}
+	
+	/**
+	 * 
+	 * @return The Boxel prefix
+	 */
+	public String getBoxelPrefix()
+	{
+		return boxelPrefix;
+	}
+	
+	public MBWorldManager getMBWorldManager()
+	{
+		return worldManager;		
+	}
+	
+	public MBLogger getLogManager()
+	{
+		return logger;
 	}
 }

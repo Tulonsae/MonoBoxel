@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel;
+package com.github.Monofraps.MonoBoxel.CommandExecutors;
 
 import java.util.List;
 
@@ -7,6 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.github.Monofraps.MonoBoxel.MBBoxel;
+import com.github.Monofraps.MonoBoxel.MonoBoxel;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 
 public class MBBoxelremoveCommandExecutor implements CommandExecutor {
@@ -35,21 +37,21 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		// get the boxels name
 		if (args.length == 0) {
 			if (!senderIsPlayer) {
-				master.logger.info("You have to specify a boxel or player name");
+				master.getLogManager().info("You have to specify a boxel or player name");
 				return false;
 			}
 
-			boxelName = "BOXEL_" + player.getName();
+			boxelName = master.getBoxelPrefix() + player.getName();
 		} else {
-			if (args[0].startsWith("BOXEL_"))
+			if (args[0].startsWith(master.getBoxelPrefix()))
 				boxelName = args[0];
 			else
-				boxelName = "BOXEL_" + args[0];
+				boxelName = master.getBoxelPrefix() + args[0];
 		}
 
 		if (senderIsPlayer) {
 			// is this the players own boxel?
-			if (boxelName.equals("BOXEL_" + player.getName())) {
+			if (boxelName.equals(master.getBoxelPrefix() + player.getName())) {
 				if (!player.hasPermission("monoboxel.boxremove.own")) {
 					sender.sendMessage("You don't have permissions to do this!");
 					return false;
@@ -65,7 +67,7 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		}
 
 		// check if the boxel exists (loaded and unloaded worlds)
-		boolean[] boxlupResult = master.worldManager.IsBoxel(boxelName);
+		boolean[] boxlupResult = master.getMBWorldManager().IsBoxel(boxelName);
 		if (!boxlupResult[0]) {
 			sender.sendMessage("Boxel \"" + boxelName + "\" does not exists.");
 			return false;
@@ -89,7 +91,7 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		}
 
 		if (wm.deleteWorld(boxelName)) {
-			master.logger
+			master.getLogManager()
 					.info("Successfully removed boxel \"" + boxelName + "\".");
 
 			if (senderIsPlayer) {
@@ -98,11 +100,11 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 			}
 			
 			MBBoxel box = null;
-			for (MBBoxel b : master.worldManager.boxels) {
-				if(b.correspondingWorldName.equals(boxelName))
+			for (MBBoxel b : master.getMBWorldManager().getBoxels()) {
+				if(b.getCorrespondingWorldName().equals(boxelName))
 					box = b;
 			}
-			master.worldManager.boxels.remove(box);
+			master.getMBWorldManager().getBoxels().remove(box);
 
 			return true;
 		}

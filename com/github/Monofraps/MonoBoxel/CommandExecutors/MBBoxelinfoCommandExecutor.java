@@ -1,8 +1,10 @@
-package com.github.Monofraps.MonoBoxel;
+package com.github.Monofraps.MonoBoxel.CommandExecutors;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
 public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 
@@ -16,8 +18,9 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
 
-		master.worldManager.LoadWorlds();
-		sender.sendMessage(String.valueOf(master.worldManager.GetNumberOfBoxels()) + " Boxels are currently registered on this server.");
+		master.getMBWorldManager().LoadWorlds();
+		sender.sendMessage(String.valueOf(master.getMBWorldManager().GetNumberOfBoxels()) + " Boxels are currently registered on this server.");
+		sender.sendMessage("The current Boxel prefix is: " + master.getBoxelPrefix());
 
 		return true;
 	}

@@ -27,3 +27,7 @@ per-boxel-permissions: false
 # to where he was on exit
 save-exit-location: true
 
+
+# Prefix of Boxel world names
+boxel-prefix: 'BOXEL_'
+
