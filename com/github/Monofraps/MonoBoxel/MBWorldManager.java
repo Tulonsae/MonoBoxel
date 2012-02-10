@@ -53,22 +53,10 @@ public class MBWorldManager {
 	}
 
 	public void CheckForUnusedWorlds() {
-		Collection<MultiverseWorld> worlds = master.GetMVCore()
-				.getMVWorldManager().getMVWorlds();
-		for (MultiverseWorld w : worlds) {
-			if (w.getName().startsWith("BOXEL_")) {
-				if (w.getCBWorld().getPlayers().size() == 0) {
-					master.log.info("Unloaded world " + w.getName()
-							+ " due to inactivity.");
-					master.GetMVCore().getMVWorldManager()
-							.unloadWorld(w.getName());
-
-					// only unload 1 world per check - the world list w will be
-					// modified and java will throw an exception if we loop
-					// through it
-					return;
-				}
-			}
+		for(MBBoxel box : boxels)
+		{
+			if(box.Unload())
+				master.log.info("Unloaded Boxel " + box.correspondingWorldName);
 		}
 	}
 
@@ -137,27 +125,10 @@ public class MBWorldManager {
 			}
 		}
 
-		/*if (!name.endsWith(owner.getName())) {
-			owner.sendMessage("You requested a boxel that is not created and does not belong to your username.");
-			return null;
-		}*/
-
-		/*if (!owner.hasPermission("monoboxel.boxel.create")) {
-			owner.sendMessage("You don't seem to have a boxel yet. You also don't have permissions to create one... :(");
-			return null;
-		}*/
-
 		if (GetNumberOfBoxels() >= master.getConfig().getInt("max-boxel-count", 20)) {
 			owner.sendMessage("The maximum number of boxels on this server is reached. Please contact a server admin.");
 			return null;
 		}
-
-		// we have to create a new boxel, check if the player has the right to
-		// do this
-		/*if (!owner.hasPermission("monoboxel.boxel.create")) {
-			owner.sendMessage("You don't have a Boxel and you are not allowed to create one. Please contact a server admin.");
-			return null;
-		}*/
 
 		owner.sendMessage("You don't seem to have a boxel yet. Will create one for you now...");
 

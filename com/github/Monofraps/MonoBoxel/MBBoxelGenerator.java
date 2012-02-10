@@ -9,32 +9,43 @@ import org.bukkit.generator.ChunkGenerator;
 
 // This chunk generator will just generate a flat grass surface (on layer 7)
 public class MBBoxelGenerator extends ChunkGenerator {
-	
+
 	byte[] flatChunk;
-	
-	public MBBoxelGenerator () {
-		
-		// does not seem to work with generating this once
+	byte[] borderChunk;
+	long maxBoxelSize = 16;
+
+	public MBBoxelGenerator(long maxBoxelSize) {
+
 		flatChunk = new byte[32768];
+		borderChunk = new byte[32768];
 		
+		this.maxBoxelSize = maxBoxelSize;
+
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
 				flatChunk[xyzToByte(x, 0, z)] = (byte) Material.BEDROCK.getId();
 			}
 		}
-		
-		for(int y = 1; y < 6; y++)
-		{
-			for (int x = 0; x < 16; x++) {
+
+		for (int x = 0; x < 16; x++) {
+			for (int y = 1; y < 6; y++) {
 				for (int z = 0; z < 16; z++) {
 					flatChunk[xyzToByte(x, y, z)] = (byte) Material.DIRT.getId();
 				}
 			}
 		}
-		
+
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
 				flatChunk[xyzToByte(x, 6, z)] = (byte) Material.GRASS.getId();
+			}
+		}
+
+		for (int x = 0; x < 16; x++) {
+			for (int y = 1; y < 127; y++) {
+				for (int z = 0; z < 16; z++) {
+					borderChunk[xyzToByte(x, y, z)] = (byte) Material.BEDROCK.getId();
+				}
 			}
 		}
 	}
@@ -52,6 +63,11 @@ public class MBBoxelGenerator extends ChunkGenerator {
 
 	@Override
 	public byte[] generate(World world, Random rand, int chunkx, int chunkz) {
+		
+		if(chunkx >= maxBoxelSize)
+			return Arrays.copyOf(borderChunk, borderChunk.length);
+		if(chunkz >= maxBoxelSize)
+			return Arrays.copyOf(borderChunk, borderChunk.length);
 		
 		return Arrays.copyOf(flatChunk, flatChunk.length);
 	}

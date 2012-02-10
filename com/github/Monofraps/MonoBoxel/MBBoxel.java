@@ -308,4 +308,22 @@ public class MBBoxel {
 
 		return false;
 	}
+
+	// unload the Boxel if no player is in
+	public boolean Unload() {
+		if(!worldLoaded)
+			return false;
+		
+		if (correspondingWorld.getPlayers().size() == 0) {
+			master.log.info("Unloaded world " + correspondingWorldName
+					+ " due to inactivity.");
+
+			worldLoaded = false;
+
+			return master.GetMVCore().getMVWorldManager()
+					.unloadWorld(correspondingWorldName);
+
+		}
+		return false;
+	}
 }

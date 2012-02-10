@@ -81,7 +81,7 @@ public class MonoBoxel extends JavaPlugin {
 	}
 
 	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-		return new MBBoxelGenerator();
+		return new MBBoxelGenerator(getConfig().getLong("max-boxel-size", 5));
 	}
 	
 	// returns true if the player has the permission
