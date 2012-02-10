@@ -16,6 +16,7 @@ public class MBLogger {
 	private Logger log;
 	private PluginDescriptionFile pdFile;
 	private String LogPrefix = "";
+	private boolean logStackTrace = false;
 
 	/**
 	 * 
@@ -25,6 +26,7 @@ public class MBLogger {
 	protected MBLogger(String name, JavaPlugin plugin) {
 		log = Logger.getLogger(name);
 		pdFile = plugin.getDescription();
+		logStackTrace = plugin.getConfig().getBoolean("log-stack-trace", false);
 		LogPrefix = "[" + pdFile.getName() + " " + pdFile.getVersion() + "] ";
 	}
 
@@ -33,6 +35,15 @@ public class MBLogger {
 	 * @param msg
 	 */
 	public void info(String msg) {
+		if(logStackTrace)
+		{
+			msg = msg + "\n With stack: \n";
+			
+			for(StackTraceElement s : Thread.currentThread().getStackTrace())
+			 msg += s.toString() + "\n";
+			
+			msg += "\n====================";
+		}
 		log.info(LogPrefix + msg);
 	}
 
@@ -41,6 +52,15 @@ public class MBLogger {
 	 * @param msg
 	 */
 	public void severe(String msg) {
+		if(logStackTrace)
+		{
+			msg = msg + "\n With stack: \n";
+			
+			for(StackTraceElement s : Thread.currentThread().getStackTrace())
+			 msg += s.toString() + "\n";
+			
+			msg += "\n====================";
+		}
 		log.severe(LogPrefix + msg);
 	}
 
@@ -49,6 +69,15 @@ public class MBLogger {
 	 * @param msg
 	 */
 	public void warning(String msg) {
+		if(logStackTrace)
+		{
+			msg = msg + "\n With stack: \n";
+			
+			for(StackTraceElement s : Thread.currentThread().getStackTrace())
+			 msg += s.toString() + "\n";
+			
+			msg += "\n====================";
+		}
 		log.warning(LogPrefix + msg);
 	}
 }

@@ -18,8 +18,8 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
 
-		master.getMBWorldManager().LoadWorlds();
-		sender.sendMessage(String.valueOf(master.getMBWorldManager().GetNumberOfBoxels()) + " Boxels are currently registered on this server.");
+		master.getMBWorldManager().LoadConfig();
+		sender.sendMessage(String.valueOf(master.getMBWorldManager().getNumBoxels()) + " Boxels are currently registered on this server.");
 		sender.sendMessage("The current Boxel prefix is: " + master.getBoxelPrefix());
 
 		return true;

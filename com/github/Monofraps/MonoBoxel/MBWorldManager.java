@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.bukkit.World;
-import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
 /**
@@ -19,6 +16,8 @@ import com.onarandombox.MultiverseCore.api.MultiverseWorld;
  * @author Monofraps
  */
 public class MBWorldManager {
+
+	MonoBoxel master = null;
 
 	private class BoxelUnloadRunnable implements Runnable {
 
@@ -39,7 +38,6 @@ public class MBWorldManager {
 		}
 	}
 
-	MonoBoxel master = null;
 	List<MBBoxel> boxels = null;
 
 	private boolean worldsCounted = false;
@@ -112,8 +110,6 @@ public class MBWorldManager {
 		}
 	}
 
-	// return[0] -> Boxel exists
-	// return[1] -> Boxel is loaded
 	/**
 	 * Checks if the given name is an existing Boxel and if it is loaded.
 	 * 
@@ -182,70 +178,6 @@ public class MBWorldManager {
 				return false;
 
 		return boxels.add(boxel);
-	}
-
-	/**
-	 * Creates a new Boxel world
-	 * 
-	 * @param name
-	 *            Name of the Boxel
-	 * @param owner
-	 *            The player that wants to perform this action
-	 * @param generator
-	 *            The generator to use to generate the Boxel (only needed if you
-	 *            don't want to use the MonoBoxel generator)
-	 * @param seed
-	 *            The seed to use for generating the Boxel
-	 * @return
-	 */
-	public World CreateWorld(String name, Player owner, String generator,
-			String seed) {
-
-		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
-		World result = null;
-
-		if (wm.getMVWorld(name) != null) {
-			owner.sendMessage("Found your boxel. Will port you there now...");
-			return wm.getMVWorld(name).getCBWorld();
-		} else {
-			// now check unloaded worlds too
-			Collection<String> uworlds = wm.getUnloadedWorlds();
-			if (uworlds.contains(name)) {
-				owner.sendMessage("Found your boxel. Will have to load it and port you there...");
-				wm.loadWorld(name);
-				return wm.getMVWorld(name).getCBWorld();
-			}
-		}
-
-		if (GetNumberOfBoxels() >= master.getConfig().getInt("max-boxel-count",
-				20)) {
-			owner.sendMessage("The maximum number of boxels on this server is reached. Please contact a server admin.");
-			return null;
-		}
-
-		owner.sendMessage("You don't seem to have a boxel yet. Will create one for you now...");
-
-		if (generator.equals("default"))
-			generator = "";
-
-		if (wm.addWorld(name, World.Environment.valueOf("NORMAL"), seed,
-				WorldType.valueOf("NORMAL"), false, generator)) {
-
-			result = wm.getMVWorld(name).getCBWorld();
-			if (result == null)
-				master.logger.info("Boxel " + name + " created!");
-			wm.getMVWorld(name).setAllowAnimalSpawn(false);
-			wm.getMVWorld(name).setAllowMonsterSpawn(false);
-			wm.getMVWorld(name).setEnableWeather(false);
-			wm.getMVWorld(name).setGameMode("CREATIVE");
-			wm.getMVWorld(name).setPVPMode(false);
-			wm.getMVWorld(name).setAutoLoad(false);
-
-			master.logger.info("Boxel created for Player: " + owner.getName());
-			owner.sendMessage("Boxel created! Will port you there now...");
-		}
-
-		return result;
 	}
 
 	public List<MBBoxel> getBoxels() {

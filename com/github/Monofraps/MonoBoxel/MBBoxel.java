@@ -1,7 +1,11 @@
 package com.github.Monofraps.MonoBoxel;
 
+import java.util.Collection;
+
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.WorldType;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
@@ -101,8 +105,7 @@ public class MBBoxel {
 		if (isPlayersOwnBoxel) {
 
 			if (master.CheckPermCanCreateOwn(player)) {
-				if (master.worldManager.CreateWorld(correspondingWorldName,
-						player, boxelGenerator, boxelSeed) != null) {
+				if (DoCreate(player)) {
 
 					correspondingWorld = master.GetMVCore().getMVWorldManager()
 							.getMVWorld(correspondingWorldName).getCBWorld();
@@ -117,8 +120,7 @@ public class MBBoxel {
 		} else {
 			if (master.CheckPermCanCreateOther(player)) {
 
-				if (master.worldManager.CreateWorld(correspondingWorldName,
-						player, boxelGenerator, boxelSeed) != null) {
+				if (DoCreate(player)) {
 
 					correspondingWorld = master.GetMVCore().getMVWorldManager()
 							.getMVWorld(correspondingWorldName).getCBWorld();
@@ -141,6 +143,75 @@ public class MBBoxel {
 	}
 
 	/**
+	 * Does the actual Boxel/World creation
+	 * 
+	 * @param sender The sender (mostly a player) that will perform this action (I am using CommandSender because so it is possible to create Boxels for specific players from the console)
+	 * @return
+	 */
+	private boolean DoCreate(CommandSender sender) {
+		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
+		MultiverseWorld result = null;
+
+		if (wm.getMVWorld(correspondingWorldName) != null) {
+			sender.sendMessage("Found your boxel. Will port you there now...");
+			return true;
+		} else {
+			// now check unloaded worlds too
+			Collection<String> uworlds = wm.getUnloadedWorlds();
+			if (uworlds.contains(correspondingWorldName)) {
+				sender.sendMessage("Found your boxel. Will have to load it and port you there...");
+				Load();
+				return true;
+			}
+		}
+
+		/*
+		 * if (GetNumberOfBoxels() >=
+		 * master.getConfig().getInt("max-boxel-count", 20)) {
+		 * owner.sendMessage(
+		 * "The maximum number of boxels on this server is reached. Please contact a server admin."
+		 * ); return null; }
+		 */
+
+		sender.sendMessage("You don't seem to have a boxel yet. Will create one for you now...");
+
+		if (boxelGenerator.equals("default"))
+			boxelGenerator = "";
+
+		if (wm.addWorld(correspondingWorldName,
+				World.Environment.valueOf("NORMAL"), boxelSeed,
+				WorldType.valueOf("NORMAL"), false, boxelGenerator)) {
+
+			result = wm.getMVWorld(correspondingWorldName);
+
+			if (result != null)
+				master.logger.info("Boxel " + correspondingWorldName
+						+ " created!");
+			else
+				return false;
+
+			result.setAllowAnimalSpawn(false);
+			result.setAllowMonsterSpawn(false);
+			result.setEnableWeather(false);
+			result.setGameMode("CREATIVE");
+			result.setPVPMode(false);
+			result.setAutoLoad(false);
+
+			if (correspondingWorld != null)
+				master.getLogManager()
+						.warning(
+								"DoCreate was called, but correspondingWorld was already set.");
+
+			master.logger.info("Boxel created for Player: " + sender.getName());
+			sender.sendMessage("Boxel created! Will port you there now...");
+			
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Will load the world if it exists and is not loaded.
 	 * 
 	 * @return true on success, otherwise false
@@ -153,6 +224,7 @@ public class MBBoxel {
 
 		if (IsLoaded()) {
 			master.logger.info("Boxel is already loaded.");
+			worldLoaded = true;
 			return true;
 		}
 
@@ -163,8 +235,10 @@ public class MBBoxel {
 			return false;
 		}
 
+		// the world should be loaded now
 		correspondingWorld = master.GetMVCore().getMVWorldManager()
 				.getMVWorld(correspondingWorldName).getCBWorld();
+		worldLoaded = true;
 
 		return true;
 	}
@@ -390,7 +464,7 @@ public class MBBoxel {
 	 */
 	public boolean Unload() {
 
-		if (isEmpty()) {
+		if (isEmpty() && !IsLoaded()) {
 			if (master.GetMVCore().getMVWorldManager()
 					.unloadWorld(correspondingWorldName)) {
 				worldLoaded = false;
@@ -405,8 +479,9 @@ public class MBBoxel {
 	}
 
 	public boolean isEmpty() {
-		if (!worldLoaded)
-			return true;
+		// if (!worldLoaded)
+		// return true;
+		master.getLogManager().info(String.valueOf(worldLoaded));
 
 		if (correspondingWorld.getPlayers().size() == 0)
 			return true;

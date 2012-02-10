@@ -31,3 +31,6 @@ save-exit-location: true
 # Prefix of Boxel world names
 boxel-prefix: 'BOXEL_'
 
+
+log-stack-trace: false
+
