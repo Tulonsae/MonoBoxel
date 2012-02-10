@@ -26,9 +26,11 @@ public class MonoBoxel extends JavaPlugin {
 	MBBoxelremoveCommandExecutor boxelremoveCmdExecutor;
 	MBBoxelinfoCommandExecutor boxelinfoCmdExecutor;
 
-	private MBEventListener eventListener = null;
-
 	MBWorldManager worldManager;
+
+	public MBWorldManager getWorldManager() {
+		return worldManager;
+	}
 
 	private MultiverseCore mvCore = null;
 	private String boxelPrefix = "BOXEL_";
@@ -59,7 +61,7 @@ public class MonoBoxel extends JavaPlugin {
 		getCommand("boxremove").setExecutor(boxelremoveCmdExecutor);
 		getCommand("boxinfo").setExecutor(boxelinfoCmdExecutor);
 
-		eventListener = new MBEventListener(this);
+		new MBEventListener(this);
 
 		worldManager = new MBWorldManager(this);
 

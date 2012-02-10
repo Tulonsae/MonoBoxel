@@ -22,6 +22,7 @@ public class MBBoxel {
 	World correspondingWorld = null;
 	String correspondingWorldName = "";
 	boolean worldLoaded = false;
+	int unloadTaskId = -1;
 
 	String boxelGenerator = "MonoBoxel";
 	String boxelSeed = "ThisSeedIsCool";
