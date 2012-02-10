@@ -45,7 +45,7 @@ public class MBWorldManager {
 		Collection<String> unloadedWorlds = master.GetMVCore()
 				.getMVWorldManager().getUnloadedWorlds();
 		for (String w : unloadedWorlds) {
-			master.Log(w);
+			master.logger.info(w);
 			if (w.startsWith("BOXEL_")) {
 				boxels.add(new MBBoxel(master, w, "", ""));
 			}
@@ -140,9 +140,7 @@ public class MBWorldManager {
 
 			result = wm.getMVWorld(name).getCBWorld();
 			if (result == null)
-				master.Log("failer");
-			master.Log("Boxel " + name + " created!");
-
+			master.logger.info("Boxel " + name + " created!");
 			wm.getMVWorld(name).setAllowAnimalSpawn(false);
 			wm.getMVWorld(name).setAllowMonsterSpawn(false);
 			wm.getMVWorld(name).setEnableWeather(false);
@@ -150,7 +148,7 @@ public class MBWorldManager {
 			wm.getMVWorld(name).setPVPMode(false);
 			wm.getMVWorld(name).setAutoLoad(false);
 
-			master.Log("Boxel created for Player: " + owner.getName());
+			master.logger.info("Boxel created for Player: " + owner.getName());
 			owner.sendMessage("Boxel created! Will port you there now...");
 		}
 

@@ -12,6 +12,7 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 
 public class MonoBoxel extends JavaPlugin {
 
+	MBLogger logger = new MBLogger("Minecraft", this);	
 	MBBoxelCommandExecutor boxelCmdExecutor;
 	MBBoxellookupCommandExecutor boxellookupCmdExecutor;
 	MBBoxelremoveCommandExecutor boxelremoveCmdExecutor;
@@ -56,7 +57,7 @@ public class MonoBoxel extends JavaPlugin {
 					}
 				}, 60 * 20, getConfig().getInt("world-unload-period", 60) * 20);
 
-		Log("MonoBoxel enabled!");
+		logger.info("MonoBoxel enabled!");
 	}
 
 	public MultiverseCore GetMVCore() {
@@ -66,11 +67,11 @@ public class MonoBoxel extends JavaPlugin {
 			for (Plugin p : plugins) {
 				if (p.toString().contains("Multiverse-Core")) {
 					mv = p;
-					Log("Multiverse Core found.");
+					logger.info("Multiverse Core found.");
 				}
 			}
 			if (mv == null) {
-				Log("Multiverse-Core *NOT* found! Is it installed and enabled?");
+				logger.info("Multiverse-Core *NOT* found! Is it installed and enabled?");
 				return null;
 			}
 
@@ -82,7 +83,7 @@ public class MonoBoxel extends JavaPlugin {
 
 	public void onDisable() {
 		saveConfig();
-		log.info("MonoBoxel disabled!");
+		logger.info("MonoBoxel disabled!");
 	}
 
 	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
@@ -123,11 +124,4 @@ public class MonoBoxel extends JavaPlugin {
 		else
 			return player.hasPermission("monoboxel.boxel.visit.other");
 	}
-
-	public void Log(String message) {
-		PluginDescriptionFile pdFile = this.getDescription();
-		log.info("[" + pdFile.getName() + " " + pdFile.getVersion() + "] "
-				+ message);
-	}
-
 }
