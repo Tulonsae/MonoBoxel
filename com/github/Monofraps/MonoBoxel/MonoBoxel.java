@@ -26,16 +26,10 @@ public class MonoBoxel extends JavaPlugin {
 	MBBoxelremoveCommandExecutor boxelremoveCmdExecutor;
 	MBBoxelinfoCommandExecutor boxelinfoCmdExecutor;
 
-	MBWorldManager worldManager;
-
-	public MBWorldManager getWorldManager() {
-		return worldManager;
-	}
-
 	private MultiverseCore mvCore = null;
 	private String boxelPrefix = "BOXEL_";
 	private MBBoxelManager boxelManager = null;
-	
+
 	/**
 	 * Hooks up the command executors and initializes the scheduled tasks
 	 */
@@ -64,8 +58,14 @@ public class MonoBoxel extends JavaPlugin {
 
 		new MBEventListener(this);
 
-		worldManager = new MBWorldManager(this);
 		boxelManager = new MBBoxelManager(this);
+
+		getServer().getScheduler().scheduleSyncDelayedTask(this,
+				new Runnable() {
+					public void run() {
+						boxelManager.LoadConfig();
+					}
+				}, getConfig().getInt("word-load-delay", 20) * 20);
 
 		logger.info("MonoBoxel enabled!");
 	}
@@ -178,10 +178,9 @@ public class MonoBoxel extends JavaPlugin {
 	public String getBoxelPrefix() {
 		return boxelPrefix;
 	}
-	
-	public MBBoxelManager getMBWorldManager()
-	{
-		return boxelManager;		
+
+	public MBBoxelManager getMBWorldManager() {
+		return boxelManager;
 	}
 
 	public MBLogger getLogManager() {

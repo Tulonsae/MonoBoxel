@@ -249,7 +249,7 @@ public class MBBoxel {
 	 * @return true if the Boxel exists, otherwise false
 	 */
 	public boolean Exists() {
-		return master.worldManager.IsBoxel(correspondingWorldName)[0];
+		return master.getMBWorldManager().isBoxel(correspondingWorldName)[0];
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class MBBoxel {
 	 * @return true if the Boxel is loaded, otherwise false
 	 */
 	public boolean IsLoaded() {
-		return master.worldManager.IsBoxel(correspondingWorldName)[1];
+		return master.getMBWorldManager().isBoxel(correspondingWorldName)[1];
 	}
 
 	/**
@@ -285,7 +285,7 @@ public class MBBoxel {
 		// save the players current location and teleport
 		if (master.getConfig().getBoolean("save-exit-location", true)) {
 			// do not save the return/entry location if the player is in a Boxel
-			if (!master.worldManager.IsBoxel(player.getWorld().getName())[0]) {
+			if (!master.getMBWorldManager().isBoxel(player.getWorld().getName())[0]) {
 				master.getConfig().set(
 						"playeroloc." + player.getName() + ".world",
 						player.getWorld().getName());
@@ -479,10 +479,12 @@ public class MBBoxel {
 	}
 
 	public boolean isEmpty() {
-		// if (!worldLoaded)
-		// return true;
-		master.getLogManager().info(String.valueOf(worldLoaded));
-
+		if (correspondingWorld == null)
+		 return true;
+		
+		master.getLogManager().info("wl: " + String.valueOf(worldLoaded));
+		//master.getLogManager().info(String.valueOf(correspondingWorld.getPlayers().size()));
+		
 		if (correspondingWorld.getPlayers().size() == 0)
 			return true;
 		else

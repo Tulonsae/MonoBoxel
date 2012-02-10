@@ -32,6 +32,8 @@ public class MBBoxelManager {
 
 	MonoBoxel master = null;
 	List<MBBoxel> boxels = null;
+	
+	private boolean worldsCounted = false;
 
 	public MBBoxelManager(MonoBoxel plugin) {
 		master = plugin;
@@ -39,7 +41,27 @@ public class MBBoxelManager {
 	}
 
 	public void LoadConfig() {
+		if (worldsCounted)
+			return;
 
+		worldsCounted = true;
+
+		Collection<MultiverseWorld> worlds = master.GetMVCore()
+				.getMVWorldManager().getMVWorlds();
+		for (MultiverseWorld w : worlds) {
+			if (w.getName().startsWith(master.getBoxelPrefix())) {
+				AddBoxel(w.getName(), false, null, "", "");
+			}
+		}
+
+		Collection<String> unloadedWorlds = master.GetMVCore()
+				.getMVWorldManager().getUnloadedWorlds();
+		for (String w : unloadedWorlds) {
+			master.logger.info(w);
+			if (w.startsWith(master.getBoxelPrefix())) {
+				AddBoxel(w, false, null, "", "");
+			}
+		}
 	}
 	
 	/**
@@ -53,6 +75,8 @@ public class MBBoxelManager {
 	 */
 	public boolean AddBoxel(String name, boolean create, Player player, String generator, String seed)
 	{
+		master.getLogManager().info("Created new entry in boxels.");
+		
 		if(!name.startsWith(master.getBoxelPrefix()))
 			name = master.getBoxelPrefix() + name;
 		
@@ -114,7 +138,8 @@ public class MBBoxelManager {
 	 */
 	public void CheckForUnusedWorlds() {
 		for (MBBoxel box : boxels) {
-			if (box.isEmpty() && box.unloadTaskId == -1) {
+			if (box.isEmpty() && box.unloadTaskId == -1 && box.IsLoaded()) {
+				master.logger.info("started delayed task");
 				box.unloadTaskId = master
 						.getServer()
 						.getScheduler()
@@ -124,6 +149,7 @@ public class MBBoxelManager {
 								master.getConfig().getInt(
 										"world-unload-period", 60) * 20);
 			} else if (!box.isEmpty() && box.unloadTaskId != -1) {
+				master.logger.info("canceled delayed task" + String.valueOf(box.isEmpty()) + String.valueOf(box.unloadTaskId));
 				master.getServer().getScheduler().cancelTask(box.unloadTaskId);
 			}
 		}

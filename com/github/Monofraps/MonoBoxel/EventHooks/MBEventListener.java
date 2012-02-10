@@ -14,7 +14,7 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
  * 
  */
 public class MBEventListener implements Listener {
-
+	
 	private MonoBoxel master = null;
 
 	/**
@@ -33,7 +33,10 @@ public class MBEventListener implements Listener {
 	 * @param event
 	 */
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerTeleport(PlayerTeleportEvent event) {
+	public void onPlayerChangedWorld(PlayerTeleportEvent event) {
 		master.getMBWorldManager().CheckForUnusedWorlds();
+		master.getLogManager().info(event.getPlayer().getWorld().getName());
 	}
+	
+	
 }
