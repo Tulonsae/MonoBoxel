@@ -33,6 +33,6 @@ public class MBEventListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
-		master.getWorldManager().CheckForUnusedWorlds();
+		master.getMBWorldManager().CheckForUnusedWorlds();
 	}
 }

@@ -9,6 +9,26 @@ import org.bukkit.entity.Player;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
 public class MBBoxelManager {
+	
+	private class BoxelUnloadRunnable implements Runnable {
+
+		MBBoxel box = null;
+		MonoBoxel master = null;
+
+		public BoxelUnloadRunnable(MonoBoxel monoBoxel, MBBoxel boxel) {
+			master = monoBoxel;
+			box = boxel;
+		}
+
+		@Override
+		public void run() {
+			master.getLogManager().info("runable execute");
+			if (box.Unload())
+				master.logger.info("Unloaded Boxel "
+						+ box.correspondingWorldName);
+			box.unloadTaskId = -1;
+		}
+	}
 
 	MonoBoxel master = null;
 	List<MBBoxel> boxels = null;
@@ -87,5 +107,25 @@ public class MBBoxelManager {
 		}
 
 		return result;
+	}
+	
+	/**
+	 * Unloads unused worlds to save RAM.
+	 */
+	public void CheckForUnusedWorlds() {
+		for (MBBoxel box : boxels) {
+			if (box.isEmpty() && box.unloadTaskId == -1) {
+				box.unloadTaskId = master
+						.getServer()
+						.getScheduler()
+						.scheduleAsyncDelayedTask(
+								master,
+								new BoxelUnloadRunnable(master, box),
+								master.getConfig().getInt(
+										"world-unload-period", 60) * 20);
+			} else if (!box.isEmpty() && box.unloadTaskId != -1) {
+				master.getServer().getScheduler().cancelTask(box.unloadTaskId);
+			}
+		}
 	}
 }
