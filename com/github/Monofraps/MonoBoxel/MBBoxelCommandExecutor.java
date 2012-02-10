@@ -93,7 +93,14 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 			return false;
 		}
 
-		// port the player
+		// save the players current location and port
+		if(master.getConfig().getBoolean("save-exit-location", true))
+		{
+			// experimental and not finished yet...
+			master.getConfig().set("playerloc." + player.getName() + ".world", player.getWorld());
+			master.getConfig().set("playerloc." + player.getName() + ".position", player.getWorld());
+		}
+			
 		if (player.teleport(new Location(target, 0, 7, 0)))
 			return true;
 

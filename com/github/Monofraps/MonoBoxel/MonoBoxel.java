@@ -55,7 +55,7 @@ public class MonoBoxel extends JavaPlugin {
 			Plugin[] plugins = getServer().getPluginManager().getPlugins();
 			Plugin mv = null;
 			for (Plugin p : plugins) {
-				if (p.toString().contains("Multiverse")) {
+				if (p.toString().contains("Multiverse-Core")) {
 					mv = p;
 					log.info("Multiverse Core found.");
 				}
