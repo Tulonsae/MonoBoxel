@@ -8,6 +8,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
+//@TODO[important]: class for Boxels
+
 public class MonoBoxel extends JavaPlugin {
 
 	Logger log = Logger.getLogger("Minecraft");
