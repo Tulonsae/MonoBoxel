@@ -45,7 +45,7 @@ public class MBWorldManager {
 		Collection<String> unloadedWorlds = master.GetMVCore()
 				.getMVWorldManager().getUnloadedWorlds();
 		for (String w : unloadedWorlds) {
-			master.log.info(w);
+			master.logger.info(w);
 			if (w.startsWith("BOXEL_")) {
 				boxels.add(new MBBoxel(master, w));
 			}
@@ -58,7 +58,7 @@ public class MBWorldManager {
 		for (MultiverseWorld w : worlds) {
 			if (w.getName().startsWith("BOXEL_")) {
 				if (w.getCBWorld().getPlayers().size() == 0) {
-					master.log.info("Unloaded world " + w.getName()
+					master.logger.info("Unloaded world " + w.getName()
 							+ " due to inactivity.");
 					master.GetMVCore().getMVWorldManager()
 							.unloadWorld(w.getName());
@@ -166,8 +166,8 @@ public class MBWorldManager {
 
 			result = wm.getMVWorld(name).getCBWorld();
 			if (result == null)
-				master.log.info("failer");
-			master.log.info("Boxel " + name + " created!");
+				master.logger.info("failer");
+			master.logger.info("Boxel " + name + " created!");
 
 			wm.getMVWorld(name).setAllowAnimalSpawn(false);
 			wm.getMVWorld(name).setAllowMonsterSpawn(false);
@@ -176,7 +176,7 @@ public class MBWorldManager {
 			wm.getMVWorld(name).setPVPMode(false);
 			wm.getMVWorld(name).setAutoLoad(false);
 
-			master.log.info("Boxel created for Player: " + owner.getName());
+			master.logger.info("Boxel created for Player: " + owner.getName());
 			owner.sendMessage("Boxel created! Will port you there now...");
 		}
 

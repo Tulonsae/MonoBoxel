@@ -40,12 +40,12 @@ public class MBBoxel {
 
 		// first check if the Boxel does not exist already
 		if (Exists()) {
-			master.log.info("MB was supposed to create Boxel "
+			master.logger.info("MB was supposed to create Boxel "
 					+ correspondingWorldName
 					+ " but it already exists. Will load it...");
 			if (!Load()) {
 				// something went wrong
-				master.log.info("Could not load Boxel.");
+				master.logger.info("Could not load Boxel.");
 				return false;
 			}
 
@@ -84,7 +84,7 @@ public class MBBoxel {
 
 				} else {
 					player.sendMessage("Failed to create Boxel.");
-					master.log.info("Failed to create Boxel "
+					master.logger.info("Failed to create Boxel "
 							+ correspondingWorldName);
 					return false;
 				}
@@ -101,19 +101,19 @@ public class MBBoxel {
 	// load the Boxel/world if it was unloaded
 	public boolean Load() {
 		if (!Exists()) {
-			master.log.info("Tried to load a not existsing Boxel.");
+			master.logger.info("Tried to load a not existsing Boxel.");
 			return false;
 		}
 
 		if (IsLoaded()) {
-			master.log.info("Boxel is already loaded.");
+			master.logger.info("Boxel is already loaded.");
 			return true;
 		}
 
 		if (!master.GetMVCore().getMVWorldManager()
 				.loadWorld(correspondingWorldName)) {
 			// failed to load Boxel
-			master.log.info("Failed to load Boxel.");
+			master.logger.info("Failed to load Boxel.");
 			return false;
 		}
 
@@ -194,7 +194,7 @@ public class MBBoxel {
 						return player.teleport(new Location(correspondingWorld,
 								0, 7, 0));
 					} else {
-						master.log.info("Failed to load Boxel "
+						master.logger.info("Failed to load Boxel "
 								+ correspondingWorldName + " to join");
 					}
 
@@ -211,7 +211,7 @@ public class MBBoxel {
 								0, 7, 0));
 					} else {
 
-						master.log.info("Failed to load Boxel "
+						master.logger.info("Failed to load Boxel "
 								+ correspondingWorldName + " to join");
 					}
 				} else {
@@ -251,7 +251,7 @@ public class MBBoxel {
 
 			// the saved location could not be loaded correctly
 			if (outWorld.isEmpty() || outPosition.isEmpty()) {
-				master.log
+				master.logger
 						.info("save-exit-location was set, but no entry location for player "
 								+ player.getName() + " was found.");
 				player.teleport(wm.getSpawnWorld().getSpawnLocation());
@@ -267,7 +267,7 @@ public class MBBoxel {
 				if (!wm.getUnloadedWorlds().contains(outWorld)) {
 					// the saved world could not be found, so port the
 					// player to the default spawn world
-					master.log
+					master.logger
 							.info("save-exit-location was set, but no entry world "
 									+ outWorld
 									+ " for player "
@@ -278,7 +278,7 @@ public class MBBoxel {
 					// the entry world of the player is in the
 					// Multiverse config, but not loaded; load it!
 					if (!wm.loadWorld(outWorld)) {
-						master.log
+						master.logger
 								.info("Failed to load entry world for player "
 										+ player.getName());
 						player.sendMessage("Failed to load entry world");
@@ -293,7 +293,7 @@ public class MBBoxel {
 
 			// DEBUG:
 			if (entryWorld == null) {
-				master.log.info("entryWorld is still null");
+				master.logger.info("entryWorld is still null");
 				return false;
 			}
 
