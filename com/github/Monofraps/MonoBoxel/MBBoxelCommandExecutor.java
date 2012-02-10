@@ -43,7 +43,7 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		// ...and it's world manager
 		wm = master.GetMVCore().getMVWorldManager();
 
-		// boxel names are alwas: BOXEL_<playername>
+		// boxel names are always: BOXEL_<playername>
 		boxelName = "BOXEL_" + player.getName();
 
 		if (args.length > 0) {
@@ -146,7 +146,7 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		}
 
 		// create or load the world
-		target = master.worldManager.CreateWorld(boxelName, player, wm);
+		target = master.worldManager.CreateWorld(boxelName, player);
 
 		// something went wrong...
 		if (target == null) {

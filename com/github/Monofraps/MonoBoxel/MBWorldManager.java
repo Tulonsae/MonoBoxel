@@ -71,6 +71,7 @@ public class MBWorldManager {
 	public boolean[] IsBoxel(String name) {
 		boolean[] result = new boolean[2];
 
+		// @TODO: an option for the Boxel prefix
 		if (!name.startsWith("BOXEL_")) {
 			result[0] = false;
 			result[1] = true;
@@ -99,8 +100,9 @@ public class MBWorldManager {
 		return result;
 	}
 
-	public World CreateWorld(String name, Player owner, MVWorldManager wm) {
+	public World CreateWorld(String name, Player owner) {
 
+		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
 		World result = null;
 
 		if (wm.getMVWorld(name) != null) {

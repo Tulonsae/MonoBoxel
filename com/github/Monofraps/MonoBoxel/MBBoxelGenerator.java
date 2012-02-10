@@ -9,18 +9,19 @@ import org.bukkit.generator.ChunkGenerator;
 // This chunk generator will just generate a flat grass surface (on layer 7)
 public class MBBoxelGenerator extends ChunkGenerator {
 	
-	byte[] flatChunk;
+	//byte[] flatChunk;
 	
 	public MBBoxelGenerator () {
 		
-		flatChunk = new byte[32768];
+		// does not seem to work with generating this once
+		/*flatChunk = new byte[32768];
 		int y = 6;
 		
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
 				flatChunk[xyzToByte(x, y, z)] = (byte) Material.GRASS.getId();
 			}
-		}
+		}*/
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class MBBoxelGenerator extends ChunkGenerator {
 			}
 		}
 		
-		return flatChunk;
+		return result;
 	}
 
 }
