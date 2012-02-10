@@ -67,7 +67,7 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		}
 
 		// check if the boxel exists (loaded and unloaded worlds)
-		boolean[] boxlupResult = master.getMBWorldManager().IsBoxel(boxelName);
+		boolean[] boxlupResult = master.getMBWorldManager().isBoxel(boxelName);
 		if (!boxlupResult[0]) {
 			sender.sendMessage("Boxel \"" + boxelName + "\" does not exists.");
 			return false;

@@ -27,7 +27,7 @@ public class MBBoxellookupCommandExecutor implements CommandExecutor {
 
 		Player player = (Player) sender;
 
-		if(!master.getMBWorldManager().IsBoxel(player.getWorld().getName())[0])
+		if(!master.getMBWorldManager().isBoxel(player.getWorld().getName())[0])
 		{
 			player.sendMessage("You are not in a Boxel!");
 			return true;

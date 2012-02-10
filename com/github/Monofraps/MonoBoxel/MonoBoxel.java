@@ -28,6 +28,7 @@ public class MonoBoxel extends JavaPlugin {
 
 	private MultiverseCore mvCore = null;
 	private String boxelPrefix = "BOXEL_";
+	private MBBoxelManager boxelManager = null;
 	
 	/**
 	 * Hooks up the command executors and initializes the scheduled tasks
@@ -57,6 +58,7 @@ public class MonoBoxel extends JavaPlugin {
 		getCommand("boxinfo").setExecutor(boxelinfoCmdExecutor);
 
 		worldManager = new MBWorldManager(this);
+		boxelManager = new MBBoxelManager(this);
 
 		getServer().getScheduler().scheduleSyncDelayedTask(this,
 				new Runnable() {
@@ -176,9 +178,9 @@ public class MonoBoxel extends JavaPlugin {
 		return boxelPrefix;
 	}
 	
-	public MBWorldManager getMBWorldManager()
+	public MBBoxelManager getMBWorldManager()
 	{
-		return worldManager;		
+		return boxelManager;		
 	}
 	
 	public MBLogger getLogManager()
