@@ -1,11 +1,8 @@
 package com.github.Monofraps.MonoBoxel;
 
-import java.util.logging.Logger;
-
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
@@ -14,9 +11,9 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 
 public class MonoBoxel extends JavaPlugin {
 
-	//Logger logger = Logger.getLogger("Minecraft");
-	MBLogger logger = new MBLogger("Minecraft", this);
-	
+	// Logger logger = Logger.getLogger("Minecraft");
+	MBLogger logger;
+
 	MBBoxelCommandExecutor boxelCmdExecutor;
 	MBBoxellookupCommandExecutor boxellookupCmdExecutor;
 	MBBoxelremoveCommandExecutor boxelremoveCmdExecutor;
@@ -26,6 +23,7 @@ public class MonoBoxel extends JavaPlugin {
 	private MultiverseCore mvCore = null;
 
 	public void onEnable() {
+		logger = new MBLogger("Minecraft", this);
 		getConfig().set("Version", "0.2");
 		saveConfig();
 
