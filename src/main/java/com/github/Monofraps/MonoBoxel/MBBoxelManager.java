@@ -1,5 +1,6 @@
 package com.github.Monofraps.MonoBoxel;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,44 +10,56 @@ import org.bukkit.entity.Player;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
+
 public class MBBoxelManager {
-
+	
+	/**
+	 * The Runnable for the delayed unload task
+	 * 
+	 * @author Monofraps
+	 */
 	private class BoxelUnloadRunnable implements Runnable {
-
-		MBBoxel box = null;
-		MonoBoxel master = null;
-
+		
+		MBBoxel		box		= null;
+		MonoBoxel	master	= null;
+		
 		public BoxelUnloadRunnable(MonoBoxel monoBoxel, MBBoxel boxel) {
 			master = monoBoxel;
 			box = boxel;
 		}
-
+		
 		@Override
 		public void run() {
 			master.getLogManager().info("runable execute");
-			if (box.Unload())
-				master.logger.info("Unloaded Boxel "
-						+ box.correspondingWorldName);
+			if (box.Unload()) master.logger.info("Unloaded Boxel "
+					+ box.correspondingWorldName);
 			box.unloadTaskId = -1;
 		}
 	}
-
-	MonoBoxel master = null;
-	List<MBBoxel> boxels = null;
-
-	private boolean worldsCounted = false;
-
+	
+	List<MBBoxel>		boxels			= null;
+	
+	private MonoBoxel	master			= null;
+	private boolean		worldsCounted	= false;
+	
+	/**
+	 * 
+	 * @param plugin
+	 *            The reference to the core plugin instance
+	 */
 	public MBBoxelManager(MonoBoxel plugin) {
 		master = plugin;
 		boxels = new ArrayList<MBBoxel>();
 	}
-
+	
+	/**
+	 * Loads the Boxels. (@TODO: store Boxels in a separate config file)
+	 */
 	public void LoadConfig() {
-		if (worldsCounted)
-			return;
-
+		if (worldsCounted) return;
+		
 		worldsCounted = true;
-
+		
 		Collection<MultiverseWorld> worlds = master.GetMVCore()
 				.getMVWorldManager().getMVWorlds();
 		for (MultiverseWorld w : worlds) {
@@ -54,17 +67,16 @@ public class MBBoxelManager {
 				AddBoxel(w.getName(), false, null, "", "");
 			}
 		}
-
+		
 		Collection<String> unloadedWorlds = master.GetMVCore()
 				.getMVWorldManager().getUnloadedWorlds();
 		for (String w : unloadedWorlds) {
 			if (w.startsWith(master.getBoxelPrefix())) {
-				master.logger.info(w);
 				AddBoxel(w, false, null, "", "");
 			}
 		}
 	}
-
+	
 	/**
 	 * Adds a Boxel to the boxels list
 	 * 
@@ -88,32 +100,37 @@ public class MBBoxelManager {
 			String generator, String seed) {
 		// check for duplicates
 		for (MBBoxel b : boxels) {
-			if (b.getCorrespondingWorldName().equals(name))
-				return true;
+			if (b.getCorrespondingWorldName().equals(name)) return true;
 		}
-
+		
 		master.getLogManager().info("Created new entry in boxels.");
-
-		if (!name.startsWith(master.getBoxelPrefix()))
-			name = master.getBoxelPrefix() + name;
-
+		
+		if (!name.startsWith(master.getBoxelPrefix())) name = master
+				.getBoxelPrefix() + name;
+		
 		MBBoxel boxel = new MBBoxel(master, name, generator, seed);
-
-		if (create)
-			if (!boxel.Create(player))
-				return false;
-
+		
+		if (create) if (!boxel.Create(player)) return false;
+		
 		return boxels.add(boxel);
 	}
-
+	
+	/**
+	 * 
+	 * @return A reference to the list of all registered (loaded + unloaded) Boxels
+	 */
 	public List<MBBoxel> getBoxels() {
 		return boxels;
 	}
-
+	
+	/**
+	 * 
+	 * @return The total number of all registered (loaded + unloaded) Boxels
+	 */
 	public long getNumBoxels() {
 		return boxels.size();
 	}
-
+	
 	/**
 	 * Checks if the given name is an existing Boxel and if it is loaded.
 	 * 
@@ -124,12 +141,12 @@ public class MBBoxelManager {
 	 */
 	public boolean[] isBoxel(String name) {
 		boolean[] result = new boolean[2];
-
+		
 		// @TODO: an option for the Boxel prefix
 		if (!name.startsWith(master.getBoxelPrefix())) {
 			name = master.getBoxelPrefix() + name;
 		}
-
+		
 		Collection<MultiverseWorld> worlds = master.GetMVCore()
 				.getMVWorldManager().getMVWorlds();
 		for (MultiverseWorld w : worlds) {
@@ -138,7 +155,7 @@ public class MBBoxelManager {
 				result[1] = true;
 			}
 		}
-
+		
 		Collection<String> unloadedWorlds = master.GetMVCore()
 				.getMVWorldManager().getUnloadedWorlds();
 		for (String w : unloadedWorlds) {
@@ -147,20 +164,20 @@ public class MBBoxelManager {
 				result[1] = false;
 			}
 		}
-
+		
 		return result;
 	}
-
+	
 	public boolean[] isBoxel(World world) {
 		return this.isBoxel(world.getName());
 	}
-
+	
 	/**
-	 * Unloads unused worlds to save RAM.
+	 * Starts/Cancels a delayed world unload if a Boxel is empty
 	 */
 	public void CheckForUnusedWorlds() {
 		for (MBBoxel box : boxels) {
-			if (box.isEmpty() && box.unloadTaskId == -1 && box.IsLoaded()) {
+			if (box.isEmpty() && box.unloadTaskId == -1 && box.isLoaded()) {
 				box.unloadTaskId = master
 						.getServer()
 						.getScheduler()

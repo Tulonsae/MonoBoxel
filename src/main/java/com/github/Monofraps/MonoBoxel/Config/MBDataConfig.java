@@ -9,6 +9,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
+/**
+ * Handles special date as a config file.
+ * Handles the backport locations for players.
+ * @author MikeMatrix
+ *
+ */
 public class MBDataConfig {
 
 	private MonoBoxel master = null;

@@ -11,7 +11,6 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
 /**
  * Executor class for /boxel commands
  * 
- * @version 0.4
  * @author Monofraps
  */
 public class MBBoxelCommandExecutor implements CommandExecutor {

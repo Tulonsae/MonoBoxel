@@ -16,7 +16,6 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 /**
  * Main class of MonoBoxel plugin.
  * 
- * @version 0.4
  * @author Monofraps
  */
 public class MonoBoxel extends JavaPlugin {
@@ -201,14 +200,26 @@ public class MonoBoxel extends JavaPlugin {
 		return boxelPrefix;
 	}
 
+	/**
+	 * 
+	 * @return THe BoxelManager
+	 */
 	public MBBoxelManager getMBWorldManager() {
 		return boxelManager;
 	}
 
+	/**
+	 * 
+	 * @return The LogManager
+	 */
 	public MBLogger getLogManager() {
 		return logger;
 	}
 
+	/**
+	 * 
+	 * @return The data config
+	 */
 	public MBDataConfig getDataConfig() {
 		return dataConfig;
 	}
