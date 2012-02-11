@@ -1,14 +1,13 @@
 package com.github.Monofraps.MonoBoxel.EventHooks;
 
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.util.Vector;
 
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
@@ -40,6 +39,7 @@ public class MBEventListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
 		master.getMBWorldManager().CheckForUnusedWorlds();
+		master.getLogManager().info("player is in world:" + event.getPlayer().getWorld().getName());
 	}
 
 	@EventHandler
@@ -54,6 +54,14 @@ public class MBEventListener implements Listener {
 					}
 				}, 2 * 20);
 
+	}
+	
+	@EventHandler
+	public void onPlayerQuit(PlayerJoinEvent event) {
+
+		// wait two seconds before checking for unused worlds, because if this
+		// event handler is called
+		master.getMBWorldManager().CheckForUnusedWorlds();
 	}
 
 	@EventHandler

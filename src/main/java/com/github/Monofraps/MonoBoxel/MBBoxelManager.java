@@ -161,7 +161,6 @@ public class MBBoxelManager {
 	public void CheckForUnusedWorlds() {
 		for (MBBoxel box : boxels) {
 			if (box.isEmpty() && box.unloadTaskId == -1 && box.IsLoaded()) {
-				master.logger.info("started delayed task");
 				box.unloadTaskId = master
 						.getServer()
 						.getScheduler()
@@ -171,10 +170,8 @@ public class MBBoxelManager {
 								master.getConfig().getInt(
 										"world-unload-period", 60) * 20);
 			} else if (!box.isEmpty() && box.unloadTaskId != -1) {
-				master.logger.info("canceled delayed task"
-						+ String.valueOf(box.isEmpty())
-						+ String.valueOf(box.unloadTaskId));
 				master.getServer().getScheduler().cancelTask(box.unloadTaskId);
+				box.unloadTaskId = -1;
 			}
 		}
 	}

@@ -506,7 +506,6 @@ public class MBBoxel {
 		if (correspondingWorld == null)
 			return true;
 
-		master.getLogManager().info("wl: " + String.valueOf(worldLoaded));
 		// master.getLogManager().info(String.valueOf(correspondingWorld.getPlayers().size()));
 
 		if (correspondingWorld.getPlayers().size() == 0)
