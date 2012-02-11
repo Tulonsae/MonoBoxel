@@ -1,6 +1,6 @@
 name: MonoBoxel
 main: com.github.Monofraps.MonoBoxel.MonoBoxel
-version: 0.4
+version: maven-version-number
 load: STARTUP
 
 commands:

@@ -1,28 +1,33 @@
 package com.github.Monofraps.MonoBoxel.CommandExecutors;
 
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
+
 public class MBBoxelinfoCommandExecutor implements CommandExecutor {
-
-	private MonoBoxel master;
-
+	
+	private MonoBoxel	master;
+	
 	public MBBoxelinfoCommandExecutor(MonoBoxel plugin) {
 		master = plugin;
 	}
-
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
-
+		
 		master.getMBWorldManager().LoadConfig();
-		sender.sendMessage(String.valueOf(master.getMBWorldManager().getNumBoxels()) + " Boxels are currently registered on this server.");
-		sender.sendMessage("The current Boxel prefix is: " + master.getBoxelPrefix());
-
+		sender.sendMessage(String.valueOf(master.getMBWorldManager()
+				.getNumBoxels())
+				+ " Boxels are currently registered on this server.");
+		sender.sendMessage("The current Boxel prefix is: "
+				+ master.getBoxelPrefix());
+		
 		return true;
 	}
-
+	
 }

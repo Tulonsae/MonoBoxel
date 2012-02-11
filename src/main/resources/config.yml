@@ -1,6 +1,7 @@
 # Monoboxel configuration file
 
-# DO NOT CHANGE THIS
+# For information about the options in this file, check https://github.com/Monofraps/MonoBoxel/wiki/Configuration
+
 version: '0.5'
 
 # Multiverse-Core needs some time to initialize

@@ -1,5 +1,6 @@
 package com.github.Monofraps.MonoBoxel.CommandExecutors;
 
+
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -11,44 +12,44 @@ import com.github.Monofraps.MonoBoxel.MBBoxel;
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 
+
 public class MBBoxelremoveCommandExecutor implements CommandExecutor {
-
-	private MonoBoxel master;
-
+	
+	private MonoBoxel	master;
+	
 	public MBBoxelremoveCommandExecutor(MonoBoxel plugin) {
 		master = plugin;
 	}
-
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
-
+		
 		boolean senderIsPlayer = false;
 		Player player = null;
 		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
 		;
 		String boxelName = "";
-
+		
 		if (sender instanceof Player) {
 			player = (Player) sender;
 			senderIsPlayer = true;
 		}
-
+		
 		// get the boxels name
 		if (args.length == 0) {
 			if (!senderIsPlayer) {
-				master.getLogManager().info("You have to specify a boxel or player name");
+				master.getLogManager().info(
+						"You have to specify a boxel or player name");
 				return false;
 			}
-
+			
 			boxelName = master.getBoxelPrefix() + player.getName();
 		} else {
-			if (args[0].startsWith(master.getBoxelPrefix()))
-				boxelName = args[0];
-			else
-				boxelName = master.getBoxelPrefix() + args[0];
+			if (args[0].startsWith(master.getBoxelPrefix())) boxelName = args[0];
+			else boxelName = master.getBoxelPrefix() + args[0];
 		}
-
+		
 		if (senderIsPlayer) {
 			// is this the players own boxel?
 			if (boxelName.equals(master.getBoxelPrefix() + player.getName())) {
@@ -65,18 +66,17 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 				}
 			}
 		}
-
+		
 		// check if the boxel exists (loaded and unloaded worlds)
 		boolean[] boxlupResult = master.getMBWorldManager().isBoxel(boxelName);
 		if (!boxlupResult[0]) {
 			sender.sendMessage("Boxel \"" + boxelName + "\" does not exists.");
 			return false;
 		}
-
+		
 		// load the boxel if it was not loaded
-		if (!boxlupResult[1])
-			wm.loadWorld(boxelName);
-
+		if (!boxlupResult[1]) wm.loadWorld(boxelName);
+		
 		// Are there still players in this boxel? (there can't be some if the
 		// boxel was unloaded
 		if (boxlupResult[1]) {
@@ -89,11 +89,11 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 				}
 			}
 		}
-
+		
 		if (wm.deleteWorld(boxelName)) {
 			master.getLogManager()
 					.info("Successfully removed boxel \"" + boxelName + "\".");
-
+			
 			if (senderIsPlayer) {
 				sender.sendMessage("Successfully removed boxel \"" + boxelName
 						+ "\".");
@@ -101,14 +101,13 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 			
 			MBBoxel box = null;
 			for (MBBoxel b : master.getMBWorldManager().getBoxels()) {
-				if(b.getCorrespondingWorldName().equals(boxelName))
-					box = b;
+				if (b.getCorrespondingWorldName().equals(boxelName)) box = b;
 			}
 			master.getMBWorldManager().getBoxels().remove(box);
-
+			
 			return true;
 		}
-
+		
 		return false;
 	}
 }

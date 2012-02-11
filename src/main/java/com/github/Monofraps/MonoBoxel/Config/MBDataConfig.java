@@ -1,5 +1,6 @@
 package com.github.Monofraps.MonoBoxel.Config;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,22 +17,22 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
  *
  */
 public class MBDataConfig {
-
-	private MonoBoxel master = null;
-
-	private FileConfiguration dataConfig = null;
-	private File dataConfigFile = null;
-
+	
+	private MonoBoxel			master			= null;
+	
+	private FileConfiguration	dataConfig		= null;
+	private File				dataConfigFile	= null;
+	
 	public MBDataConfig(MonoBoxel plugin) {
 		master = plugin;
 	}
-
+	
 	public void reloadDataConfig() {
 		if (dataConfigFile == null) {
 			dataConfigFile = new File(master.getDataFolder(), "data.yml");
 		}
 		dataConfig = YamlConfiguration.loadConfiguration(dataConfigFile);
-
+		
 		InputStream defDataConfigStream = master.getResource("data.yml");
 		if (defDataConfigStream != null) {
 			YamlConfiguration defConfig = YamlConfiguration
@@ -39,21 +40,21 @@ public class MBDataConfig {
 			dataConfig.setDefaults(defConfig);
 		}
 	}
-
+	
 	public FileConfiguration getDataConfig() {
 		if (dataConfig == null) {
 			reloadDataConfig();
 		}
 		return dataConfig;
 	}
-
+	
 	public void saveDataConfig() {
-		if (dataConfig == null || dataConfigFile == null)
-			return;
-
+		if (dataConfig == null || dataConfigFile == null) return;
+		
 		try {
 			dataConfig.save(dataConfigFile);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			master.getLogManager().severe(
 					"Could not save Data Configuration File to "
 							+ dataConfigFile);

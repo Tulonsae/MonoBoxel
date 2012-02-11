@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
  *
  */
 public class MBPlayerManager {
-
-	HashMap<Player, Location> BackportLocations = new HashMap<Player, Location>();
-
+	
+	HashMap<Player, Location>	BackportLocations	= new HashMap<Player, Location>();
+	
 	public void setBackportLocation(Player player) {
 		BackportLocations.put(player, player.getLocation());
 	}

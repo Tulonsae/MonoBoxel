@@ -18,6 +18,8 @@ public class MBBoxelManager {
 	 * 
 	 * @author Monofraps
 	 */
+public class MBBoxelManager {
+	
 	private class BoxelUnloadRunnable implements Runnable {
 		
 		MBBoxel		box		= null;
