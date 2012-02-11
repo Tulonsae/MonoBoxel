@@ -1,7 +1,7 @@
 # Monoboxel configuration file
 
 # DO NOT CHANGE THIS
-version: '0.4'
+version: '0.5'
 
 # Multiverse-Core needs some time to initialize
 # If you get errors saying Multiverse-Core was not found, but you have installed and enabled it increase this value
@@ -34,3 +34,4 @@ boxel-prefix: 'BOXEL_'
 
 log-stack-trace: false
 
+max-boxel-size: 20

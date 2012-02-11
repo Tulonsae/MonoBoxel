@@ -68,7 +68,6 @@ public class MonoBoxel extends JavaPlugin {
 		// we may use the version for incompatibility checks later
 		// reloadConfig();
 		// getConfig().set("version", getDescription().getVersion());
-		// this.getConfig().
 
 		boxelCmdExecutor = new MBBoxelCommandExecutor(this);
 		boxellookupCmdExecutor = new MBBoxellookupCommandExecutor(this);
@@ -129,7 +128,7 @@ public class MonoBoxel extends JavaPlugin {
 	 * @return The MonoBoxel chunk generator
 	 */
 	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-		return new MBBoxelGenerator(getConfig().getLong("max-boxel-size", 5));
+		return new MBBoxelGenerator(getConfig().getLong("max-boxel-size", 16));
 	}
 
 	/**

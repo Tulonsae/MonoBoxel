@@ -1,10 +1,14 @@
 package com.github.Monofraps.MonoBoxel.EventHooks;
 
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.util.Vector;
 
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
@@ -40,8 +44,9 @@ public class MBEventListener implements Listener {
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		
-		// wait two seconds before checking for unused worlds, because if this event handler is called 
+
+		// wait two seconds before checking for unused worlds, because if this
+		// event handler is called
 		master.getServer().getScheduler()
 				.scheduleSyncDelayedTask(master, new Runnable() {
 					public void run() {
@@ -51,4 +56,24 @@ public class MBEventListener implements Listener {
 
 	}
 
+	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent event) {
+		int maxBoxelSize = master.getConfig().getInt("max-boxel-size", 16);
+		if (maxBoxelSize > 0) {
+			if (master.getMBWorldManager()
+					.isBoxel(event.getPlayer().getWorld())[0]) {
+				Chunk playerLocationChunk = event.getPlayer().getLocation()
+						.getChunk();
+				if (playerLocationChunk.getX() >= maxBoxelSize
+						|| playerLocationChunk.getX() <= -maxBoxelSize
+						|| playerLocationChunk.getZ() >= maxBoxelSize
+						|| playerLocationChunk.getZ() <= -maxBoxelSize) {
+					event.getPlayer().sendMessage(
+							"[MonoBoxel] You reached the border of the Boxel.");
+					event.getPlayer().teleport(
+							event.getPlayer().getWorld().getSpawnLocation());
+				}
+			}
+		}
+	}
 }

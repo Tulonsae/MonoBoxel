@@ -1,13 +1,13 @@
 package com.github.Monofraps.MonoBoxel;
 
 import java.util.Collection;
-import java.util.Vector;
 
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
@@ -403,7 +403,7 @@ public class MBBoxel {
 
 			String outWorld = master.getDataConfig().getDataConfig()
 					.getString("playeroloc." + player.getName() + ".world", "");
-			org.bukkit.util.Vector outPosition = master
+			Vector outPosition = master
 					.getDataConfig()
 					.getDataConfig()
 					.getVector("playeroloc." + player.getName() + ".position",
