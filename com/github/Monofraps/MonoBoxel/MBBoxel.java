@@ -1,6 +1,7 @@
 package com.github.Monofraps.MonoBoxel;
 
 import java.util.Collection;
+import java.util.Vector;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -145,7 +146,10 @@ public class MBBoxel {
 	/**
 	 * Does the actual Boxel/World creation
 	 * 
-	 * @param sender The sender (mostly a player) that will perform this action (I am using CommandSender because so it is possible to create Boxels for specific players from the console)
+	 * @param sender
+	 *            The sender (mostly a player) that will perform this action (I
+	 *            am using CommandSender because so it is possible to create
+	 *            Boxels for specific players from the console)
 	 * @return
 	 */
 	private boolean DoCreate(CommandSender sender) {
@@ -204,7 +208,7 @@ public class MBBoxel {
 
 			master.logger.info("Boxel created for Player: " + sender.getName());
 			sender.sendMessage("Boxel created! Will port you there now...");
-			
+
 			return true;
 		}
 
@@ -285,19 +289,25 @@ public class MBBoxel {
 		// save the players current location and teleport
 		if (master.getConfig().getBoolean("save-exit-location", true)) {
 			// do not save the return/entry location if the player is in a Boxel
-			if (!master.getMBWorldManager().isBoxel(player.getWorld().getName())[0]) {
-				master.getConfig().set(
-						"playeroloc." + player.getName() + ".world",
-						player.getWorld().getName());
-
-				master.getConfig().set(
-						"playeroloc." + player.getName() + ".position",
-						String.valueOf(player.getLocation().getX()) + ","
-								+ String.valueOf(player.getLocation().getY())
-								+ ","
-								+ String.valueOf(player.getLocation().getZ()));
-
-				master.saveConfig();
+			if (!master.getMBWorldManager()
+					.isBoxel(player.getWorld().getName())[0]) {
+				master.getDataConfig()
+						.getDataConfig()
+						.set("playeroloc." + player.getName() + ".world",
+								player.getWorld().getName());
+				master.getDataConfig()
+						.getDataConfig()
+						.set("playeroloc." + player.getName() + ".position",
+								player.getLocation().toVector());
+				master.getDataConfig()
+						.getDataConfig()
+						.set("playeroloc." + player.getName() + ".yaw",
+								player.getLocation().getYaw());
+				master.getDataConfig()
+						.getDataConfig()
+						.set("playeroloc." + player.getName() + ".pitch",
+								player.getLocation().getPitch());
+				master.getDataConfig().saveDataConfig();
 			}
 		}
 
@@ -391,13 +401,23 @@ public class MBBoxel {
 
 		if (master.getConfig().getBoolean("save-exit-location", true)) {
 
-			String outWorld = master.getConfig().getString(
-					"playeroloc." + player.getName() + ".world", "");
-			String outPosition = master.getConfig().getString(
-					"playeroloc." + player.getName() + ".position", "");
+			String outWorld = master.getDataConfig().getDataConfig()
+					.getString("playeroloc." + player.getName() + ".world", "");
+			org.bukkit.util.Vector outPosition = master
+					.getDataConfig()
+					.getDataConfig()
+					.getVector("playeroloc." + player.getName() + ".position",
+							new org.bukkit.util.Vector());
+			double outPitch = master
+					.getDataConfig()
+					.getDataConfig()
+					.getDouble("playeroloc." + player.getName() + ".pitch", 0.0);
+
+			double outYaw = master.getDataConfig().getDataConfig()
+					.getDouble("playeroloc." + player.getName() + ".yaw", 0.0);
 
 			// the saved location could not be loaded correctly
-			if (outWorld.isEmpty() || outPosition.isEmpty()) {
+			if (outWorld.isEmpty()) {
 				master.logger
 						.info("save-exit-location was set, but no entry location for player "
 								+ player.getName() + " was found.");
@@ -446,11 +466,15 @@ public class MBBoxel {
 
 			// @TODO: the position does not seem to be the exact player position
 			// we found the world, now extract the position
-			String[] pos = outPosition.split(",");
-			return player.teleport(new Location(entryWorld.getCBWorld(), Double
-					.valueOf(pos[0]), Double.valueOf(pos[1]), Double
-					.valueOf(pos[2])));
+			// String[] pos = outPosition.split(",");
+			// return player.teleport(new Location(entryWorld.getCBWorld(),
+			// Double
+			// .valueOf(pos[0]), Double.valueOf(pos[1]), Double
+			// .valueOf(pos[2])));
 
+			return player.teleport(new Location(entryWorld.getCBWorld(),
+					outPosition.getX(), outPosition.getY(), outPosition.getZ(),
+					(float) outYaw, (float) outPitch));
 		}
 
 		return false;
@@ -480,11 +504,11 @@ public class MBBoxel {
 
 	public boolean isEmpty() {
 		if (correspondingWorld == null)
-		 return true;
-		
+			return true;
+
 		master.getLogManager().info("wl: " + String.valueOf(worldLoaded));
-		//master.getLogManager().info(String.valueOf(correspondingWorld.getPlayers().size()));
-		
+		// master.getLogManager().info(String.valueOf(correspondingWorld.getPlayers().size()));
+
 		if (correspondingWorld.getPlayers().size() == 0)
 			return true;
 		else

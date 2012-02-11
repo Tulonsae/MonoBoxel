@@ -9,6 +9,7 @@ import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelinfoCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxellookupCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelremoveCommandExecutor;
+import com.github.Monofraps.MonoBoxel.Config.MBDataConfig;
 import com.github.Monofraps.MonoBoxel.EventHooks.MBEventListener;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
@@ -21,6 +22,9 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 public class MonoBoxel extends JavaPlugin {
 
 	MBLogger logger = null;
+
+	MBDataConfig dataConfig = null;
+
 	MBBoxelCommandExecutor boxelCmdExecutor;
 	MBBoxellookupCommandExecutor boxellookupCmdExecutor;
 	MBBoxelremoveCommandExecutor boxelremoveCmdExecutor;
@@ -36,16 +40,35 @@ public class MonoBoxel extends JavaPlugin {
 	public void onEnable() {
 		this.logger = new MBLogger("Minecraft", this);
 
-		// missuse the version to find out if this is the first run
-		String versionInfo = getConfig().getString("version", "first run");
-		if (versionInfo.equals("first run"))
-			saveDefaultConfig();
+		dataConfig = new MBDataConfig(this);
 
-		// we may use the version for incompatibility checks later
+		//Better behaviour
+		/*
+		 *  NOTE: 
+		 *  	The Default Configuration Manager Strips every comment between the lines. 
+		 *  	Comments on top seems to be possible though.
+		 */
 		reloadConfig();
-		getConfig().set("version", getDescription().getVersion());
+
+		if (getConfig().getString("version", "no config") == "no config") {
+			saveDefaultConfig();
+			reloadConfig();
+			getConfig().set("version", getDescription().getVersion());
+			saveConfig();
+		}
 
 		boxelPrefix = getConfig().getString("boxel-prefix", "BOXEL_");
+
+		// // missuse the version to find out if this is the first run
+		// String versionInfo = getConfig().getString("version", "first run");
+		// if (versionInfo.equals("first run"))
+		// saveDefaultConfig();
+		// boxelPrefix = getConfig().getString("boxel-prefix", "BOXEL_");
+
+		// we may use the version for incompatibility checks later
+		// reloadConfig();
+		// getConfig().set("version", getDescription().getVersion());
+		// this.getConfig().
 
 		boxelCmdExecutor = new MBBoxelCommandExecutor(this);
 		boxellookupCmdExecutor = new MBBoxellookupCommandExecutor(this);
@@ -185,5 +208,9 @@ public class MonoBoxel extends JavaPlugin {
 
 	public MBLogger getLogManager() {
 		return logger;
+	}
+
+	public MBDataConfig getDataConfig() {
+		return dataConfig;
 	}
 }
