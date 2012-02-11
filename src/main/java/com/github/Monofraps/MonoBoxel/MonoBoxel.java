@@ -42,12 +42,6 @@ public class MonoBoxel extends JavaPlugin {
 
 		dataConfig = new MBDataConfig(this);
 
-		//Better behaviour
-		/*
-		 *  NOTE: 
-		 *  	The Default Configuration Manager Strips every comment between the lines. 
-		 *  	Comments on top seems to be possible though.
-		 */
 		reloadConfig();
 
 		if (getConfig().getString("version", "no config") == "no config") {
@@ -58,16 +52,6 @@ public class MonoBoxel extends JavaPlugin {
 		}
 
 		boxelPrefix = getConfig().getString("boxel-prefix", "BOXEL_");
-
-		// // missuse the version to find out if this is the first run
-		// String versionInfo = getConfig().getString("version", "first run");
-		// if (versionInfo.equals("first run"))
-		// saveDefaultConfig();
-		// boxelPrefix = getConfig().getString("boxel-prefix", "BOXEL_");
-
-		// we may use the version for incompatibility checks later
-		// reloadConfig();
-		// getConfig().set("version", getDescription().getVersion());
 
 		boxelCmdExecutor = new MBBoxelCommandExecutor(this);
 		boxellookupCmdExecutor = new MBBoxellookupCommandExecutor(this);
