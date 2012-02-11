@@ -82,8 +82,8 @@ public class MBEventListener implements Listener {
 				int x = playerLocationChunk.getX();
 				int z = playerLocationChunk.getZ();
 				
-				int newX = 0;
-				int newZ = 0;
+				double newX = event.getPlayer().getLocation().getX();
+				double newZ = event.getPlayer().getLocation().getZ();
 				
 				boolean playerNeedsPort = false;
 				
@@ -95,7 +95,7 @@ public class MBEventListener implements Listener {
 				}
 				else if(x < -maxBoxelSize / 2)
 				{
-					newZ = (x - (x + maxBoxelSize / 2) + 1) * 16;
+					newX = (x - (x + maxBoxelSize / 2) + 1) * 16;
 					playerNeedsPort = true;
 				}
 				
@@ -109,8 +109,6 @@ public class MBEventListener implements Listener {
 					newZ = (z - (z + maxBoxelSize / 2) + 1) * 16;
 					playerNeedsPort = true;
 				}				
-				
-				master.getLogManager().info(String.valueOf(x));
 				
 				if (playerNeedsPort) {
 					event.getPlayer().sendMessage(
