@@ -1,6 +1,7 @@
 package com.github.Monofraps.MonoBoxel.EventHooks;
 
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -67,19 +68,54 @@ public class MBEventListener implements Listener {
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
 		int maxBoxelSize = master.getConfig().getInt("max-boxel-size", 16);
+		
 		if (maxBoxelSize > 0) {
 			if (master.getMBWorldManager()
 					.isBoxel(event.getPlayer().getWorld())[0]) {
+				
 				Chunk playerLocationChunk = event.getPlayer().getLocation()
 						.getChunk();
-				if (playerLocationChunk.getX() >= maxBoxelSize
-						|| playerLocationChunk.getX() <= -maxBoxelSize
-						|| playerLocationChunk.getZ() >= maxBoxelSize
-						|| playerLocationChunk.getZ() <= -maxBoxelSize) {
+				
+				
+				// correct the players position (-10 units if the player left the border)
+				
+				int x = playerLocationChunk.getX();
+				int z = playerLocationChunk.getZ();
+				
+				int newX = 0;
+				int newZ = 0;
+				
+				boolean playerNeedsPort = false;
+				
+				
+				if(x > maxBoxelSize / 2)
+				{
+					newX = (x - (x - maxBoxelSize / 2) - 1) * 16;
+					playerNeedsPort = true;
+				}
+				else if(x < -maxBoxelSize / 2)
+				{
+					newZ = (x - (x + maxBoxelSize / 2) + 1) * 16;
+					playerNeedsPort = true;
+				}
+				
+				if(z > maxBoxelSize / 2)
+				{
+					newZ= (z - (z - maxBoxelSize / 2) - 1) * 16;
+					playerNeedsPort = true;
+				}
+				else if(z < -maxBoxelSize / 2)
+				{
+					newZ = (z - (z + maxBoxelSize / 2) + 1) * 16;
+					playerNeedsPort = true;
+				}				
+				
+				master.getLogManager().info(String.valueOf(x));
+				
+				if (playerNeedsPort) {
 					event.getPlayer().sendMessage(
 							"[MonoBoxel] You reached the border of the Boxel.");
-					event.getPlayer().teleport(
-							event.getPlayer().getWorld().getSpawnLocation());
+					event.getPlayer().teleport(new Location(event.getPlayer().getWorld(), newX, 7, newZ));
 				}
 			}
 		}

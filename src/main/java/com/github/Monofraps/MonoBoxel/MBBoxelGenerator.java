@@ -77,13 +77,13 @@ public class MBBoxelGenerator extends ChunkGenerator {
 
 		// max-boxel-size set to 0 will result in non-limited worlds
 		if (maxBoxelSize != 0) {
-			if (chunkx >= maxBoxelSize)
+			if (chunkx > maxBoxelSize / 2)
 				return Arrays.copyOf(borderChunk, borderChunk.length);
-			if (chunkz >= maxBoxelSize)
+			if (chunkz > maxBoxelSize / 2)
 				return Arrays.copyOf(borderChunk, borderChunk.length);
-			if(chunkx <= -maxBoxelSize)
+			if(chunkx < -maxBoxelSize / 2)
 				return Arrays.copyOf(borderChunk, borderChunk.length);
-			if(chunkz <= -maxBoxelSize)
+			if(chunkz < -maxBoxelSize / 2)
 				return Arrays.copyOf(borderChunk, borderChunk.length);
 		}
 

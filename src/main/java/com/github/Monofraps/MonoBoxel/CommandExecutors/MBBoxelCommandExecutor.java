@@ -9,7 +9,8 @@ import com.github.Monofraps.MonoBoxel.MBBoxel;
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
 /**
- * Executor class for /boxel commands 
+ * Executor class for /boxel commands
+ * 
  * @version 0.4
  * @author Monofraps
  */
@@ -19,7 +20,8 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 
 	/**
 	 * 
-	 * @param plugin A reference to the plugin class instance
+	 * @param plugin
+	 *            A reference to the plugin class instance
 	 */
 	public MBBoxelCommandExecutor(MonoBoxel plugin) {
 		master = plugin;
@@ -27,6 +29,7 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 
 	/**
 	 * Will parse and execute the /boxel commands
+	 * 
 	 * @param sender
 	 * @param command
 	 * @param lable
@@ -59,8 +62,8 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 
 			else if (args[0].equals("getmeout") && senderIsPlayer) {
 				for (MBBoxel box : master.getMBWorldManager().getBoxels()) {
-					if (box.getCorrespondingWorldName().equals(player.getWorld()
-							.getName()))
+					if (box.getCorrespondingWorldName().equals(
+							player.getWorld().getName()))
 						return box.Leave(player);
 				}
 				player.sendMessage("Failed to port you out. - Are you in a Boxel?");
@@ -77,18 +80,18 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 			if (box.getCorrespondingWorldName().equals(boxelName))
 				return box.Join(player);
 		}
-		
+
 		// the Boxel does not exist, so we have to create it
-		for(String arg : args)
-		{
-			if(arg.startsWith("-g"))
-				boxelGenerator = arg.substring(2);
-			if(arg.startsWith("-s"))
-				boxelSeed = arg.substring(2);
+		for (int i = 0; i < args.length; i++) {
+			if (args[i].equals("-g"))
+				boxelGenerator = args[i + 1];
+
+			if (args[i].equals("-s"))
+				boxelSeed = args[i + 1];
 		}
 
-		
-		if (master.getMBWorldManager().AddBoxel(boxelName, true, player, boxelGenerator, boxelSeed)) {
+		if (master.getMBWorldManager().AddBoxel(boxelName, true, player,
+				boxelGenerator, boxelSeed)) {
 			for (MBBoxel box : master.getMBWorldManager().getBoxels()) {
 				if (box.getCorrespondingWorldName().equals(boxelName))
 					return box.Join(player);

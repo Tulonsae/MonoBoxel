@@ -32,6 +32,9 @@ save-exit-location: true
 boxel-prefix: 'BOXEL_'
 
 
+# Just for debugging
 log-stack-trace: false
 
-max-boxel-size: 20
+
+# Use this to set the maximum boxel size
+max-boxel-size: 16
