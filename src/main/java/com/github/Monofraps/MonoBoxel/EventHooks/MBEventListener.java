@@ -138,7 +138,8 @@ public class MBEventListener implements Listener {
 					event.getPlayer().sendMessage(
 							"[MonoBoxel] You reached the border of the Boxel.");
 					event.getPlayer().teleport(
-							new Location(event.getPlayer().getWorld(), newX, newY,
+							new Location(event.getPlayer().getWorld(), newX,
+									newY,
 									newZ, newYaw, newPitch));
 				}
 			}

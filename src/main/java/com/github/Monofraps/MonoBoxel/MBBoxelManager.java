@@ -18,8 +18,6 @@ public class MBBoxelManager {
 	 * 
 	 * @author Monofraps
 	 */
-public class MBBoxelManager {
-	
 	private class BoxelUnloadRunnable implements Runnable {
 		
 		MBBoxel		box		= null;
@@ -39,10 +37,10 @@ public class MBBoxelManager {
 		}
 	}
 	
-	List<MBBoxel>		boxels			= null;
+	private List<MBBoxel>	boxels			= null;
 	
-	private MonoBoxel	master			= null;
-	private boolean		worldsCounted	= false;
+	private MonoBoxel		master			= null;
+	private boolean			worldsCounted	= false;
 	
 	/**
 	 * 
