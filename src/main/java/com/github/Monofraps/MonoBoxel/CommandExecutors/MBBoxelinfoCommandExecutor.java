@@ -1,10 +1,10 @@
 package com.github.Monofraps.MonoBoxel.CommandExecutors;
 
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.getspout.commons.ChatColor;
 
 import com.github.Monofraps.MonoBoxel.MBBoxel;
 import com.github.Monofraps.MonoBoxel.MBGroupBoxel;
