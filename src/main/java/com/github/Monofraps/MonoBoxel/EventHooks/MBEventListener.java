@@ -3,6 +3,8 @@ package com.github.Monofraps.MonoBoxel.EventHooks;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -115,26 +117,43 @@ public class MBEventListener implements Listener {
 				if (x > maxBoxelSize / 2) {
 					newX = (x - (x - maxBoxelSize / 2) - 1) * 16;
 					playerNeedsPort = true;
-				} else if (x < -maxBoxelSize / 2) {
-					newX = (x - (x + maxBoxelSize / 2) + 1) * 16;
-					playerNeedsPort = true;
-				}
+				} else
+					if (x < -maxBoxelSize / 2) {
+						newX = (x - (x + maxBoxelSize / 2) + 1) * 16;
+						playerNeedsPort = true;
+					}
 				
 				if (z > maxBoxelSize / 2) {
 					newZ = (z - (z - maxBoxelSize / 2) - 1) * 16;
 					playerNeedsPort = true;
-				} else if (z < -maxBoxelSize / 2) {
-					newZ = (z - (z + maxBoxelSize / 2) + 1) * 16;
-					playerNeedsPort = true;
+				} else
+					if (z < -maxBoxelSize / 2) {
+						newZ = (z - (z + maxBoxelSize / 2) + 1) * 16;
+						playerNeedsPort = true;
+					}
+				
+				Location targetLocation = new Location(event.getPlayer()
+						.getWorld(), newX, newY, newZ, newYaw, newPitch);
+				
+				World world = event.getPlayer().getWorld();
+				
+				// try and find a suitable high 
+				while (((world.getBlockTypeIdAt(targetLocation) != Material.AIR
+						.getId()) || (world.getBlockTypeIdAt(
+						(int) targetLocation.getX(),
+						(int) targetLocation.getY() + 1,
+						(int) targetLocation.getZ()) != Material.AIR.getId()))
+						&& (targetLocation.getY() != 127))
+				
+				{
+					targetLocation.add(0, 1, 0);
 				}
 				
 				if (playerNeedsPort) {
-					event.getPlayer().sendMessage(
-							"[A divine voice] You reached the border of the World.");
-					event.getPlayer().teleport(
-							new Location(event.getPlayer().getWorld(), newX,
-									newY,
-									newZ, newYaw, newPitch));
+					event.getPlayer()
+							.sendMessage(
+									"[A divine voice] You reached the border of the World.");
+					event.getPlayer().teleport(targetLocation);
 				}
 			}
 		}
