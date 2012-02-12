@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import com.github.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
@@ -59,10 +60,8 @@ public class MBBoxel {
 			worldLoaded = true;
 		}
 		
-		if (generator.isEmpty())
-			boxelGenerator = "MonoBoxel";
-		else
-			boxelGenerator = generator;
+		if (generator.isEmpty()) boxelGenerator = "MonoBoxel";
+		else boxelGenerator = generator;
 		
 		boxelSeed = seed;
 	}
@@ -81,12 +80,11 @@ public class MBBoxel {
 		String boxelOwner = "";
 		
 		// should always be true
-		if (correspondingWorldName.startsWith(master.getBoxelPrefix()))
-			boxelOwner = correspondingWorldName.substring(master
-					.getBoxelPrefix().length());
+		if (correspondingWorldName.startsWith(master.getBoxelPrefix())) boxelOwner = correspondingWorldName
+				.substring(master
+						.getBoxelPrefix().length());
 		
-		if (boxelOwner.equals(player.getName()))
-			isPlayersOwnBoxel = true;
+		if (boxelOwner.equals(player.getName())) isPlayersOwnBoxel = true;
 		
 		// first check if the Boxel does not exist already
 		if (Exists()) {
@@ -110,7 +108,8 @@ public class MBBoxel {
 		
 		if (isPlayersOwnBoxel) {
 			
-			if (master.getPermManager().canCreateOwnBoxel(player)) {
+			if (master.getPermManager().hasPermission(player,
+					MBPermission.CAN_CREATE_OWN)) {
 				if (DoCreate(player)) {
 					
 					correspondingWorld = master.GetMVCore().getMVWorldManager()
@@ -124,7 +123,8 @@ public class MBBoxel {
 			}
 			
 		} else {
-			if (master.getPermManager().canCreateOtherBoxel(player)) {
+			if (master.getPermManager().hasPermission(player,
+					MBPermission.CAN_CREATE_OTHERS)) {
 				
 				if (DoCreate(player)) {
 					
@@ -163,10 +163,10 @@ public class MBBoxel {
 		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
 		MultiverseWorld result = null;
 		
-		if (correspondingWorld != null)
-			master.getLogManager()
-					.debugLog(Level.INFO,
-							"DoCreate was called, but correspondingWorld was already set.");
+		if (correspondingWorld != null) master
+				.getLogManager()
+				.debugLog(Level.INFO,
+						"DoCreate was called, but correspondingWorld was already set.");
 		
 		if (wm.getMVWorld(correspondingWorldName) != null) {
 			sender.sendMessage("Found your boxel. Will port you there now...");
@@ -189,8 +189,7 @@ public class MBBoxel {
 		
 		sender.sendMessage("You don't seem to have a boxel yet. Will create one for you now...");
 		
-		if (boxelGenerator.equals("default"))
-			boxelGenerator = "";
+		if (boxelGenerator.equals("default")) boxelGenerator = "";
 		
 		if (wm.addWorld(correspondingWorldName,
 				World.Environment.valueOf("NORMAL"), boxelSeed,
@@ -198,11 +197,9 @@ public class MBBoxel {
 			
 			result = wm.getMVWorld(correspondingWorldName);
 			
-			if (result != null)
-				master.getLogManager().info(
-						"Boxel " + correspondingWorldName + " created!");
-			else
-				return false;
+			if (result != null) master.getLogManager().info(
+					"Boxel " + correspondingWorldName + " created!");
+			else return false;
 			
 			result.setAllowAnimalSpawn(false);
 			result.setAllowMonsterSpawn(false);
@@ -288,12 +285,11 @@ public class MBBoxel {
 		String boxelOwner = "";
 		
 		// should always be true
-		if (correspondingWorldName.startsWith(master.getBoxelPrefix()))
-			boxelOwner = correspondingWorldName.substring(master
-					.getBoxelPrefix().length());
+		if (correspondingWorldName.startsWith(master.getBoxelPrefix())) boxelOwner = correspondingWorldName
+				.substring(master
+						.getBoxelPrefix().length());
 		
-		if (boxelOwner.equals(player.getName()))
-			isPlayersOwnBoxel = true;
+		if (boxelOwner.equals(player.getName())) isPlayersOwnBoxel = true;
 		
 		// before porting the player, save his location
 		if (master.getConfig().getBoolean("save-exit-location", true)) {
@@ -324,7 +320,8 @@ public class MBBoxel {
 		// has permissions
 		if (Exists() && isLoaded()) {
 			if (isPlayersOwnBoxel) {
-				if (master.getPermManager().canVisitOwnBoxel(player)) {
+				if (master.getPermManager().hasPermission(player,
+						MBPermission.CAN_VISIT_OWN)) {
 					return player.teleport(correspondingWorld
 							.getSpawnLocation());
 				} else {
@@ -332,7 +329,8 @@ public class MBBoxel {
 					return false;
 				}
 			} else {
-				if (master.getPermManager().canVisitOtherBoxel(player, boxelOwner)) {
+				if (master.getPermManager().canVisitOtherBoxel(player,
+						boxelOwner)) {
 					return player.teleport(correspondingWorld
 							.getSpawnLocation());
 				} else {
@@ -347,7 +345,8 @@ public class MBBoxel {
 			
 			if (isPlayersOwnBoxel) {
 				
-				if (master.getPermManager().canVisitOwnBoxel(player)) {
+				if (master.getPermManager().hasPermission(player,
+						MBPermission.CAN_VISIT_OWN)) {
 					
 					if (Load()) {
 						return player.teleport(correspondingWorld
@@ -365,7 +364,8 @@ public class MBBoxel {
 				
 			} else {
 				
-				if (master.getPermManager().canVisitOtherBoxel(player, boxelOwner)) {
+				if (master.getPermManager().canVisitOtherBoxel(player,
+						boxelOwner)) {
 					if (Load()) {
 						return player.teleport(correspondingWorld
 								.getSpawnLocation());
@@ -394,9 +394,8 @@ public class MBBoxel {
 					"Boxel.Join was called but the Boxel "
 							+ correspondingWorldName + " does not exist.");
 			player.sendMessage("Boxel does not exists yet. I'll try to create one for you...");
-			if (Create(player))
-				return player
-						.teleport(new Location(correspondingWorld, 0, 7, 0));
+			if (Create(player)) return player
+					.teleport(new Location(correspondingWorld, 0, 7, 0));
 			
 		}
 		
@@ -499,8 +498,7 @@ public class MBBoxel {
 						"Unloaded world " + correspondingWorldName
 								+ " due to inactivity.");
 				return true;
-			} else
-				return false;
+			} else return false;
 		}
 		
 		return false;
@@ -512,13 +510,10 @@ public class MBBoxel {
 	 * @return true if the Boxel is empty
 	 */
 	public boolean isEmpty() {
-		if (correspondingWorld == null)
-			return true;
+		if (correspondingWorld == null) return true;
 		
-		if (correspondingWorld.getPlayers().size() == 0)
-			return true;
-		else
-			return false;
+		if (correspondingWorld.getPlayers().size() == 0) return true;
+		else return false;
 	}
 	
 	/**
