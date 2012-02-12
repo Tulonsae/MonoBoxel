@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.Monofraps.MonoBoxel.MBGroupBoxel;
+import com.github.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
 
@@ -50,44 +51,43 @@ public class MBBoxelgrpCommandExecutor implements CommandExecutor {
 		
 		player = (Player) sender;
 		
-		if (!master.getPermManager().canVisitGroupBoxel(player)) {
+		if (!master.getPermManager().hasPermission(player,
+				MBPermission.CAN_VISIT_GROUP_BOXEL)) {
 			master.getPermManager().SendNotAllowedMessage(player);
 			return false;
-		}		
+		}
 		
-		if (args.length <= 1)
-			player.sendMessage("You have to specify a Boxel name and a password to join/create a group Boxel");
+		if (args.length <= 1) player
+				.sendMessage("You have to specify a Boxel name and a password to join/create a group Boxel");
 		
 		boxelName = master.getBoxelPrefix() + args[0];
 		boxelPassword = args[1];
 		
-		if(!master.getPermManager().canCreateGroupBoxel(player))
-		{
+		if (!master.getPermManager().hasPermission(player,
+				MBPermission.CAN_CREATE_GROUP_BOXEL)) {
 			master.getPermManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		
 		// check if the Boxel already exists
 		for (MBGroupBoxel box : master.getMBWorldManager().getGroupBoxels()) {
-			if (box.getCorrespondingWorldName().equals(boxelName))
-				return box.JoinGroupBoxel(player, boxelPassword);
+			if (box.getCorrespondingWorldName().equals(boxelName)) return box
+					.JoinGroupBoxel(player, boxelPassword);
 		}
 		
 		// the Boxel does not exist, so we have to create it
 		// get generator and seed if specified
 		for (int i = 0; i < args.length; i++) {
-			if (args[i].equals("-g"))
-				boxelGenerator = args[i + 1];
+			if (args[i].equals("-g")) boxelGenerator = args[i + 1];
 			
-			if (args[i].equals("-s"))
-				boxelSeed = args[i + 1];
+			if (args[i].equals("-s")) boxelSeed = args[i + 1];
 		}
 		
 		if (master.getMBWorldManager().AddGroupBoxel(boxelName, boxelPassword,
 				true, player, boxelGenerator, boxelSeed)) {
 			for (MBGroupBoxel box : master.getMBWorldManager().getGroupBoxels()) {
-				if (box.getCorrespondingWorldName().equals(boxelName))
-					return box.JoinGroupBoxel(player, boxelPassword);
+				if (box.getCorrespondingWorldName().equals(boxelName)) return box
+						.JoinGroupBoxel(player, boxelPassword);
 			}
 		}
 		

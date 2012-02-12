@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.github.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
 import com.github.Monofraps.MonoBoxel.Utils.HashMD5;
 
 
@@ -22,18 +23,16 @@ public class MBGroupBoxel extends MBBoxel {
 	@Override
 	public boolean Create(Player player) {
 		
-		if(!master.getPermManager().canCreateGroupBoxel(player))
-		{
+		if (!master.getPermManager().hasPermission(player,
+				MBPermission.CAN_CREATE_GROUP_BOXEL)) {
 			master.getPermManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		
 		if (super.DoCreate(player)) {
-			
 			correspondingWorld = master.GetMVCore().getMVWorldManager()
 					.getMVWorld(correspondingWorldName).getCBWorld();
 			return true;
-			
 		} else {
 			player.sendMessage("Failed to create group Boxel.");
 			master.getLogManager().severe(
@@ -66,24 +65,23 @@ public class MBGroupBoxel extends MBBoxel {
 			return false;
 		}
 		
-		if(!master.getPermManager().canVisitGroupBoxel(player))
-		{
+		if (!master.getPermManager().hasPermission(player,
+				MBPermission.CAN_VISIT_GROUP_BOXEL)) {
 			master.getPermManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		
-		if (!isLoaded())
-			if (!Load()) {
-				master.getLogManager()
-						.severe("Failed to load group Boxel: "
-								+ correspondingWorldName);
-				master.getLogManager()
-						.debugLog(
-								Level.INFO,
-								"Failed to load group Boxel: "
-										+ correspondingWorldName);
-				return false;
-			}
+		if (!isLoaded()) if (!Load()) {
+			master.getLogManager()
+					.severe("Failed to load group Boxel: "
+							+ correspondingWorldName);
+			master.getLogManager()
+					.debugLog(
+							Level.INFO,
+							"Failed to load group Boxel: "
+									+ correspondingWorldName);
+			return false;
+		}
 		
 		// before porting the player, save his location
 		if (master.getConfig().getBoolean("save-exit-location", true)) {
@@ -110,8 +108,7 @@ public class MBGroupBoxel extends MBBoxel {
 			}
 		}
 		
-		if (player.teleport(new Location(correspondingWorld, 0, 7, 0)))
-			return true;
+		if (player.teleport(new Location(correspondingWorld, 0, 7, 0))) return true;
 		
 		master.getLogManager().debugLog(Level.INFO, "Player teleport failed!");
 		player.sendMessage("Teleport failed!");
