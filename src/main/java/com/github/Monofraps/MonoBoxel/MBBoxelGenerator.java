@@ -61,21 +61,15 @@ public class MBBoxelGenerator extends ChunkGenerator {
 			}
 		}
 		
-		for (int x = 0; x < CHUNK_WIDTH; x++) {
-			for (int z = 0; z < CHUNK_LENGHT; z++) {
-				for (int y = 0; y < CHUNK_HEIGHT; y++) {
-					borderChunk[xyzToByte(x, y, z)] = (byte) Material.BEDROCK
-							.getId();
-				}
-			}
-		}
+		for (int i = 0; i < CHUNK_SIZE; i++)
+			borderChunk[i] = (byte) Material.BEDROCK.getId();
 	}
 	
 	@Override
 	public boolean canSpawn(World world, int x, int z) {
 		
 		// set the spawnpoint to the origin (0|0)
-		if( (x == 0) && (z == 0) )
+		if ((x == 0) && (z == 0))
 			return true;
 		else
 			return false;
@@ -98,14 +92,14 @@ public class MBBoxelGenerator extends ChunkGenerator {
 		
 		// max-boxel-size set to 0 will result in non-limited worlds
 		if (maxBoxelSize != 0) {
-			if (chunkx > maxBoxelSize / 2) return Arrays.copyOf(borderChunk,
-					borderChunk.length);
-			if (chunkz > maxBoxelSize / 2) return Arrays.copyOf(borderChunk,
-					borderChunk.length);
-			if (chunkx < -maxBoxelSize / 2) return Arrays.copyOf(borderChunk,
-					borderChunk.length);
-			if (chunkz < -maxBoxelSize / 2) return Arrays.copyOf(borderChunk,
-					borderChunk.length);
+			if (chunkx > maxBoxelSize / 2)
+				return Arrays.copyOf(borderChunk, borderChunk.length);
+			if (chunkz > maxBoxelSize / 2)
+				return Arrays.copyOf(borderChunk, borderChunk.length);
+			if (chunkx < -maxBoxelSize / 2)
+				return Arrays.copyOf(borderChunk, borderChunk.length);
+			if (chunkz < -maxBoxelSize / 2)
+				return Arrays.copyOf(borderChunk, borderChunk.length);
 		}
 		
 		return Arrays.copyOf(flatChunk, flatChunk.length);

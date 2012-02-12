@@ -39,3 +39,6 @@ log-stack-trace: false
 
 # Use this to set the maximum boxel size
 max-boxel-size: 16
+
+# Enable debug output
+log-debug: false

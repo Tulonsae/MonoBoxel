@@ -16,7 +16,6 @@ import com.onarandombox.MultiverseCore.utils.DebugLog;
  * Logging Class for MonoBoxel.
  * Holds the log instance and adds Plugin information to the beginning of a Logmessage.
  * 
- * @version 0.4
  * @author MikeMatrix
  */
 public class MBLogger {
@@ -26,6 +25,7 @@ public class MBLogger {
 	private PluginDescriptionFile	pdFile			= null;
 	private String					logPrefix		= "";
 	private boolean					logStackTrace	= false;
+	private boolean					printDebugLog	= false;
 	
 	/**
 	 * 
@@ -49,8 +49,12 @@ public class MBLogger {
 		debugLog = new DebugLog(pdFile.getName() + "-debug",
 				plugin.getDataFolder() + File.separator + "debug.log");
 		
+		printDebugLog = plugin.getConfig().getBoolean("log-debug");
+		
 		logStackTrace = plugin.getConfig().getBoolean("log-stack-trace", false);
 		logPrefix = "[" + pdFile.getName() + " " + pdFile.getVersion() + "] ";
+		
+		log.setLevel(Level.ALL);
 	}
 	
 	/**
@@ -61,6 +65,9 @@ public class MBLogger {
 	 */
 	public void debugLog(Level level, String msg) {
 		debugLog.log(level, logPrefix + msg);
+		
+		if (printDebugLog)
+			log.info(logPrefix + msg);
 	}
 	
 	/**

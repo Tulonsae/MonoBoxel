@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.Monofraps.MonoBoxel.MBBoxel;
+import com.github.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 
@@ -20,7 +21,7 @@ import com.onarandombox.MultiverseCore.api.MVWorldManager;
  */
 public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 	
-	private MonoBoxel	master;
+	private MonoBoxel	master = null;
 	
 	public MBBoxelremoveCommandExecutor(MonoBoxel plugin) {
 		master = plugin;
@@ -59,12 +60,12 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		if (senderIsPlayer) {
 			// is this the players own boxel?
 			if (boxelName.equals(master.getBoxelPrefix() + player.getName())) {
-				if (!player.hasPermission("monoboxel.boxremove.own")) {
+				if (!master.getPermManager().hasPermission(player, MBPermission.CAN_REMOVE_OWN)) {
 					master.getPermManager().SendNotAllowedMessage(player);
 					return false;
 				}
 			} else { // no, it's not
-				if (!player.hasPermission("monoboxel.boxremove.other")) {
+				if (!master.getPermManager().hasPermission(player, MBPermission.CAN_REMOVE_OTHER)) {
 					master.getPermManager().SendNotAllowedMessage(player);
 					return false;
 				}

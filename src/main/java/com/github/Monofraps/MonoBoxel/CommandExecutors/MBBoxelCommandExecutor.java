@@ -18,7 +18,7 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
  */
 public class MBBoxelCommandExecutor implements CommandExecutor {
 	
-	private MonoBoxel	master;
+	private MonoBoxel	master	= null;
 	
 	/**
 	 * 
@@ -29,15 +29,6 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		master = plugin;
 	}
 	
-	/**
-	 * Will parse and execute the /boxel commands.
-	 * 
-	 * @param sender
-	 * @param command
-	 * @param lable
-	 * @param args
-	 * @return true if the command execution was successful, otherwise false
-	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
@@ -49,7 +40,12 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		String boxelSeed = "";
 		
 		if (!(sender instanceof Player)) {
+			master.getLogManager().info(
+					"You cannot do this from the server console.");
+			
 			senderIsPlayer = false;
+			
+			// TODO: implement/enable Boxel creation from server console
 			return true;
 		}
 		

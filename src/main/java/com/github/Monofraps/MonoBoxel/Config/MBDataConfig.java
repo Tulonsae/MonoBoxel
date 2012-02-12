@@ -61,11 +61,13 @@ public class MBDataConfig {
 	 * Save the Configuration to the Disk.
 	 */
 	public void saveDataConfig() {
-		if (dataConfig == null || dataConfigFile == null) return;
+		if (dataConfig == null || dataConfigFile == null)
+			return;
 		
 		try {
 			dataConfig.save(dataConfigFile);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			master.getLogManager().severe(
 					"Could not save Data Configuration File to "
 							+ dataConfigFile);

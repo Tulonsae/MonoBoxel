@@ -21,7 +21,6 @@ import com.onarandombox.MultiverseCore.api.MultiverseWorld;
  * corresponding world (if loaded) will be stored here. This class also provides
  * Create/Load/Join/Leave functions.
  * 
- * @version 0.4
  * @author Monofraps
  */
 public class MBBoxel {
@@ -60,8 +59,10 @@ public class MBBoxel {
 			worldLoaded = true;
 		}
 		
-		if (generator.isEmpty()) boxelGenerator = "MonoBoxel";
-		else boxelGenerator = generator;
+		if (generator.isEmpty())
+			boxelGenerator = "MonoBoxel";
+		else
+			boxelGenerator = generator;
 		
 		boxelSeed = seed;
 	}
@@ -80,14 +81,15 @@ public class MBBoxel {
 		String boxelOwner = "";
 		
 		// should always be true
-		if (correspondingWorldName.startsWith(master.getBoxelPrefix())) boxelOwner = correspondingWorldName
-				.substring(master
-						.getBoxelPrefix().length());
+		if (correspondingWorldName.startsWith(master.getBoxelPrefix()))
+			boxelOwner = correspondingWorldName.substring(master
+					.getBoxelPrefix().length());
 		
-		if (boxelOwner.equals(player.getName())) isPlayersOwnBoxel = true;
+		if (boxelOwner.equals(player.getName()))
+			isPlayersOwnBoxel = true;
 		
 		// first check if the Boxel does not exist already
-		if (Exists()) {
+		if (isExisting()) {
 			master.getLogManager().debugLog(
 					Level.INFO,
 					"MB was supposed to create Boxel " + correspondingWorldName
@@ -163,10 +165,10 @@ public class MBBoxel {
 		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
 		MultiverseWorld result = null;
 		
-		if (correspondingWorld != null) master
-				.getLogManager()
-				.debugLog(Level.INFO,
-						"DoCreate was called, but correspondingWorld was already set.");
+		if (correspondingWorld != null)
+			master.getLogManager()
+					.debugLog(Level.INFO,
+							"DoCreate was called, but correspondingWorld was already set.");
 		
 		if (wm.getMVWorld(correspondingWorldName) != null) {
 			sender.sendMessage("Found your boxel. Will port you there now...");
@@ -189,7 +191,8 @@ public class MBBoxel {
 		
 		sender.sendMessage("You don't seem to have a boxel yet. Will create one for you now...");
 		
-		if (boxelGenerator.equals("default")) boxelGenerator = "";
+		if (boxelGenerator.equals("default"))
+			boxelGenerator = "";
 		
 		if (wm.addWorld(correspondingWorldName,
 				World.Environment.valueOf("NORMAL"), boxelSeed,
@@ -197,9 +200,11 @@ public class MBBoxel {
 			
 			result = wm.getMVWorld(correspondingWorldName);
 			
-			if (result != null) master.getLogManager().info(
-					"Boxel " + correspondingWorldName + " created!");
-			else return false;
+			if (result != null)
+				master.getLogManager().info(
+						"Boxel " + correspondingWorldName + " created!");
+			else
+				return false;
 			
 			result.setAllowAnimalSpawn(false);
 			result.setAllowMonsterSpawn(false);
@@ -226,7 +231,7 @@ public class MBBoxel {
 	 * @return true on success, otherwise false
 	 */
 	public boolean Load() {
-		if (!Exists()) {
+		if (!isExisting()) {
 			master.getLogManager().debugLog(Level.INFO,
 					"Tried to load a not existsing Boxel.");
 			return false;
@@ -259,7 +264,7 @@ public class MBBoxel {
 	 * 
 	 * @return true if the Boxel exists, otherwise false
 	 */
-	public boolean Exists() {
+	public boolean isExisting() {
 		return master.getMBWorldManager().isBoxel(correspondingWorldName)[0];
 	}
 	
@@ -285,11 +290,12 @@ public class MBBoxel {
 		String boxelOwner = "";
 		
 		// should always be true
-		if (correspondingWorldName.startsWith(master.getBoxelPrefix())) boxelOwner = correspondingWorldName
-				.substring(master
-						.getBoxelPrefix().length());
+		if (correspondingWorldName.startsWith(master.getBoxelPrefix()))
+			boxelOwner = correspondingWorldName.substring(master
+					.getBoxelPrefix().length());
 		
-		if (boxelOwner.equals(player.getName())) isPlayersOwnBoxel = true;
+		if (boxelOwner.equals(player.getName()))
+			isPlayersOwnBoxel = true;
 		
 		// before porting the player, save his location
 		if (master.getConfig().getBoolean("save-exit-location", true)) {
@@ -318,7 +324,7 @@ public class MBBoxel {
 		
 		// only port the player if the Boxel exists and is loaded and the player
 		// has permissions
-		if (Exists() && isLoaded()) {
+		if (isExisting() && isLoaded()) {
 			if (isPlayersOwnBoxel) {
 				if (master.getPermManager().hasPermission(player,
 						MBPermission.CAN_VISIT_OWN)) {
@@ -341,7 +347,7 @@ public class MBBoxel {
 		}
 		
 		// the Boxel exists, but is not loaded
-		if (Exists() && !isLoaded()) {
+		if (isExisting() && !isLoaded()) {
 			
 			if (isPlayersOwnBoxel) {
 				
@@ -371,7 +377,7 @@ public class MBBoxel {
 								.getSpawnLocation());
 					} else {
 						
-						master.getLogManager().info(
+						master.getLogManager().warning(
 								"Failed to load Boxel "
 										+ correspondingWorldName + " to join");
 					}
@@ -387,15 +393,17 @@ public class MBBoxel {
 		
 		// the Boxel does not exist, create it - or just return with error:
 		// "This Boxel does not exists." ?
-		if (!Exists()) {
+		if (!isExisting()) {
 			
 			master.getLogManager().debugLog(
 					Level.INFO,
 					"Boxel.Join was called but the Boxel "
 							+ correspondingWorldName + " does not exist.");
+			
 			player.sendMessage("Boxel does not exists yet. I'll try to create one for you...");
-			if (Create(player)) return player
-					.teleport(new Location(correspondingWorld, 0, 7, 0));
+			
+			if (Create(player))
+				return player.teleport(correspondingWorld.getSpawnLocation());
 			
 		}
 		
@@ -493,12 +501,14 @@ public class MBBoxel {
 		if (isEmpty() && isLoaded()) {
 			if (master.GetMVCore().getMVWorldManager()
 					.unloadWorld(correspondingWorldName)) {
+				
 				worldLoaded = false;
 				master.getLogManager().info(
 						"Unloaded world " + correspondingWorldName
 								+ " due to inactivity.");
 				return true;
-			} else return false;
+			} else
+				return false;
 		}
 		
 		return false;
@@ -510,10 +520,13 @@ public class MBBoxel {
 	 * @return true if the Boxel is empty
 	 */
 	public boolean isEmpty() {
-		if (correspondingWorld == null) return true;
+		if (correspondingWorld == null)
+			return true;
 		
-		if (correspondingWorld.getPlayers().size() == 0) return true;
-		else return false;
+		if (correspondingWorld.getPlayers().size() == 0)
+			return true;
+		else
+			return false;
 	}
 	
 	/**

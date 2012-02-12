@@ -22,12 +22,14 @@ public class MBPermissionManager {
 	 * 
 	 */
 	public enum MBPermission {
-		CAN_CREATE_OWN(new Permission("monoboxel.boxel.create.own")), CAN_CREATE_OTHERS(
-				new Permission("monoboxel.boxel.create.other")), CAN_CREATE_GROUP_BOXEL(
-				new Permission("monoboxel.groupboxel.create")), CAN_VISIT_OWN(
-				new Permission("monoboxel.boxel.visit.own")), CAN_VISIT_OTHERS(
-				new Permission("monoboxel.boxel.create.other")), CAN_VISIT_GROUP_BOXEL(
-				new Permission("monoboxel.groupboxel.visit"));
+		CAN_CREATE_OWN(new Permission("monoboxel.boxel.create.own")),
+		CAN_CREATE_OTHERS(new Permission("monoboxel.boxel.create.other")),
+		CAN_CREATE_GROUP_BOXEL(new Permission("monoboxel.groupboxel.create")),
+		CAN_VISIT_OWN(new Permission("monoboxel.boxel.visit.own")),
+		CAN_VISIT_OTHERS(new Permission("monoboxel.boxel.create.other")),
+		CAN_VISIT_GROUP_BOXEL(new Permission("monoboxel.groupboxel.visit")),
+		CAN_REMOVE_OWN(new Permission("monoboxel.boxremove.own")),
+		CAN_REMOVE_OTHER(new Permission("monoboxel.boxremove.other"));
 		
 		private final Permission	perm;
 		
@@ -40,6 +42,11 @@ public class MBPermissionManager {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param plugin
+	 *            A reference to the main plugin class
+	 */
 	public MBPermissionManager(MonoBoxel plugin) {
 		master = plugin;
 	}
@@ -101,6 +108,6 @@ public class MBPermissionManager {
 	 * @param sender
 	 */
 	public void SendNotAllowedMessage(CommandSender sender) {
-		sender.sendMessage("A divine voice says: 'You are not allowd to do this!'");
+		sender.sendMessage("A divine voice says: 'You are not allowed to do this!'");
 	}
 }

@@ -16,7 +16,7 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
  */
 public class MBBoxellookupCommandExecutor implements CommandExecutor {
 	
-	private MonoBoxel	master;
+	private MonoBoxel	master = null;
 	
 	public MBBoxellookupCommandExecutor(MonoBoxel plugin) {
 		master = plugin;
@@ -27,7 +27,8 @@ public class MBBoxellookupCommandExecutor implements CommandExecutor {
 			String lable, String[] args) {
 		
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("You must be a player!");
+			master.getLogManager().info(
+					"You cannot do this from the server console.");
 			return true;
 		}
 		

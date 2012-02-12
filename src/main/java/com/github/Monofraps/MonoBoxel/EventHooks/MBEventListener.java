@@ -137,7 +137,7 @@ public class MBEventListener implements Listener {
 				
 				World world = event.getPlayer().getWorld();
 				
-				// try and find a suitable high 
+				// try and find a suitable height
 				while (((world.getBlockTypeIdAt(targetLocation) != Material.AIR
 						.getId()) || (world.getBlockTypeIdAt(
 						(int) targetLocation.getX(),

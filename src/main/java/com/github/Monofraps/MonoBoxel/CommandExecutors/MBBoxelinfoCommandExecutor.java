@@ -18,43 +18,34 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
  */
 public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 	
-	private MonoBoxel	master;
+	private MonoBoxel	master = null;
 	
 	public MBBoxelinfoCommandExecutor(MonoBoxel plugin) {
 		master = plugin;
 	}
 	
-	/**
-	 * Will parse and execute the /boxinfo commands.
-	 * 
-	 * @param sender
-	 * @param command
-	 * @param lable
-	 * @param args
-	 * @return true if the command execution was successful, otherwise false
-	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
 		
 		master.getMBWorldManager().LoadConfig();
 		
-		sender.sendMessage( ChatColor.RED + "=====[ MonoBoxel Info ] =====");
+		sender.sendMessage(ChatColor.RED + "=====[ MonoBoxel Info ] =====");
 		
 		sender.sendMessage(ChatColor.WHITE + "Boxels:");
-		for(MBBoxel box : master.getMBWorldManager().getBoxels())
-		{
+		for (MBBoxel box : master.getMBWorldManager().getBoxels()) {
 			String msg = "";
 			
-			if(box.isLoaded())
+			if (box.isLoaded())
 				msg += ChatColor.WHITE;
 			else
 				msg += ChatColor.GRAY;
 			
 			msg += box.getCorrespondingWorldName() + " - ";
 			
-			if(box.isEmpty())
-				msg += ChatColor.AQUA + "No players inside. UnloadThread: " + box.getUnloadTaskId();
+			if (box.isEmpty())
+				msg += ChatColor.AQUA + "No players inside. UnloadThread: "
+						+ box.getUnloadTaskId();
 			else
 				msg += ChatColor.GREEN + "Players inside.";
 			
@@ -62,19 +53,19 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 		}
 		
 		sender.sendMessage(ChatColor.WHITE + "Group Boxels:");
-		for(MBGroupBoxel box : master.getMBWorldManager().getGroupBoxels())
-		{
+		for (MBGroupBoxel box : master.getMBWorldManager().getGroupBoxels()) {
 			String msg = "";
 			
-			if(box.isLoaded())
+			if (box.isLoaded())
 				msg += ChatColor.WHITE;
 			else
 				msg += ChatColor.GRAY;
 			
 			msg += box.getCorrespondingWorldName() + " - ";
 			
-			if(box.isEmpty())
-				msg += ChatColor.AQUA + "No players inside. UnloadThread: " + box.getUnloadTaskId();
+			if (box.isEmpty())
+				msg += ChatColor.AQUA + "No players inside. UnloadThread: "
+						+ box.getUnloadTaskId();
 			else
 				msg += ChatColor.GREEN + "Players inside.";
 			

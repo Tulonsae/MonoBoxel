@@ -4,6 +4,7 @@ package com.github.Monofraps.MonoBoxel.Utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+
 /**
  * This class just allows to quickly hash a string to a MD5 sum
  * 
@@ -12,8 +13,12 @@ import java.security.NoSuchAlgorithmException;
  */
 public class HashMD5 {
 	
-	public static String Hash(String str)
-	{
+	/**
+	 * Creates MD5 hash of a given string
+	 * @param str The string to hash
+	 * @return the hash
+	 */
+	public static String Hash(String str) {
 		MessageDigest md5 = null;
 		StringBuffer sbMD5sum = new StringBuffer();
 		byte[] digest = null;
@@ -31,8 +36,7 @@ public class HashMD5 {
 		
 		digest = md5.digest();
 		
-		for (byte b : digest)
-		{
+		for (byte b : digest) {
 			sbMD5sum.append(Integer.toHexString((b & 0xFF) | 0x100)
 					.toLowerCase().substring(1, 3));
 		}

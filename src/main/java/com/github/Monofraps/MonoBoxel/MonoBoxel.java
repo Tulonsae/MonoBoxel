@@ -4,7 +4,6 @@ package com.github.Monofraps.MonoBoxel;
 import java.util.logging.Level;
 
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelCommandExecutor;
@@ -72,7 +71,6 @@ public class MonoBoxel extends JavaPlugin {
 		new MBEventListener(this);
 		
 		boxelManager = new MBBoxelManager(this);
-		
 		boxelPermManager = new MBPermissionManager(this);
 		
 		getServer().getScheduler().scheduleSyncDelayedTask(this,
@@ -94,21 +92,15 @@ public class MonoBoxel extends JavaPlugin {
 	 */
 	public MultiverseCore GetMVCore() {
 		if (mvCore == null) {
-			Plugin[] plugins = getServer().getPluginManager().getPlugins();
-			Plugin mv = null;
-			for (Plugin p : plugins) {
-				if (p.toString().contains("Multiverse-Core")) {
-					mv = p;
-					logger.debugLog(Level.INFO, "Multiverse Core found.");
-				}
-			}
-			if (mv == null) {
-				logger.info("Multiverse-Core *NOT* found! Is it installed and enabled?");
-				logger.debugLog(Level.INFO, "Multiverse Core not found!");
-				return null;
-			}
+			mvCore = (MultiverseCore) getServer().getPluginManager().getPlugin(
+					"Multiverse-Core");
 			
-			mvCore = (MultiverseCore) mv;
+			if (mvCore == null) {
+				logger.severe("Multiverse-Core *NOT* found! Is it installed and enabled?");
+				logger.debugLog(Level.SEVERE, "Multiverse Core not found!");
+				return null;
+			} else
+				logger.info("Multiverse-Core found.");
 		}
 		
 		return mvCore;
@@ -146,7 +138,7 @@ public class MonoBoxel extends JavaPlugin {
 	
 	/**
 	 * 
-	 * @return THe BoxelManager
+	 * @return The BoxelManager
 	 */
 	public MBBoxelManager getMBWorldManager() {
 		return boxelManager;
