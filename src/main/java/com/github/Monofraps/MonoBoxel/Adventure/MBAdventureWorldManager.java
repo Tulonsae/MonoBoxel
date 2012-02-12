@@ -14,14 +14,13 @@ public class MBAdventureWorldManager {
 	private List<MBAdventureWorld>	adventureWorlds	= null;
 	private MonoBoxel				master			= null;
 	
-	public MBAdventureWorldManager(MonoBoxel plugin)
-	{
+	public MBAdventureWorldManager(MonoBoxel plugin) {
 		master = plugin;
 		adventureWorlds = new ArrayList<MBAdventureWorld>();
 	}
 	
-	public boolean CreateAdventureWorldFromWorld(World world)
-	{
+	public boolean CreateAdventureWorldFromWorld(World world) {
 		return false;
 	}
 }
+

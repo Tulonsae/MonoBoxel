@@ -10,7 +10,7 @@ import org.bukkit.generator.ChunkGenerator;
 
 
 /**
- * This chunk generator will generate a flat chunk
+ * This chunk generator will generate a flat chunk.
  * Chunk layers:
  * 0 - Bedrock
  * 1 - 5 - dirt
@@ -21,41 +21,49 @@ import org.bukkit.generator.ChunkGenerator;
  */
 public class MBBoxelGenerator extends ChunkGenerator {
 	
-	byte[]	flatChunk;
-	byte[]	borderChunk;
-	long	maxBoxelSize	= 16;
+	private static final int	CHUNK_WIDTH		= 16;
+	private static final int	CHUNK_LENGHT	= 16;
+	private static final int	CHUNK_HEIGHT	= 128;
+	private static final int	CHUNK_SIZE		= CHUNK_WIDTH * CHUNK_LENGHT
+														* CHUNK_HEIGHT;
+	
+	private byte[]				flatChunk;
+	private byte[]				borderChunk;
+	private long				maxBoxelSize	= 16;
+	private int					landHeight		= 6;
 	
 	public MBBoxelGenerator(long maxBoxelSize) {
 		
-		flatChunk = new byte[32768];
-		borderChunk = new byte[32768];
+		flatChunk = new byte[CHUNK_SIZE];
+		borderChunk = new byte[CHUNK_SIZE];
 		
 		this.maxBoxelSize = maxBoxelSize;
 		
-		for (int x = 0; x < 16; x++) {
-			for (int z = 0; z < 16; z++) {
+		for (int x = 0; x < CHUNK_WIDTH; x++) {
+			for (int z = 0; z < CHUNK_LENGHT; z++) {
 				flatChunk[xyzToByte(x, 0, z)] = (byte) Material.BEDROCK.getId();
 			}
 		}
 		
-		for (int x = 0; x < 16; x++) {
-			for (int y = 1; y < 6; y++) {
-				for (int z = 0; z < 16; z++) {
+		for (int x = 0; x < CHUNK_WIDTH; x++) {
+			for (int z = 0; z < CHUNK_LENGHT; z++) {
+				for (int y = 1; y < landHeight; y++) {
 					flatChunk[xyzToByte(x, y, z)] = (byte) Material.DIRT
 							.getId();
 				}
 			}
 		}
 		
-		for (int x = 0; x < 16; x++) {
-			for (int z = 0; z < 16; z++) {
-				flatChunk[xyzToByte(x, 6, z)] = (byte) Material.GRASS.getId();
+		for (int x = 0; x < CHUNK_WIDTH; x++) {
+			for (int z = 0; z < CHUNK_LENGHT; z++) {
+				flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.GRASS
+						.getId();
 			}
 		}
 		
-		for (int x = 0; x < 16; x++) {
-			for (int y = 1; y < 127; y++) {
-				for (int z = 0; z < 16; z++) {
+		for (int x = 0; x < CHUNK_WIDTH; x++) {
+			for (int z = 0; z < CHUNK_LENGHT; z++) {
+				for (int y = 0; y < CHUNK_HEIGHT; y++) {
 					borderChunk[xyzToByte(x, y, z)] = (byte) Material.BEDROCK
 							.getId();
 				}
@@ -68,10 +76,16 @@ public class MBBoxelGenerator extends ChunkGenerator {
 		return true;
 	}
 	
-	// This converts relative chunk locations to bytes that can be written to
-	// the chunk
+	/**
+	 * Converts relative Chunk locations to 1 dimensional chunk index.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return 1 Dimensional Index for Chunk array's
+	 */
 	public int xyzToByte(int x, int y, int z) {
-		return (x * 16 + z) * 128 + y;
+		return (x * CHUNK_WIDTH + z) * CHUNK_HEIGHT + y;
 	}
 	
 	@Override

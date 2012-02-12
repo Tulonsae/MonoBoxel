@@ -9,6 +9,11 @@ import org.bukkit.entity.Player;
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
 
+/**
+ * Executor class for /boxlookup commands.
+ * 
+ * @author Monofraps
+ */
 public class MBBoxellookupCommandExecutor implements CommandExecutor {
 	
 	private MonoBoxel	master;
@@ -28,8 +33,7 @@ public class MBBoxellookupCommandExecutor implements CommandExecutor {
 		
 		Player player = (Player) sender;
 		
-		if (!master.getMBWorldManager().isBoxel(player.getWorld().getName())[0])
-		{
+		if (!master.getMBWorldManager().isBoxel(player.getWorld().getName())[0]) {
 			player.sendMessage("You are not in a Boxel!");
 			return true;
 		}

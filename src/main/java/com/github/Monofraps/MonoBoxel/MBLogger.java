@@ -24,7 +24,7 @@ public class MBLogger {
 	private Logger					log				= null;
 	private DebugLog				debugLog		= null;
 	private PluginDescriptionFile	pdFile;
-	private String					LogPrefix		= "";
+	private String					logPrefix		= "";
 	private boolean					logStackTrace	= false;
 	
 	/**
@@ -42,15 +42,14 @@ public class MBLogger {
 		File debugLogFile = new File(plugin.getDataFolder(), "debug.log");
 		try {
 			debugLogFile.createNewFile();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		debugLog = new DebugLog(pdFile.getName() + "-debug",
 				plugin.getDataFolder() + File.separator + "debug.log");
 		
 		logStackTrace = plugin.getConfig().getBoolean("log-stack-trace", false);
-		LogPrefix = "[" + pdFile.getName() + " " + pdFile.getVersion() + "] ";
+		logPrefix = "[" + pdFile.getName() + " " + pdFile.getVersion() + "] ";
 	}
 	
 	/**
@@ -60,17 +59,16 @@ public class MBLogger {
 	 * @param msg
 	 */
 	public void debugLog(Level level, String msg) {
-		debugLog.log(level, LogPrefix + msg);
+		debugLog.log(level, logPrefix + msg);
 	}
 	
 	/**
-	 * Logs an informative Message
+	 * Logs an informative Message.
 	 * 
 	 * @param msg
 	 */
 	public void info(String msg) {
-		if (logStackTrace)
-		{
+		if (logStackTrace) {
 			msg = msg + "\n With stack: \n";
 			
 			for (StackTraceElement s : Thread.currentThread().getStackTrace())
@@ -78,17 +76,16 @@ public class MBLogger {
 			
 			msg += "\n====================";
 		}
-		log.info(LogPrefix + msg);
+		log.info(logPrefix + msg);
 	}
 	
 	/**
-	 * Logs a severe Error message
+	 * Logs a severe Error message.
 	 * 
 	 * @param msg
 	 */
 	public void severe(String msg) {
-		if (logStackTrace)
-		{
+		if (logStackTrace) {
 			msg = msg + "\n With stack: \n";
 			
 			for (StackTraceElement s : Thread.currentThread().getStackTrace())
@@ -96,17 +93,16 @@ public class MBLogger {
 			
 			msg += "\n====================";
 		}
-		log.severe(LogPrefix + msg);
+		log.severe(logPrefix + msg);
 	}
 	
 	/**
-	 * Logs a Warning Message
+	 * Logs a Warning Message.
 	 * 
 	 * @param msg
 	 */
 	public void warning(String msg) {
-		if (logStackTrace)
-		{
+		if (logStackTrace) {
 			msg = msg + "\n With stack: \n";
 			
 			for (StackTraceElement s : Thread.currentThread().getStackTrace())
@@ -114,6 +110,6 @@ public class MBLogger {
 			
 			msg += "\n====================";
 		}
-		log.warning(LogPrefix + msg);
+		log.warning(logPrefix + msg);
 	}
 }
