@@ -43,7 +43,7 @@ public class MBBoxellookupCommandExecutor implements CommandExecutor {
 				.substring(master.getBoxelPrefix().length());
 		player.sendMessage("This boxel belongs to " + boxelOwner);
 		
-		return false;
+		return true;
 	}
 	
 }

@@ -101,6 +101,8 @@ public class MonoBoxel extends JavaPlugin {
 				return null;
 			} else
 				logger.info("Multiverse-Core found.");
+			
+			mvCore.incrementPluginCount();
 		}
 		
 		return mvCore;
@@ -114,6 +116,8 @@ public class MonoBoxel extends JavaPlugin {
 		boxelManager.SaveBoxels();
 		logger.info("MonoBoxel disabled!");
 		logger.debugLog(Level.INFO, "Plugin unloaded.");
+		
+		mvCore.decrementPluginCount();
 	}
 	
 	/**

@@ -18,7 +18,7 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
  */
 public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 	
-	private MonoBoxel	master = null;
+	private MonoBoxel	master	= null;
 	
 	public MBBoxelinfoCommandExecutor(MonoBoxel plugin) {
 		master = plugin;
@@ -43,11 +43,16 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 			
 			msg += box.getCorrespondingWorldName() + " - ";
 			
-			if (box.isEmpty() && box.isLoaded())
-				msg += ChatColor.AQUA + "No players inside. UnloadThread: "
-						+ box.getUnloadTaskId();
+			if (box.isLoaded()) {
+				if (box.isEmpty())
+					msg += ChatColor.AQUA + "No players inside. UnloadThread: "
+							+ box.getUnloadTaskId();
+				else
+					if (!box.isEmpty())
+						msg += ChatColor.GREEN + "Players inside.";
+			}
 			else
-				msg += ChatColor.GREEN + "Players inside.";
+				msg += ChatColor.GOLD + "UNLOADED";
 			
 			sender.sendMessage(msg);
 		}
@@ -63,11 +68,14 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 			
 			msg += box.getCorrespondingWorldName() + " - ";
 			
-			if (box.isEmpty() && box.isLoaded())
-				msg += ChatColor.AQUA + "No players inside. UnloadThread: "
-						+ box.getUnloadTaskId();
-			else if(!box.isEmpty() && box.isLoaded())
-				msg += ChatColor.GREEN + "Players inside.";
+			if (box.isLoaded()) {
+				if (box.isEmpty())
+					msg += ChatColor.AQUA + "No players inside. UnloadThread: "
+							+ box.getUnloadTaskId();
+				else
+					if (!box.isEmpty())
+						msg += ChatColor.GREEN + "Players inside.";
+			}
 			else
 				msg += ChatColor.GOLD + "UNLOADED";
 			
