@@ -13,6 +13,11 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 
 
+/**
+ * Executor class for /boxremove commands.
+ * 
+ * @author Monofraps
+ */
 public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 	
 	private MonoBoxel	master;
@@ -28,7 +33,7 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		boolean senderIsPlayer = false;
 		Player player = null;
 		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
-		;
+		
 		String boxelName = "";
 		
 		if (sender instanceof Player) {
@@ -57,9 +62,7 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 					sender.sendMessage("You don't have permissions to do this!");
 					return false;
 				}
-			}
-			// no, it's not
-			else {
+			} else { // no, it's not
 				if (!player.hasPermission("monoboxel.boxremove.other")) {
 					sender.sendMessage("You don't have permissions to do this!");
 					return false;

@@ -30,7 +30,7 @@ public class MBGroupBoxel extends MBBoxel {
 			
 		} else {
 			player.sendMessage("Failed to create group Boxel.");
-			master.logger.severe("Failed to create group Boxel "
+			master.getLogManager().severe("Failed to create group Boxel "
 					+ correspondingWorldName);
 			return false;
 		}

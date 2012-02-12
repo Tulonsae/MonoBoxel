@@ -8,6 +8,11 @@ import org.bukkit.command.CommandSender;
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
 
+/**
+ * Executor class for /boxinfo commands.
+ * 
+ * @author Monofraps
+ */
 public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 	
 	private MonoBoxel	master;
@@ -16,6 +21,15 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 		master = plugin;
 	}
 	
+	/**
+	 * Will parse and execute the /boxinfo commands.
+	 * 
+	 * @param sender
+	 * @param command
+	 * @param lable
+	 * @param args
+	 * @return true if the command execution was successful, otherwise false
+	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {

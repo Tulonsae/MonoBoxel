@@ -15,7 +15,7 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
 
 /**
- * MonoBoxel Event Listener for hooking into the Bukkit Event System
+ * MonoBoxel Event Listener for hooking into the Bukkit Event System.
  * 
  * @author MikeMatrix
  * 
@@ -25,7 +25,7 @@ public class MBEventListener implements Listener {
 	private MonoBoxel	master	= null;
 	
 	/**
-	 * Register Event Listener with the Bukkit Event System
+	 * Register Event Listener with the Bukkit Event System.
 	 * 
 	 * @param plugin
 	 */
@@ -35,7 +35,7 @@ public class MBEventListener implements Listener {
 	}
 	
 	/**
-	 * Listen for players changing their world
+	 * Listen for players changing their world.
 	 * If a player changes his world, we can have a look if a Boxel gets empty and if we can unload
 	 * 
 	 * @param event
@@ -48,7 +48,7 @@ public class MBEventListener implements Listener {
 	}
 	
 	/**
-	 * Also handle the auto unload if a player left the server
+	 * Also handle the auto unload if a player left the server.
 	 * 
 	 * @param event
 	 */
@@ -68,7 +68,7 @@ public class MBEventListener implements Listener {
 	}
 	
 	/**
-	 * Also handle the auto unload if a player joind the server
+	 * Also handle the auto unload if a player joind the server.
 	 * (the auto unload check will also check if it has to cancel a planned unload)
 	 * 
 	 * @param event
@@ -82,7 +82,7 @@ public class MBEventListener implements Listener {
 	}
 	
 	/**
-	 * Do a boder check if a player moves
+	 * Do a boder check if a player moves.
 	 * NOTES: May be CPU intensive, but we'll keep it as long as it works well
 	 * 
 	 * @param event
@@ -112,24 +112,18 @@ public class MBEventListener implements Listener {
 				
 				boolean playerNeedsPort = false;
 				
-				if (x > maxBoxelSize / 2)
-				{
+				if (x > maxBoxelSize / 2) {
 					newX = (x - (x - maxBoxelSize / 2) - 1) * 16;
 					playerNeedsPort = true;
-				}
-				else if (x < -maxBoxelSize / 2)
-				{
+				} else if (x < -maxBoxelSize / 2) {
 					newX = (x - (x + maxBoxelSize / 2) + 1) * 16;
 					playerNeedsPort = true;
 				}
 				
-				if (z > maxBoxelSize / 2)
-				{
+				if (z > maxBoxelSize / 2) {
 					newZ = (z - (z - maxBoxelSize / 2) - 1) * 16;
 					playerNeedsPort = true;
-				}
-				else if (z < -maxBoxelSize / 2)
-				{
+				} else if (z < -maxBoxelSize / 2) {
 					newZ = (z - (z + maxBoxelSize / 2) + 1) * 16;
 					playerNeedsPort = true;
 				}

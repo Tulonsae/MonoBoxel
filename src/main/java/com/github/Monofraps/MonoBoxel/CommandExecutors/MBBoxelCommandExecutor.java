@@ -12,7 +12,7 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
 
 /**
- * Executor class for /boxel commands
+ * Executor class for /boxel commands.
  * 
  * @author Monofraps
  */
@@ -30,7 +30,7 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 	}
 	
 	/**
-	 * Will parse and execute the /boxel commands
+	 * Will parse and execute the /boxel commands.
 	 * 
 	 * @param sender
 	 * @param command

@@ -29,6 +29,9 @@ public class MBDataConfig {
 		master = plugin;
 	}
 	
+	/**
+	 * Reload Configuration from File.
+	 */
 	public void reloadDataConfig() {
 		if (dataConfigFile == null) {
 			dataConfigFile = new File(master.getDataFolder(), "data.yml");
@@ -43,6 +46,10 @@ public class MBDataConfig {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return the DataConfig
+	 */
 	public FileConfiguration getDataConfig() {
 		if (dataConfig == null) {
 			reloadDataConfig();
@@ -50,13 +57,15 @@ public class MBDataConfig {
 		return dataConfig;
 	}
 	
+	/**
+	 * Save the Configuration to the Disk.
+	 */
 	public void saveDataConfig() {
 		if (dataConfig == null || dataConfigFile == null) return;
 		
 		try {
 			dataConfig.save(dataConfigFile);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			master.getLogManager().severe(
 					"Could not save Data Configuration File to "
 							+ dataConfigFile);

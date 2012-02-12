@@ -25,22 +25,22 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
  */
 public class MonoBoxel extends JavaPlugin {
 	
-	MBLogger						logger			= null;
+	private MBLogger						logger			= null;
 	
-	MBDataConfig					dataConfig		= null;
+	private MBDataConfig					dataConfig		= null;
 	
-	MBBoxelCommandExecutor			boxelCmdExecutor;
-	MBBoxelgrpCommandExecutor		boxelgrpCommandExecutor;
-	MBBoxellookupCommandExecutor	boxellookupCmdExecutor;
-	MBBoxelremoveCommandExecutor	boxelremoveCmdExecutor;
-	MBBoxelinfoCommandExecutor		boxelinfoCmdExecutor;
+	private MBBoxelCommandExecutor			boxelCmdExecutor;
+	private MBBoxelgrpCommandExecutor		boxelgrpCommandExecutor;
+	private MBBoxellookupCommandExecutor	boxellookupCmdExecutor;
+	private MBBoxelremoveCommandExecutor	boxelremoveCmdExecutor;
+	private MBBoxelinfoCommandExecutor		boxelinfoCmdExecutor;
 	
-	private MultiverseCore			mvCore			= null;
-	private String					boxelPrefix		= "BOXEL_";
-	private MBBoxelManager			boxelManager	= null;
+	private MultiverseCore					mvCore			= null;
+	private String							boxelPrefix		= "BOXEL_";
+	private MBBoxelManager					boxelManager	= null;
 	
 	/**
-	 * Hooks up the command executors and initializes the scheduled tasks
+	 * Hooks up the command executors and initializes the scheduled tasks.
 	 */
 	public void onEnable() {
 		this.logger = new MBLogger("Minecraft", this);
@@ -86,7 +86,7 @@ public class MonoBoxel extends JavaPlugin {
 	}
 	
 	/**
-	 * Tries to get the MultiverseCore instance
+	 * Tries to get the MultiverseCore instance.
 	 * 
 	 * @return The MultiverCore or null on failure.
 	 */
@@ -111,6 +111,9 @@ public class MonoBoxel extends JavaPlugin {
 		return mvCore;
 	}
 	
+	/**
+	 * onDisable hook for Bukkit.
+	 */
 	public void onDisable() {
 		saveConfig();
 		boxelManager.SaveBoxels();
@@ -126,7 +129,7 @@ public class MonoBoxel extends JavaPlugin {
 	}
 	
 	/**
-	 * Checks if the player has permissions to create his own Boxel
+	 * Checks if the player has permissions to create his own Boxel.
 	 * 
 	 * @param player
 	 *            The player that want's to perform the creation.
@@ -137,7 +140,7 @@ public class MonoBoxel extends JavaPlugin {
 	}
 	
 	/**
-	 * Checks if the player has permissions to create other players Boxels
+	 * Checks if the player has permissions to create other players Boxels.
 	 * 
 	 * @param player
 	 *            The player that want's to perform the creation.
@@ -148,7 +151,7 @@ public class MonoBoxel extends JavaPlugin {
 	}
 	
 	/**
-	 * Checks if the player has permissions visit his own Boxel
+	 * Checks if the player has permissions visit his own Boxel.
 	 * 
 	 * @param player
 	 *            The player that want's to perform the creation.
@@ -157,17 +160,20 @@ public class MonoBoxel extends JavaPlugin {
 	public boolean CheckPermCanVisitOwn(Player player) {
 		// if the player has permissions to create his own Boxel, he will also
 		// be able to visit it
-		if (player.hasPermission("monoboxel.boxel.create.own")) return true;
+		if (player.hasPermission("monoboxel.boxel.create.own"))
+			return true;
 		
-		if (player.hasPermission("monoboxel.boxel.visit.own")) return true;
+		if (player.hasPermission("monoboxel.boxel.visit.own"))
+			return true;
 		
-		if (player.hasPermission("monoboxel.boxel.visit." + player.getName())) return true;
+		if (player.hasPermission("monoboxel.boxel.visit." + player.getName()))
+			return true;
 		
 		return false;
 	}
 	
 	/**
-	 * Checks if the player has permissions to visit other players Boxels
+	 * Checks if the player has permissions to visit other players Boxels.
 	 * 
 	 * @param player
 	 *            The player that want's to perform the creation.
@@ -175,12 +181,13 @@ public class MonoBoxel extends JavaPlugin {
 	 */
 	public boolean CheckPermCanVisitOther(Player player, String boxelName) {
 		// do not check for visit.BOXEL_<name> permissions but for visit.<name>
-		if (boxelName.startsWith(getBoxelPrefix())) boxelName = boxelName
-				.substring(getBoxelPrefix().length());
+		if (boxelName.startsWith(getBoxelPrefix()))
+			boxelName = boxelName.substring(getBoxelPrefix().length());
 		
-		if (getConfig().getBoolean("per-boxel-permissions", true)) return player
-				.hasPermission("monoboxel.boxel.visit." + boxelName);
-		else return player.hasPermission("monoboxel.boxel.visit.other");
+		if (getConfig().getBoolean("per-boxel-permissions", true))
+			return player.hasPermission("monoboxel.boxel.visit." + boxelName);
+		else
+			return player.hasPermission("monoboxel.boxel.visit.other");
 	}
 	
 	/**

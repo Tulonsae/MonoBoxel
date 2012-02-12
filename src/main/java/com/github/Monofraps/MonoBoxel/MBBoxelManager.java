@@ -11,17 +11,22 @@ import org.bukkit.entity.Player;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
 
+/**
+ * Boxel Management class.
+ * 
+ * @author Monofraps
+ */
 public class MBBoxelManager {
 	
 	/**
-	 * The Runnable for the delayed unload task
+	 * The Runnable for the delayed unload task.
 	 * 
 	 * @author Monofraps
 	 */
 	private class BoxelUnloadRunnable implements Runnable {
 		
-		MBBoxel		box		= null;
-		MonoBoxel	master	= null;
+		private MBBoxel		box		= null;
+		private MonoBoxel	master	= null;
 		
 		public BoxelUnloadRunnable(MonoBoxel monoBoxel, MBBoxel boxel) {
 			master = monoBoxel;
@@ -31,10 +36,9 @@ public class MBBoxelManager {
 		@Override
 		public void run() {
 			master.getLogManager().info("runable execute");
-			if (box.Unload())
-				master.logger.info("Unloaded Boxel "
-						+ box.correspondingWorldName);
-			box.unloadTaskId = -1;
+			if (box.Unload()) master.getLogManager().info("Unloaded Boxel "
+					+ box.getCorrespondingWorldName());
+			box.setUnloadTaskId(-1);
 		}
 	}
 	
@@ -129,7 +133,7 @@ public class MBBoxelManager {
 	}
 	
 	/**
-	 * Adds a Boxel to the boxels list
+	 * Adds a Boxel to the boxels list.
 	 * 
 	 * @param name
 	 *            Name of the Boxel
@@ -227,7 +231,6 @@ public class MBBoxelManager {
 	public boolean[] isBoxel(String name) {
 		boolean[] result = new boolean[2];
 		
-		// @TODO: an option for the Boxel prefix
 		if (!name.startsWith(master.getBoxelPrefix())) {
 			name = master.getBoxelPrefix() + name;
 		}
@@ -259,50 +262,57 @@ public class MBBoxelManager {
 		return result;
 	}
 	
+	/**
+	 * Checks if the given world is an existing Boxel and if it is loaded.
+	 * 
+	 * @param world
+	 *            World to check.
+	 * @return A boolean array. Component 1(0) is true if the Boxel exists;
+	 *         Component 2(1) is true if the Boxel is loaded.
+	 */
 	public boolean[] isBoxel(World world) {
 		return this.isBoxel(world.getName());
 	}
 	
 	/**
-	 * Starts/Cancels a delayed world unload if a Boxel is empty
+	 * Starts/Cancels a delayed world unload if a Boxel is empty.
 	 */
 	public void CheckForUnusedWorlds() {
 		
 		// normal boxels
 		for (MBBoxel box : boxels) {
-			if (box.isEmpty() && box.unloadTaskId == -1 && box.isLoaded()) {
-				box.unloadTaskId = master
+			if (box.isEmpty() && box.getUnloadTaskId() == -1 && box.isLoaded()) {
+				box.setUnloadTaskId(master
 						.getServer()
 						.getScheduler()
 						.scheduleAsyncDelayedTask(
 								master,
 								new BoxelUnloadRunnable(master, box),
 								master.getConfig().getInt(
-										"world-unload-period", 60) * 20);
-			} else
-				if (!box.isEmpty() && box.unloadTaskId != -1) {
-					master.getServer().getScheduler()
-							.cancelTask(box.unloadTaskId);
-					box.unloadTaskId = -1;
-				}
+										"world-unload-period", 60) * 20));
+			} else if (!box.isEmpty() && box.getUnloadTaskId() != -1) {
+				master.getServer().getScheduler()
+						.cancelTask(box.getUnloadTaskId());
+				box.setUnloadTaskId(-1);
+			}
 		}
 		
 		// group boxels
 		for (MBGroupBoxel box : groupBoxels) {
-			if (box.isEmpty() && box.unloadTaskId == -1 && box.isLoaded()) {
-				box.unloadTaskId = master
+			if (box.isEmpty() && box.getUnloadTaskId() == -1 && box.isLoaded()) {
+				box.setUnloadTaskId(master
 						.getServer()
 						.getScheduler()
 						.scheduleAsyncDelayedTask(
 								master,
 								new BoxelUnloadRunnable(master, box),
 								master.getConfig().getInt(
-										"world-unload-period", 60) * 20);
+										"world-unload-period", 60) * 20));
 			} else
-				if (!box.isEmpty() && box.unloadTaskId != -1) {
+				if (!box.isEmpty() && box.getUnloadTaskId() != -1) {
 					master.getServer().getScheduler()
-							.cancelTask(box.unloadTaskId);
-					box.unloadTaskId = -1;
+							.cancelTask(box.getUnloadTaskId());
+					box.setUnloadTaskId(-1);
 				}
 		}
 	}
