@@ -65,7 +65,12 @@ public class MBBoxelGenerator extends ChunkGenerator {
 	
 	@Override
 	public boolean canSpawn(World world, int x, int z) {
-		return true;
+		
+		// set the spawnpoint to the origin (0|0)
+		if( (x == 0) && (z == 0) )
+			return true;
+		else
+			return false;
 	}
 	
 	// This converts relative chunk locations to bytes that can be written to

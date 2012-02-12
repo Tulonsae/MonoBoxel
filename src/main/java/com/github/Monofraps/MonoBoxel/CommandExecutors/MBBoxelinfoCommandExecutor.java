@@ -22,8 +22,9 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 		
 		master.getMBWorldManager().LoadConfig();
 		sender.sendMessage(String.valueOf(master.getMBWorldManager()
-				.getNumBoxels())
+				.getNumBoxels() + master.getMBWorldManager().getNumGroupBoxels())
 				+ " Boxels are currently registered on this server.");
+		
 		sender.sendMessage("The current Boxel prefix is: "
 				+ master.getBoxelPrefix());
 		

@@ -9,6 +9,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelCommandExecutor;
+import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelgrpCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelinfoCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxellookupCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelremoveCommandExecutor;
@@ -29,6 +30,7 @@ public class MonoBoxel extends JavaPlugin {
 	MBDataConfig					dataConfig		= null;
 	
 	MBBoxelCommandExecutor			boxelCmdExecutor;
+	MBBoxelgrpCommandExecutor		boxelgrpCommandExecutor;
 	MBBoxellookupCommandExecutor	boxellookupCmdExecutor;
 	MBBoxelremoveCommandExecutor	boxelremoveCmdExecutor;
 	MBBoxelinfoCommandExecutor		boxelinfoCmdExecutor;
@@ -57,10 +59,12 @@ public class MonoBoxel extends JavaPlugin {
 		boxelPrefix = getConfig().getString("boxel-prefix", "BOXEL_");
 		
 		boxelCmdExecutor = new MBBoxelCommandExecutor(this);
+		boxelgrpCommandExecutor = new MBBoxelgrpCommandExecutor(this);
 		boxellookupCmdExecutor = new MBBoxellookupCommandExecutor(this);
 		boxelremoveCmdExecutor = new MBBoxelremoveCommandExecutor(this);
 		boxelinfoCmdExecutor = new MBBoxelinfoCommandExecutor(this);
 		getCommand("boxel").setExecutor(boxelCmdExecutor);
+		getCommand("boxelgrp").setExecutor(boxelgrpCommandExecutor);
 		getCommand("boxlookup").setExecutor(boxellookupCmdExecutor);
 		getCommand("boxremove").setExecutor(boxelremoveCmdExecutor);
 		getCommand("boxinfo").setExecutor(boxelinfoCmdExecutor);
@@ -109,6 +113,7 @@ public class MonoBoxel extends JavaPlugin {
 	
 	public void onDisable() {
 		saveConfig();
+		boxelManager.SaveBoxels();
 		logger.info("MonoBoxel disabled!");
 	}
 	

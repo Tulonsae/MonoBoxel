@@ -9,6 +9,11 @@ commands:
         permissions: monoboxel.boxel
         usage: /<command> <player>
         
+    boxelgrp:
+        description: Creates and sends you to a group Boxel
+        permissions: monoboxel.boxelgrp
+        usage: /<command> <boxelname> <password>
+        
     boxlookup:
         description: Get the owner of the Boxel your are in
         permissions: monoboxel.boxlookup
