@@ -4,7 +4,6 @@ package com.github.Monofraps.MonoBoxel.Utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-
 /**
  * This class just allows to quickly hash a string to a MD5 sum
  * 

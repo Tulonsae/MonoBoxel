@@ -23,7 +23,7 @@ public class MBLogger {
 	
 	private Logger					log				= null;
 	private DebugLog				debugLog		= null;
-	private PluginDescriptionFile	pdFile;
+	private PluginDescriptionFile	pdFile			= null;
 	private String					logPrefix		= "";
 	private boolean					logStackTrace	= false;
 	
@@ -42,7 +42,8 @@ public class MBLogger {
 		File debugLogFile = new File(plugin.getDataFolder(), "debug.log");
 		try {
 			debugLogFile.createNewFile();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		debugLog = new DebugLog(pdFile.getName() + "-debug",
@@ -69,7 +70,7 @@ public class MBLogger {
 	 */
 	public void info(String msg) {
 		if (logStackTrace) {
-			msg = msg + "\n With stack: \n";
+			msg += "\n With stack: \n";
 			
 			for (StackTraceElement s : Thread.currentThread().getStackTrace())
 				msg += s.toString() + "\n";
@@ -86,7 +87,7 @@ public class MBLogger {
 	 */
 	public void severe(String msg) {
 		if (logStackTrace) {
-			msg = msg + "\n With stack: \n";
+			msg += "\n With stack: \n";
 			
 			for (StackTraceElement s : Thread.currentThread().getStackTrace())
 				msg += s.toString() + "\n";
@@ -103,7 +104,7 @@ public class MBLogger {
 	 */
 	public void warning(String msg) {
 		if (logStackTrace) {
-			msg = msg + "\n With stack: \n";
+			msg += "\n With stack: \n";
 			
 			for (StackTraceElement s : Thread.currentThread().getStackTrace())
 				msg += s.toString() + "\n";

@@ -3,7 +3,6 @@ package com.github.Monofraps.MonoBoxel;
 
 import java.util.logging.Level;
 
-import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,19 +24,20 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
  */
 public class MonoBoxel extends JavaPlugin {
 	
-	private MBLogger						logger			= null;
+	private MBLogger						logger					= null;
 	
-	private MBDataConfig					dataConfig		= null;
+	private MBDataConfig					dataConfig				= null;
 	
-	private MBBoxelCommandExecutor			boxelCmdExecutor;
-	private MBBoxelgrpCommandExecutor		boxelgrpCommandExecutor;
-	private MBBoxellookupCommandExecutor	boxellookupCmdExecutor;
-	private MBBoxelremoveCommandExecutor	boxelremoveCmdExecutor;
-	private MBBoxelinfoCommandExecutor		boxelinfoCmdExecutor;
+	private MBBoxelCommandExecutor			boxelCmdExecutor		= null;
+	private MBBoxelgrpCommandExecutor		boxelgrpCommandExecutor	= null;
+	private MBBoxellookupCommandExecutor	boxellookupCmdExecutor	= null;
+	private MBBoxelremoveCommandExecutor	boxelremoveCmdExecutor	= null;
+	private MBBoxelinfoCommandExecutor		boxelinfoCmdExecutor	= null;
 	
-	private MultiverseCore					mvCore			= null;
-	private String							boxelPrefix		= "BOXEL_";
-	private MBBoxelManager					boxelManager	= null;
+	private MultiverseCore					mvCore					= null;
+	private MBBoxelManager					boxelManager			= null;
+	private MBPermissionManager				boxelPermManager		= null;
+	private String							boxelPrefix				= "BOXEL_";
 	
 	/**
 	 * Hooks up the command executors and initializes the scheduled tasks.
@@ -73,6 +73,8 @@ public class MonoBoxel extends JavaPlugin {
 		
 		boxelManager = new MBBoxelManager(this);
 		
+		boxelPermManager = new MBPermissionManager(this);
+		
 		getServer().getScheduler().scheduleSyncDelayedTask(this,
 				new Runnable() {
 					
@@ -97,11 +99,12 @@ public class MonoBoxel extends JavaPlugin {
 			for (Plugin p : plugins) {
 				if (p.toString().contains("Multiverse-Core")) {
 					mv = p;
-					logger.info("Multiverse Core found.");
+					logger.debugLog(Level.INFO, "Multiverse Core found.");
 				}
 			}
 			if (mv == null) {
 				logger.info("Multiverse-Core *NOT* found! Is it installed and enabled?");
+				logger.debugLog(Level.INFO, "Multiverse Core not found!");
 				return null;
 			}
 			
@@ -118,6 +121,7 @@ public class MonoBoxel extends JavaPlugin {
 		saveConfig();
 		boxelManager.SaveBoxels();
 		logger.info("MonoBoxel disabled!");
+		logger.debugLog(Level.INFO, "Plugin unloaded.");
 	}
 	
 	/**
@@ -128,66 +132,8 @@ public class MonoBoxel extends JavaPlugin {
 		return new MBBoxelGenerator(getConfig().getLong("max-boxel-size", 16));
 	}
 	
-	/**
-	 * Checks if the player has permissions to create his own Boxel.
-	 * 
-	 * @param player
-	 *            The player that want's to perform the creation.
-	 * @return true if the player has permissions, otherwise false
-	 */
-	public boolean CheckPermCanCreateOwn(Player player) {
-		return player.hasPermission("monoboxel.boxel.create.own");
-	}
-	
-	/**
-	 * Checks if the player has permissions to create other players Boxels.
-	 * 
-	 * @param player
-	 *            The player that want's to perform the creation.
-	 * @return true if the player has permissions, otherwise false
-	 */
-	public boolean CheckPermCanCreateOther(Player player) {
-		return player.hasPermission("monoboxel.boxel.create.other");
-	}
-	
-	/**
-	 * Checks if the player has permissions visit his own Boxel.
-	 * 
-	 * @param player
-	 *            The player that want's to perform the creation.
-	 * @return true if the player has permissions, otherwise false
-	 */
-	public boolean CheckPermCanVisitOwn(Player player) {
-		// if the player has permissions to create his own Boxel, he will also
-		// be able to visit it
-		if (player.hasPermission("monoboxel.boxel.create.own"))
-			return true;
-		
-		if (player.hasPermission("monoboxel.boxel.visit.own"))
-			return true;
-		
-		if (player.hasPermission("monoboxel.boxel.visit." + player.getName()))
-			return true;
-		
-		return false;
-	}
-	
-	/**
-	 * Checks if the player has permissions to visit other players Boxels.
-	 * 
-	 * @param player
-	 *            The player that want's to perform the creation.
-	 * @return true if the player has permissions, otherwise false
-	 */
-	public boolean CheckPermCanVisitOther(Player player, String boxelName) {
-		// do not check for visit.BOXEL_<name> permissions but for visit.<name>
-		if (boxelName.startsWith(getBoxelPrefix()))
-			boxelName = boxelName.substring(getBoxelPrefix().length());
-		
-		if (getConfig().getBoolean("per-boxel-permissions", true))
-			return player.hasPermission("monoboxel.boxel.visit." + boxelName);
-		else
-			return player.hasPermission("monoboxel.boxel.visit.other");
+	public MBPermissionManager getPermManager() {
+		return boxelPermManager;
 	}
 	
 	/**

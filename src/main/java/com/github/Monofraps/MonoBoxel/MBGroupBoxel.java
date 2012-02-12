@@ -1,6 +1,8 @@
 package com.github.Monofraps.MonoBoxel;
 
 
+import java.util.logging.Level;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -20,7 +22,11 @@ public class MBGroupBoxel extends MBBoxel {
 	@Override
 	public boolean Create(Player player) {
 		
-		// check permissions - waiting for new permission manager
+		if(!master.getPermManager().canCreateGroupBoxel(player))
+		{
+			master.getPermManager().SendNotAllowedMessage(player);
+			return false;
+		}
 		
 		if (super.DoCreate(player)) {
 			
@@ -30,8 +36,8 @@ public class MBGroupBoxel extends MBBoxel {
 			
 		} else {
 			player.sendMessage("Failed to create group Boxel.");
-			master.getLogManager().severe("Failed to create group Boxel "
-					+ correspondingWorldName);
+			master.getLogManager().severe(
+					"Failed to create group Boxel " + correspondingWorldName);
 			return false;
 		}
 		
@@ -49,24 +55,33 @@ public class MBGroupBoxel extends MBBoxel {
 	 */
 	@Override
 	public boolean Join(Player player) {
-		master.getLogManager().warning("Join was called on a goup box.");
+		master.getLogManager().warning("Join was called on a goup Boxel.");
 		return false;
 	}
 	
 	public boolean JoinGroupBoxel(Player player, String passwd) {
 		// validate password
 		if (!HashMD5.Hash(passwd).equals(passwdMD5)) {
-			player.sendMessage("The security man said: NO! - Have you entered the right password?");
+			player.sendMessage("The security man said: NO! - Have you entered the correct password?");
 			return false;
 		}
 		
-		// check permissions - waiting for perm manager
+		if(!master.getPermManager().canVisitGroupBoxel(player))
+		{
+			master.getPermManager().SendNotAllowedMessage(player);
+			return false;
+		}
 		
 		if (!isLoaded())
 			if (!Load()) {
 				master.getLogManager()
-						.severe("Failed to load group boxel: "
+						.severe("Failed to load group Boxel: "
 								+ correspondingWorldName);
+				master.getLogManager()
+						.debugLog(
+								Level.INFO,
+								"Failed to load group Boxel: "
+										+ correspondingWorldName);
 				return false;
 			}
 		
@@ -98,8 +113,8 @@ public class MBGroupBoxel extends MBBoxel {
 		if (player.teleport(new Location(correspondingWorld, 0, 7, 0)))
 			return true;
 		
-		master.getLogManager().severe("Player teleport failed!");
-		player.sendMessage("Failed to teleport!");
+		master.getLogManager().debugLog(Level.INFO, "Player teleport failed!");
+		player.sendMessage("Teleport failed!");
 		return false;
 	}
 	

@@ -44,27 +44,28 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		// get the boxels name
 		if (args.length == 0) {
 			if (!senderIsPlayer) {
-				master.getLogManager().info(
-						"You have to specify a boxel or player name");
+				sender.sendMessage("You have to specify a Boxel or player name");
 				return false;
 			}
 			
 			boxelName = master.getBoxelPrefix() + player.getName();
 		} else {
-			if (args[0].startsWith(master.getBoxelPrefix())) boxelName = args[0];
-			else boxelName = master.getBoxelPrefix() + args[0];
+			if (args[0].startsWith(master.getBoxelPrefix()))
+				boxelName = args[0];
+			else
+				boxelName = master.getBoxelPrefix() + args[0];
 		}
 		
 		if (senderIsPlayer) {
 			// is this the players own boxel?
 			if (boxelName.equals(master.getBoxelPrefix() + player.getName())) {
 				if (!player.hasPermission("monoboxel.boxremove.own")) {
-					sender.sendMessage("You don't have permissions to do this!");
+					master.getPermManager().SendNotAllowedMessage(player);
 					return false;
 				}
 			} else { // no, it's not
 				if (!player.hasPermission("monoboxel.boxremove.other")) {
-					sender.sendMessage("You don't have permissions to do this!");
+					master.getPermManager().SendNotAllowedMessage(player);
 					return false;
 				}
 			}
@@ -78,7 +79,8 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		}
 		
 		// load the boxel if it was not loaded
-		if (!boxlupResult[1]) wm.loadWorld(boxelName);
+		if (!boxlupResult[1])
+			wm.loadWorld(boxelName);
 		
 		// Are there still players in this boxel? (there can't be some if the
 		// boxel was unloaded
@@ -87,15 +89,15 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 					.getPlayers();
 			if (players != null) {
 				for (Player p : players) {
-					p.sendMessage("Ooops... seems like you are in a boxel that is supposed to be deleted... will port you to the spawn world...");
+					p.sendMessage("Ooops... You are in a Boxel that is supposed to be deleted... will port you to the spawn world...");
 					p.teleport(wm.getSpawnWorld().getSpawnLocation());
 				}
 			}
 		}
 		
 		if (wm.deleteWorld(boxelName)) {
-			master.getLogManager()
-					.info("Successfully removed boxel \"" + boxelName + "\".");
+			master.getLogManager().info(
+					"Successfully removed boxel \"" + boxelName + "\".");
 			
 			if (senderIsPlayer) {
 				sender.sendMessage("Successfully removed boxel \"" + boxelName
@@ -104,7 +106,8 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 			
 			MBBoxel box = null;
 			for (MBBoxel b : master.getMBWorldManager().getBoxels()) {
-				if (b.getCorrespondingWorldName().equals(boxelName)) box = b;
+				if (b.getCorrespondingWorldName().equals(boxelName))
+					box = b;
 			}
 			master.getMBWorldManager().getBoxels().remove(box);
 			
