@@ -43,7 +43,7 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 			
 			msg += box.getCorrespondingWorldName() + " - ";
 			
-			if (box.isEmpty())
+			if (box.isEmpty() && box.isLoaded())
 				msg += ChatColor.AQUA + "No players inside. UnloadThread: "
 						+ box.getUnloadTaskId();
 			else
@@ -63,11 +63,13 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 			
 			msg += box.getCorrespondingWorldName() + " - ";
 			
-			if (box.isEmpty())
+			if (box.isEmpty() && box.isLoaded())
 				msg += ChatColor.AQUA + "No players inside. UnloadThread: "
 						+ box.getUnloadTaskId();
-			else
+			else if(!box.isEmpty() && box.isLoaded())
 				msg += ChatColor.GREEN + "Players inside.";
+			else
+				msg += ChatColor.GOLD + "UNLOADED";
 			
 			sender.sendMessage(msg);
 		}
