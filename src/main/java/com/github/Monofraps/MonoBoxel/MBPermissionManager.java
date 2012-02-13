@@ -26,7 +26,6 @@ public class MBPermissionManager {
 		CAN_CREATE_OTHERS(new Permission("monoboxel.boxel.create.other")),
 		CAN_CREATE_GROUP_BOXEL(new Permission("monoboxel.groupboxel.create")),
 		CAN_VISIT_OWN(new Permission("monoboxel.boxel.visit.own")),
-		CAN_VISIT_OTHERS(new Permission("monoboxel.boxel.create.other")),
 		CAN_VISIT_GROUP_BOXEL(new Permission("monoboxel.groupboxel.visit")),
 		CAN_REMOVE_OWN(new Permission("monoboxel.boxremove.own")),
 		CAN_REMOVE_OTHER(new Permission("monoboxel.boxremove.other"));
