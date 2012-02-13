@@ -64,10 +64,13 @@ public class MBLogger {
 	 * @param msg
 	 */
 	public void debugLog(Level level, String msg) {
+		if(!printDebugLog)
+			return;
+		
 		debugLog.log(level, logPrefix + msg);
 		
-		if (printDebugLog)
-			log.info(logPrefix + msg);
+		
+		//log.info(logPrefix + msg);
 	}
 	
 	/**
