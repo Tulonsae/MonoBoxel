@@ -13,6 +13,7 @@ import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxellookupCommandExecu
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelremoveCommandExecutor;
 import com.github.Monofraps.MonoBoxel.Config.MBDataConfig;
 import com.github.Monofraps.MonoBoxel.EventHooks.MBEventListener;
+import com.github.Monofraps.MonoBoxel.Utils.LocalizationManager;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
 
@@ -25,6 +26,7 @@ public class MonoBoxel extends JavaPlugin {
 	
 	private MBLogger						logger					= null;
 	
+	private LocalizationManager				localizationManager		= null;
 	private MBDataConfig					dataConfig				= null;
 	
 	private MBBoxelCommandExecutor			boxelCmdExecutor		= null;
@@ -44,6 +46,7 @@ public class MonoBoxel extends JavaPlugin {
 	public void onEnable() {
 		this.logger = new MBLogger("Minecraft", this);
 		
+		localizationManager = new LocalizationManager(this);
 		dataConfig = new MBDataConfig(this);
 		
 		reloadConfig();
@@ -113,11 +116,13 @@ public class MonoBoxel extends JavaPlugin {
 	 */
 	public void onDisable() {
 		saveConfig();
+		dataConfig.saveDataConfig();
 		boxelManager.SaveBoxels();
 		logger.info("MonoBoxel disabled!");
 		logger.debugLog(Level.INFO, "Plugin unloaded.");
 		
-		mvCore.decrementPluginCount();
+		if (mvCore != null)
+			mvCore.decrementPluginCount();
 	}
 	
 	/**
