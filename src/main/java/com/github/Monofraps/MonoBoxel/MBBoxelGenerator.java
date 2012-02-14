@@ -62,7 +62,7 @@ public class MBBoxelGenerator extends ChunkGenerator {
 		}
 		
 		for (int i = 0; i < CHUNK_SIZE; i++)
-			borderChunk[i] = (byte) Material.BEDROCK.getId();
+			borderChunk[i] = (byte) Material.AIR.getId();
 	}
 	
 	@Override
