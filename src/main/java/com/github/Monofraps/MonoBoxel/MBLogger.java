@@ -57,6 +57,12 @@ public class MBLogger {
 		log.setLevel(Level.ALL);
 	}
 	
+	@Override
+	protected void finalize() throws Throwable {
+		debugLog.close();
+		super.finalize();
+	}
+
 	/**
 	 * Logs a Message to a debug.log file in the Plugin Data directory.
 	 * 
