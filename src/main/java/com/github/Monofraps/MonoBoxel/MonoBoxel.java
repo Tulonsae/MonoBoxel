@@ -49,6 +49,8 @@ public class MonoBoxel extends JavaPlugin {
 		localizationManager = new LocalizationManager(this);
 		dataConfig = new MBDataConfig(this);
 		
+		//logger.debugLog(Level.INFO, localizationManager.getMessage("myKey").toString());
+		
 		reloadConfig();
 		
 		if (getConfig().getString("version", "no config") == "no config") {
@@ -118,6 +120,7 @@ public class MonoBoxel extends JavaPlugin {
 		saveConfig();
 		dataConfig.saveDataConfig();
 		boxelManager.SaveBoxels();
+		localizationManager.SaveLocalization();
 		logger.info("MonoBoxel disabled!");
 		logger.debugLog(Level.INFO, "Plugin unloaded.");
 		

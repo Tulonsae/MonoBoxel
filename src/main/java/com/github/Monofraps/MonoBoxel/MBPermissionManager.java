@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 
+// TODO: Implement wildcard permissions for PermissionsBukkit
 
 /**
  * Managing all available Permissions for MonoBoxel.
@@ -26,6 +27,7 @@ public class MBPermissionManager {
 		CAN_CREATE_OTHERS(new Permission("monoboxel.boxel.create.other")),
 		CAN_CREATE_GROUP_BOXEL(new Permission("monoboxel.groupboxel.create")),
 		CAN_VISIT_OWN(new Permission("monoboxel.boxel.visit.own")),
+		CAN_VISIT_OTHER(new Permission("monoboxel.boxel.visit.other")),
 		CAN_VISIT_GROUP_BOXEL(new Permission("monoboxel.groupboxel.visit")),
 		CAN_REMOVE_OWN(new Permission("monoboxel.boxremove.own")),
 		CAN_REMOVE_OTHER(new Permission("monoboxel.boxremove.other"));
@@ -95,6 +97,9 @@ public class MBPermissionManager {
 	public boolean canVisitOtherBoxel(Player player, String boxelName) {
 		if (boxelName.startsWith(master.getBoxelPrefix()))
 			boxelName = boxelName.substring(master.getBoxelPrefix().length());
+		
+		if(player.hasPermission(MBPermission.CAN_VISIT_OTHER.getPermission()))
+			return true;
 		
 		return this.hasPermission(player, new Permission(
 				"monoboxel.boxel.visit." + boxelName));

@@ -99,6 +99,11 @@ public class LocalizationManager {
 		Set<String> temp = localizationConfig.getConfig().getKeys(false);
 		for (String string : temp) {
 			master.getLogManager().debugLog(Level.INFO, string);
+			messages.put(string, new LocalizationMessage("hallo"));
 		}
+	}
+	
+	public void SaveLocalization() {
+		localizationConfig.saveConfig();
 	}
 }

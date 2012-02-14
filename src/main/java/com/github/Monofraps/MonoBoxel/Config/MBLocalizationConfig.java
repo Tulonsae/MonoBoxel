@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -44,7 +45,20 @@ public class MBLocalizationConfig {
 		if (defDataConfigStream != null) {
 			YamlConfiguration defConfig = YamlConfiguration
 					.loadConfiguration(defDataConfigStream);
-			localizationConfig.setDefaults(defConfig);
+			
+			try {
+				defConfig.save(localizationConfigFile);
+				localizationConfig.load(localizationConfigFile);
+				localizationConfig.save(localizationConfigFile);
+			}
+			catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			catch (InvalidConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

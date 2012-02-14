@@ -69,6 +69,7 @@ public class MBLogger {
 		
 		debugLog.log(level, logPrefix + msg);
 		
+		
 		// log.info(logPrefix + msg);
 	}
 	
