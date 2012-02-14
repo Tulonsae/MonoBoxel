@@ -1,11 +1,12 @@
 package com.github.Monofraps.MonoBoxel;
 
 
+import java.util.ArrayList;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 
-// TODO: Implement wildcard permissions for PermissionsBukkit
 
 /**
  * Managing all available Permissions for MonoBoxel.
@@ -17,29 +18,102 @@ public class MBPermissionManager {
 	private MonoBoxel	master	= null;
 	
 	/**
-	 * Enumeration of all Available Generic Permissions.
+	 * Class Wrapper for Bukkit's Permission to represent and check MonoBoxel Permissions.
 	 * 
 	 * @author MikeMatrix
-	 * 
 	 */
-	public enum MBPermission {
-		CAN_CREATE_OWN(new Permission("monoboxel.boxel.create.own")),
-		CAN_CREATE_OTHERS(new Permission("monoboxel.boxel.create.other")),
-		CAN_CREATE_GROUP_BOXEL(new Permission("monoboxel.groupboxel.create")),
-		CAN_VISIT_OWN(new Permission("monoboxel.boxel.visit.own")),
-		CAN_VISIT_OTHER(new Permission("monoboxel.boxel.visit.other")),
-		CAN_VISIT_GROUP_BOXEL(new Permission("monoboxel.groupboxel.visit")),
-		CAN_REMOVE_OWN(new Permission("monoboxel.boxremove.own")),
-		CAN_REMOVE_OTHER(new Permission("monoboxel.boxremove.other"));
+	public static class MBPermission {
 		
-		private final Permission	perm;
+		// Template Permissions
+		public static final Permission	CAN_CREATE_OWN			= new Permission(
+																		"monoboxel.boxel.create.own");
+		public static final Permission	CAN_CREATE_GROUP_BOXEL	= new Permission(
+																		"monoboxel.groupboxel.create");
+		public static final Permission	CAN_VISIT_OWN			= new Permission(
+																		"monoboxel.boxel.visit.own");
+		public static final Permission	CAN_VISIT_OTHER			= new Permission(
+																		"monoboxel.boxel.visit.other");
+		public static final Permission	CAN_VISIT_GROUP_BOXEL	= new Permission(
+																		"monoboxel.groupboxel.visit");
+		public static final Permission	CAN_REMOVE_OWN			= new Permission(
+																		"monoboxel.boxremove.own");
 		
-		MBPermission(Permission permission) {
-			this.perm = permission;
+		// Root Template Permissions
+		public static final Permission	ROOT_CAN_CREATE			= new Permission(
+																		"monoboxel.boxel.create");
+		public static final Permission	ROOT_CAN_VISIT			= new Permission(
+																		"monoboxel.boxel.visit");
+		public static final Permission	ROOT_CAN_REMOVE			= new Permission(
+																		"monoboxel.boxel.remove");
+		
+		private Permission				permission				= null;
+		private String					permissionNode			= "";
+		
+		/**
+		 * @param permission
+		 */
+		public MBPermission(Permission permission) {
+			this.permission = permission;
+			this.permissionNode = this.permission.getName();
 		}
 		
+		/**
+		 * @param node
+		 *            The Permission Node.
+		 */
+		public MBPermission(String node) {
+			this.permission = new Permission(node);
+			this.permissionNode = this.permission.getName();
+		}
+		
+		/**
+		 * @param perm
+		 * @param subnode
+		 *            The Subnode to add to the Permission's node. (e.g. example.visit and test will
+		 *            create the permission example.visit.test)
+		 */
+		public MBPermission(Permission perm, String subnode) {
+			this.permission = new Permission(perm.getName() + "." + subnode);
+			this.permissionNode = this.permission.getName();
+		}
+		
+		/**
+		 * @param node
+		 *            The Permission Node.
+		 * @param subnode
+		 *            The Subnode to add to the Permission's node. (e.g. example.visit and test will
+		 *            create the permission example.visit.test)
+		 */
+		public MBPermission(String node, String subnode) {
+			this.permission = new Permission(node + "." + subnode);
+			this.permissionNode = this.permission.getName();
+		}
+		
+		/**
+		 * @return The permission.
+		 */
 		public Permission getPermission() {
-			return perm;
+			return this.permission;
+		}
+		
+		/**
+		 * Generates and returns all Wildcard Permission to check for this node.
+		 * Only needed to add Wildcard support for PermissionsBukkit.
+		 * 
+		 * @return The List of Wildcard Permissions for this node.
+		 */
+		public ArrayList<Permission> getWildcardPermissions() {
+			ArrayList<Permission> wildcards = new ArrayList<Permission>();
+			
+			String[] nodeSplit = null;
+			String wildcardBuilder = "";
+			
+			nodeSplit = this.permissionNode.split("\\.");
+			for (String string : nodeSplit) {
+				wildcardBuilder += string + ".";
+				wildcards.add(new Permission(wildcardBuilder + "*"));
+			}
+			return wildcards;
 		}
 	}
 	
@@ -60,49 +134,14 @@ public class MBPermissionManager {
 	 * @return true if Player has the Permission, false if Player doesn't have the Permission
 	 */
 	public boolean hasPermission(Player player, MBPermission permission) {
-		return this.hasPermission(player, permission.getPermission());
-	}
-	
-	/**
-	 * Check if a Player has a specific Permission.
-	 * 
-	 * @param player
-	 * @param permission
-	 * @return true if Player has the Permission, false if Player doesn't have the Permission
-	 */
-	public boolean hasPermission(Player player, Permission permission) {
-		return player.hasPermission(permission);
-	}
-	
-	/**
-	 * Check if a Player has a specific Permission.
-	 * 
-	 * @param player
-	 * @param permission
-	 * @return true if Player has the Permission, false if Player doesn't have the Permission
-	 */
-	public boolean hasPermission(Player player, String permissionNode) {
-		return player.hasPermission(permissionNode);
-	}
-	
-	/**
-	 * Extra implementation of per-Player check, since enum's do not support Variations.
-	 * 
-	 * @TODO: Check if there is a possibility to implement this in the current framework.
-	 * @param player
-	 * @param boxelName
-	 * @return true if Player has the Permission to visit the specified Boxel, false if Player
-	 *         doesn't have the Permission to visit the specified Boxel
-	 */
-	public boolean canVisitOtherBoxel(Player player, String boxelName) {
-		if (boxelName.startsWith(master.getBoxelPrefix()))
-			boxelName = boxelName.substring(master.getBoxelPrefix().length());
-		
-		if(player.hasPermission(MBPermission.CAN_VISIT_OTHER.getPermission()))
+		if (player.hasPermission(permission.getPermission()))
 			return true;
-		
-		return this.hasPermission(player, new Permission(
-				"monoboxel.boxel.visit." + boxelName));
+		ArrayList<Permission> wildcards = permission.getWildcardPermissions();
+		for (Permission wildcard : wildcards) {
+			if (player.hasPermission(wildcard))
+				return true;
+		}
+		return false;
 	}
 	
 	/**

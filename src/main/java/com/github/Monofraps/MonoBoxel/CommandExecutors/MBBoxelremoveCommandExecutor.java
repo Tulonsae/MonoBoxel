@@ -21,7 +21,7 @@ import com.onarandombox.MultiverseCore.api.MVWorldManager;
  */
 public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 	
-	private MonoBoxel	master = null;
+	private MonoBoxel	master	= null;
 	
 	public MBBoxelremoveCommandExecutor(MonoBoxel plugin) {
 		master = plugin;
@@ -36,6 +36,7 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
 		
 		String boxelName = "";
+		String boxelOwner = "";
 		
 		if (sender instanceof Player) {
 			player = (Player) sender;
@@ -57,15 +58,22 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 				boxelName = master.getBoxelPrefix() + args[0];
 		}
 		
+		if (boxelName.startsWith(master.getBoxelPrefix()))
+			boxelOwner = boxelName.substring(master.getBoxelPrefix().length());
+		
 		if (senderIsPlayer) {
 			// is this the players own boxel?
 			if (boxelName.equals(master.getBoxelPrefix() + player.getName())) {
-				if (!master.getPermManager().hasPermission(player, MBPermission.CAN_REMOVE_OWN)) {
+				if (!master.getPermManager().hasPermission(player,
+						new MBPermission(MBPermission.CAN_REMOVE_OWN))) {
 					master.getPermManager().SendNotAllowedMessage(player);
 					return false;
 				}
 			} else { // no, it's not
-				if (!master.getPermManager().hasPermission(player, MBPermission.CAN_REMOVE_OTHER)) {
+				if (!master.getPermManager().hasPermission(
+						player,
+						new MBPermission(MBPermission.ROOT_CAN_REMOVE,
+								boxelOwner))) {
 					master.getPermManager().SendNotAllowedMessage(player);
 					return false;
 				}

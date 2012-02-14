@@ -89,13 +89,19 @@ public class MBBoxel {
 			isPlayersOwnBoxel = true;
 		
 		// check permissions
-		if(isPlayersOwnBoxel && !master.getPermManager().hasPermission(player,MBPermission.CAN_CREATE_OWN))
-		{
+		if (isPlayersOwnBoxel
+				&& !master.getPermManager().hasPermission(
+						player,
+						new MBPermission(MBPermission.ROOT_CAN_CREATE,
+								boxelOwner))) {
 			master.getPermManager().SendNotAllowedMessage(player);
 			return false;
 		}
-		if(!isPlayersOwnBoxel && !master.getPermManager().hasPermission(player, MBPermission.CAN_CREATE_OTHERS))
-		{
+		if (!isPlayersOwnBoxel
+				&& !master.getPermManager().hasPermission(
+						player,
+						new MBPermission(MBPermission.ROOT_CAN_VISIT,
+								boxelOwner))) {
 			master.getPermManager().SendNotAllowedMessage(player);
 			return false;
 		}
@@ -122,15 +128,13 @@ public class MBBoxel {
 		}
 		
 		// create the Boxel now
-		if(DoCreate(player))
-		{
+		if (DoCreate(player)) {
 			correspondingWorld = master.GetMVCore().getMVWorldManager()
 					.getMVWorld(correspondingWorldName).getCBWorld();
 			return true;
-		}
-		else
-		{
-			master.getLogManager().debugLog(Level.WARNING, "Could not create Boxel " + correspondingWorldName);
+		} else {
+			master.getLogManager().debugLog(Level.WARNING,
+					"Could not create Boxel " + correspondingWorldName);
 			return false;
 		}
 	}
@@ -272,9 +276,9 @@ public class MBBoxel {
 		boolean isPlayersOwnBoxel = false;
 		String boxelOwner = "";
 		
-		if(!isExisting())
-		{
-			master.getLogManager().severe("The Boxel " + correspondingWorldName + " does not exist.");
+		if (!isExisting()) {
+			master.getLogManager().severe(
+					"The Boxel " + correspondingWorldName + " does not exist.");
 			return false;
 		}
 		
@@ -289,14 +293,16 @@ public class MBBoxel {
 		// check permissions
 		if (isPlayersOwnBoxel
 				&& !master.getPermManager().hasPermission(player,
-						MBPermission.CAN_VISIT_OWN)) {
+						new MBPermission(MBPermission.CAN_VISIT_OWN))) {
 			master.getPermManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		
 		if (!isPlayersOwnBoxel
-				&& !master.getPermManager().canVisitOtherBoxel(player,
-						correspondingWorldName)) {
+				&& !master.getPermManager().hasPermission(
+						player,
+						new MBPermission(MBPermission.ROOT_CAN_VISIT,
+								boxelOwner))) {
 			master.getPermManager().SendNotAllowedMessage(player);
 			return false;
 		}
@@ -325,7 +331,6 @@ public class MBBoxel {
 				master.getDataConfig().saveDataConfig();
 			}
 		}
-		
 		
 		if (!isLoaded()) {
 			if (!Load()) {

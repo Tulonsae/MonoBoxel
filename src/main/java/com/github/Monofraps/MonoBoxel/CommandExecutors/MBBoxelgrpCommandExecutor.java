@@ -43,7 +43,7 @@ public class MBBoxelgrpCommandExecutor implements CommandExecutor {
 		player = (Player) sender;
 		
 		if (!master.getPermManager().hasPermission(player,
-				MBPermission.CAN_VISIT_GROUP_BOXEL)) {
+				new MBPermission(MBPermission.CAN_VISIT_GROUP_BOXEL))) {
 			master.getPermManager().SendNotAllowedMessage(player);
 			return false;
 		}
@@ -55,7 +55,7 @@ public class MBBoxelgrpCommandExecutor implements CommandExecutor {
 		boxelPassword = args[1];
 		
 		if (!master.getPermManager().hasPermission(player,
-				MBPermission.CAN_CREATE_GROUP_BOXEL)) {
+				new MBPermission(MBPermission.CAN_CREATE_GROUP_BOXEL))) {
 			master.getPermManager().SendNotAllowedMessage(player);
 			return false;
 		}

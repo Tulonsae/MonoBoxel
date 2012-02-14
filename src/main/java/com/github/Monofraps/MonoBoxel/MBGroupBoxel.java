@@ -39,7 +39,7 @@ public class MBGroupBoxel extends MBBoxel {
 	public boolean Create(Player player) {
 		
 		if (!master.getPermManager().hasPermission(player,
-				MBPermission.CAN_CREATE_GROUP_BOXEL)) {
+				new MBPermission(MBPermission.CAN_CREATE_GROUP_BOXEL))) {
 			master.getPermManager().SendNotAllowedMessage(player);
 			return false;
 		}
@@ -90,7 +90,7 @@ public class MBGroupBoxel extends MBBoxel {
 		}
 		
 		if (!master.getPermManager().hasPermission(player,
-				MBPermission.CAN_VISIT_GROUP_BOXEL)) {
+				new MBPermission(MBPermission.CAN_VISIT_GROUP_BOXEL))) {
 			master.getPermManager().SendNotAllowedMessage(player);
 			return false;
 		}
