@@ -3,8 +3,7 @@ package com.github.Monofraps.MonoBoxel.EventHooks;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -12,6 +11,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerVelocityEvent;
 
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
@@ -24,7 +24,10 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
  */
 public class MBEventListener implements Listener {
 	
-	private MonoBoxel	master	= null;
+	private MonoBoxel	master					= null;
+	
+	// Message limiters
+	private long		lastBordercheckMessage	= 0;
 	
 	/**
 	 * Register Event Listener with the Bukkit Event System.
@@ -84,77 +87,76 @@ public class MBEventListener implements Listener {
 	}
 	
 	/**
-	 * Do a boder check if a player moves.
+	 * Do a border check if a player moves.
 	 * NOTES: May be CPU intensive, but we'll keep it as long as it works well
 	 * 
 	 * @param event
 	 */
 	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent event) {
-		int maxBoxelSize = master.getConfig().getInt("max-boxel-size", 16);
-		
-		if (maxBoxelSize > 0) {
-			if (master.getMBWorldManager()
-					.isBoxel(event.getPlayer().getWorld())[0]) {
-				
-				Chunk playerLocationChunk = event.getPlayer().getLocation()
-						.getChunk();
-				
-				// correct the players position (-10 units if the player left the border)
-				
-				int x = playerLocationChunk.getX();
-				int z = playerLocationChunk.getZ();
-				
-				double newX = event.getPlayer().getLocation().getX();
-				double newY = event.getPlayer().getLocation().getY();
-				double newZ = event.getPlayer().getLocation().getZ();
-				
-				float newYaw = event.getPlayer().getLocation().getYaw();
-				float newPitch = event.getPlayer().getLocation().getPitch();
-				
-				boolean playerNeedsPort = false;
-				
-				if (x > maxBoxelSize / 2) {
-					newX = (x - (x - maxBoxelSize / 2) - 1) * 16;
-					playerNeedsPort = true;
-				} else
-					if (x < -maxBoxelSize / 2) {
-						newX = (x - (x + maxBoxelSize / 2) + 1) * 16;
-						playerNeedsPort = true;
-					}
-				
-				if (z > maxBoxelSize / 2) {
-					newZ = (z - (z - maxBoxelSize / 2) - 1) * 16;
-					playerNeedsPort = true;
-				} else
-					if (z < -maxBoxelSize / 2) {
-						newZ = (z - (z + maxBoxelSize / 2) + 1) * 16;
-						playerNeedsPort = true;
-					}
-				
-				Location targetLocation = new Location(event.getPlayer()
-						.getWorld(), newX, newY, newZ, newYaw, newPitch);
-				
-				World world = event.getPlayer().getWorld();
-				
-				// try and find a suitable height
-				while (((world.getBlockTypeIdAt(targetLocation) != Material.AIR
-						.getId()) || (world.getBlockTypeIdAt(
-						(int) targetLocation.getX(),
-						(int) targetLocation.getY() + 1,
-						(int) targetLocation.getZ()) != Material.AIR.getId()))
-						&& (targetLocation.getY() != 127))
-				
-				{
-					targetLocation.add(0, 1, 0);
+	public void onPlayerMoveEvent(PlayerMoveEvent event) {
+		if (master.getMBWorldManager().isBoxel(event.getTo().getWorld())[0]) {
+			int maxBoxelSize = master.getConfig().getInt("max-boxel-size", 16);
+			
+			Player player = event.getPlayer();
+			Location targetLocation = event.getTo();
+			Chunk targetChunk = targetLocation.getChunk();
+			
+			if (targetChunk.getX() > maxBoxelSize / 2) {
+				event.setCancelled(true);
+			} else
+				if (targetChunk.getX() < -maxBoxelSize / 2) {
+					event.setCancelled(true);
 				}
-				
-				if (playerNeedsPort) {
-					event.getPlayer()
-							.sendMessage(
-									"[A divine voice] You reached the border of the World.");
-					event.getPlayer().teleport(targetLocation);
+			
+			if (targetChunk.getZ() > maxBoxelSize / 2) {
+				event.setCancelled(true);
+			} else
+				if (targetChunk.getZ() < -maxBoxelSize / 2) {
+					event.setCancelled(true);
 				}
+			
+			// Notify the player if the event is canceled (border is reached).
+			if (event.isCancelled()
+					&& lastBordercheckMessage <= System.currentTimeMillis() - 1000) {
+				lastBordercheckMessage = System.currentTimeMillis();
+				player.sendMessage("[A divine voice] You reached the border of the World.");
+			}
+		}
+	}
+	
+	/**
+	 * Do a border check if a player gets pushed by any kind.
+	 * 
+	 * @param event
+	 */
+	@EventHandler
+	public void onPlayerVelocityEvent(PlayerVelocityEvent event) {
+		Player player = event.getPlayer();
+		if (master.getMBWorldManager().isBoxel(player.getWorld())[0]) {
+			int maxBoxelSize = master.getConfig().getInt("max-boxel-size", 16);
+			Location targetLocation = player.getLocation();
+			targetLocation.add(event.getVelocity());
+			Chunk targetChunk = targetLocation.getChunk();
+			
+			if (targetChunk.getX() > maxBoxelSize / 2) {
+				event.setCancelled(true);
+			} else
+				if (targetChunk.getX() < -maxBoxelSize / 2) {
+					event.setCancelled(true);
+				}
+			
+			if (targetChunk.getZ() > maxBoxelSize / 2) {
+				event.setCancelled(true);
+			} else
+				if (targetChunk.getZ() < -maxBoxelSize / 2) {
+					event.setCancelled(true);
+				}
+			
+			// Notify the player if the event is canceled (border is reached).
+			if (event.isCancelled()
+					&& lastBordercheckMessage <= System.currentTimeMillis() - 1000) {
+				lastBordercheckMessage = System.currentTimeMillis();
+				player.sendMessage("[A divine voice] You reached the border of the World.");
 			}
 		}
 	}
