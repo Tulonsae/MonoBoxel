@@ -4,6 +4,7 @@ package com.github.Monofraps.MonoBoxel;
 import java.util.Collection;
 import java.util.logging.Level;
 
+import org.bukkit.Difficulty;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldType;
@@ -131,6 +132,8 @@ public class MBBoxel {
 		if (DoCreate(player)) {
 			correspondingWorld = master.GetMVCore().getMVWorldManager()
 					.getMVWorld(correspondingWorldName).getCBWorld();
+			correspondingWorld.setDifficulty(Difficulty.PEACEFUL);
+			
 			return true;
 		} else {
 			master.getLogManager().debugLog(Level.WARNING,
