@@ -49,9 +49,12 @@ public class LocalizationManager {
 		/**
 		 * @param handle
 		 * @param value
+		 * @return this
 		 */
-		public void setMessageVariable(String handle, String value) {
+		public LocalizationMessage setMessageVariable(String handle,
+				String value) {
 			messageVariables.put(handle, value);
+			return this;
 		}
 		
 		@Override
@@ -83,10 +86,11 @@ public class LocalizationManager {
 	/**
 	 * @param node
 	 * @return New cloned instance of the LocalizationMessage queried, if no such node exists it
-	 *         will return null.
+	 *         will return a LocalizationMessage with the Message "No Message Found.".
 	 */
 	public LocalizationMessage getMessage(String node) {
-		return messages.containsKey(node) ? messages.get(node).clone() : null;
+		return messages.containsKey(node) ? messages.get(node).clone()
+				: new LocalizationMessage("No Message Found.");
 	}
 	
 	/**

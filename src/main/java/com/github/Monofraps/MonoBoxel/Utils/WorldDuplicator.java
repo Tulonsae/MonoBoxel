@@ -21,16 +21,18 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
  */
 public final class WorldDuplicator {
 	
-	public static void DoplicateWorld(World world, MonoBoxel plugin, String destinationName) {
+	public static void DoplicateWorld(World world, MonoBoxel plugin,
+			String destinationName) {
 		world.save();
 		
 		File worldFolder = world.getWorldFolder();
-		File worldDestinationFolder = new File(plugin.getServer().getWorldContainer().getAbsoluteFile() + File.separator + destinationName);
+		File worldDestinationFolder = new File(plugin.getServer()
+				.getWorldContainer().getAbsoluteFile()
+				+ File.separator + destinationName);
 		
 		try {
 			copyFolder(worldFolder, worldDestinationFolder);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -60,9 +62,9 @@ public final class WorldDuplicator {
 		} else {
 			// if file, then copy it
 			// Use bytes stream to support all file types
-			if(src.getName().equals("session.lock"))
+			if (src.getName().equals("session.lock"))
 				return;
-			if(src.getName().equals("uid.dat"))
+			if (src.getName().equals("uid.dat"))
 				return;
 			
 			InputStream in = new FileInputStream(src);
