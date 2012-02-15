@@ -114,22 +114,22 @@ public class MBGroupBoxel extends MBBoxel {
 			if (!master.getMBWorldManager()
 					.isBoxel(player.getWorld().getName())[0]) {
 				master.getDataConfig()
-						.getDataConfig()
+						.getConfig()
 						.set("playeroloc." + player.getName() + ".world",
 								player.getWorld().getName());
 				master.getDataConfig()
-						.getDataConfig()
+						.getConfig()
 						.set("playeroloc." + player.getName() + ".position",
 								player.getLocation().toVector());
 				master.getDataConfig()
-						.getDataConfig()
+						.getConfig()
 						.set("playeroloc." + player.getName() + ".yaw",
 								player.getLocation().getYaw());
 				master.getDataConfig()
-						.getDataConfig()
+						.getConfig()
 						.set("playeroloc." + player.getName() + ".pitch",
 								player.getLocation().getPitch());
-				master.getDataConfig().saveDataConfig();
+				master.getDataConfig().saveConfig();
 			}
 		}
 		

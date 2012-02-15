@@ -316,22 +316,22 @@ public class MBBoxel {
 			if (!master.getMBWorldManager()
 					.isBoxel(player.getWorld().getName())[0]) {
 				master.getDataConfig()
-						.getDataConfig()
+						.getConfig()
 						.set("playeroloc." + player.getName() + ".world",
 								player.getWorld().getName());
 				master.getDataConfig()
-						.getDataConfig()
+						.getConfig()
 						.set("playeroloc." + player.getName() + ".position",
 								player.getLocation().toVector());
 				master.getDataConfig()
-						.getDataConfig()
+						.getConfig()
 						.set("playeroloc." + player.getName() + ".yaw",
 								player.getLocation().getYaw());
 				master.getDataConfig()
-						.getDataConfig()
+						.getConfig()
 						.set("playeroloc." + player.getName() + ".pitch",
 								player.getLocation().getPitch());
-				master.getDataConfig().saveDataConfig();
+				master.getDataConfig().saveConfig();
 			}
 		}
 		
@@ -360,19 +360,19 @@ public class MBBoxel {
 		
 		if (master.getConfig().getBoolean("save-exit-location", true)) {
 			
-			String outWorld = master.getDataConfig().getDataConfig()
+			String outWorld = master.getDataConfig().getConfig()
 					.getString("playeroloc." + player.getName() + ".world", "");
 			Vector outPosition = master
 					.getDataConfig()
-					.getDataConfig()
+					.getConfig()
 					.getVector("playeroloc." + player.getName() + ".position",
 							new org.bukkit.util.Vector());
 			double outPitch = master
 					.getDataConfig()
-					.getDataConfig()
+					.getConfig()
 					.getDouble("playeroloc." + player.getName() + ".pitch", 0.0);
 			
-			double outYaw = master.getDataConfig().getDataConfig()
+			double outYaw = master.getDataConfig().getConfig()
 					.getDouble("playeroloc." + player.getName() + ".yaw", 0.0);
 			
 			// the saved location could not be loaded correctly

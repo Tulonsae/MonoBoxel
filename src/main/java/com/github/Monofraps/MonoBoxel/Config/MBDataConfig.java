@@ -32,7 +32,7 @@ public class MBDataConfig {
 	/**
 	 * Reload Configuration from File.
 	 */
-	public void reloadDataConfig() {
+	public void reloadConfig() {
 		if (dataConfigFile == null) {
 			dataConfigFile = new File(master.getDataFolder(), "data.yml");
 		}
@@ -50,9 +50,9 @@ public class MBDataConfig {
 	 * 
 	 * @return the DataConfig
 	 */
-	public FileConfiguration getDataConfig() {
+	public FileConfiguration getConfig() {
 		if (dataConfig == null) {
-			reloadDataConfig();
+			reloadConfig();
 		}
 		return dataConfig;
 	}
@@ -60,7 +60,7 @@ public class MBDataConfig {
 	/**
 	 * Save the Configuration to the Disk.
 	 */
-	public void saveDataConfig() {
+	public void saveConfig() {
 		if (dataConfig == null || dataConfigFile == null)
 			return;
 		

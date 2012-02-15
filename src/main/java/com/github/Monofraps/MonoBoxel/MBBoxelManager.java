@@ -70,9 +70,9 @@ public class MBBoxelManager {
 		
 		worldsCounted = true;
 		
-		List<String> boxelNames = master.getDataConfig().getDataConfig()
+		List<String> boxelNames = master.getDataConfig().getConfig()
 				.getStringList("boxels.boxels");
-		List<String> groupBoxelNames = master.getDataConfig().getDataConfig()
+		List<String> groupBoxelNames = master.getDataConfig().getConfig()
 				.getStringList("boxels.groupboxels");
 		
 		if (boxelNames != null)
@@ -81,7 +81,7 @@ public class MBBoxelManager {
 		
 		if (groupBoxelNames != null)
 			for (String s : groupBoxelNames)
-				AddGroupBoxel(s, master.getDataConfig().getDataConfig()
+				AddGroupBoxel(s, master.getDataConfig().getConfig()
 						.getString("boxels.groupboxels." + s), false, null, "",
 						"");
 		
@@ -103,20 +103,20 @@ public class MBBoxelManager {
 		for (MBGroupBoxel box : groupBoxels)
 			groupBoxelNames.add(box.getCorrespondingWorldName());
 		
-		master.getDataConfig().getDataConfig()
+		master.getDataConfig().getConfig()
 				.set("boxels.boxels", boxelNames.toArray());
 		
-		master.getDataConfig().getDataConfig()
+		master.getDataConfig().getConfig()
 				.set("boxels.groupboxels", groupBoxelNames.toArray());
 		
 		for (MBGroupBoxel box : groupBoxels)
 			master.getDataConfig()
-					.getDataConfig()
+					.getConfig()
 					.set("boxels.groupboxels.passwords"
 							+ box.getCorrespondingWorldName(),
 							box.getPasswordHash());
 		
-		master.getDataConfig().saveDataConfig();
+		master.getDataConfig().saveConfig();
 	}
 	
 	/**
