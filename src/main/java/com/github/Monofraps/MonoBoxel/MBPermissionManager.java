@@ -36,13 +36,13 @@ public class MBPermissionManager {
 		 * monoboxel.boxel.create.own
 		 */
 		public static final Permission	CAN_CREATE_GROUP_BOXEL	= new Permission(
-																		"monoboxel.boxel.create.own");
+																		"monoboxel.groupboxel.create");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
 		public static final Permission	CAN_VISIT_OWN			= new Permission(
-																		"monoboxel.boxel.create.own");
+																		"monoboxel.boxel.visit.own");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
@@ -54,13 +54,13 @@ public class MBPermissionManager {
 		 * monoboxel.boxel.create.own
 		 */
 		public static final Permission	CAN_VISIT_GROUP_BOXEL	= new Permission(
-																		"monoboxel.boxel.create.own");
+																		"monoboxel.groupboxel.visit");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
 		public static final Permission	CAN_REMOVE_OWN			= new Permission(
-																		"monoboxel.boxel.create.own");
+																		"monoboxel.boxel.remove.own");
 		
 		// Root Template Permissions
 		/**

@@ -50,10 +50,12 @@ public class MBLocalizationConfig {
 				defConfig.save(localizationConfigFile);
 				localizationConfig.load(localizationConfigFile);
 				localizationConfig.save(localizationConfigFile);
-			} catch (IOException e1) {
+			}
+			catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (InvalidConfigurationException e) {
+			}
+			catch (InvalidConfigurationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -80,7 +82,8 @@ public class MBLocalizationConfig {
 		
 		try {
 			localizationConfig.save(localizationConfigFile);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			master.getLogManager().severe(
 					"Could not save Data Configuration File to "
 							+ localizationConfigFile);

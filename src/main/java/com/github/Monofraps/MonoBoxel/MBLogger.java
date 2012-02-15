@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -42,7 +43,8 @@ public class MBLogger {
 		File debugLogFile = new File(plugin.getDataFolder(), "debug.log");
 		try {
 			debugLogFile.createNewFile();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		debugLog = new DebugLog(pdFile.getName() + "-debug",
@@ -126,5 +128,27 @@ public class MBLogger {
 			msg += "\n====================";
 		}
 		log.warning(logPrefix + msg);
+	}
+	
+	public static class MBPlayerMessagePrefix {
+		
+		public static MBPlayerMessagePrefix	PLUGIN_NAME	= new MBPlayerMessagePrefix(
+																"[MonoBoxel]");
+		public static MBPlayerMessagePrefix	NOT_ALLOWED	= new MBPlayerMessagePrefix(
+																"A divine voice says: ");
+		
+		private String						prefix		= "";
+		
+		public MBPlayerMessagePrefix(String pref) {
+			prefix = pref;
+		}
+		
+		public String getPrefix() {
+			return prefix;
+		}
+	}
+	
+	public void playerMessage(Player player, MBPlayerMessagePrefix prefix, String msg) {
+		player.sendMessage(prefix.getPrefix() + msg);
 	}
 }
