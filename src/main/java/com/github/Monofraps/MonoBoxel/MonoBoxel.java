@@ -15,7 +15,6 @@ import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelremoveCommandExecu
 import com.github.Monofraps.MonoBoxel.Config.MBConfiguration;
 import com.github.Monofraps.MonoBoxel.EventHooks.MBEventListener;
 import com.github.Monofraps.MonoBoxel.Utils.LocalizationManager;
-import com.github.Monofraps.MonoBoxel.Utils.LocalizationManager.LocalizationMessage;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
 
@@ -51,12 +50,6 @@ public class MonoBoxel extends JavaPlugin {
 		this.logger = new MBLogger("Minecraft", this);
 		
 		localizationManager = new LocalizationManager(this);
-		
-		LocalizationMessage test = localizationManager.getMessage("test");
-		LocalizationMessage secondTest = localizationManager
-				.getMessage("secondTest");
-		logger.debugLog(Level.INFO, String.valueOf(test));
-		logger.debugLog(Level.INFO, String.valueOf(secondTest));
 		
 		dataConfig = new MBConfiguration(this, "data.yml");
 		

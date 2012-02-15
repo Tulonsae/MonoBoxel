@@ -148,10 +148,13 @@ public class MBBoxelManager {
 				return true;
 		}
 		
-		master.getLogManager().info("Created new entry in boxels.");
-		
 		if (!name.startsWith(master.getBoxelPrefix()))
 			name = master.getBoxelPrefix() + name;
+		
+		master.getLogManager().info(
+				master.getLocalizationManager().getMessage("found")
+						.setMessageVariable("boxeltype", "Boxel")
+						.setMessageVariable("boxelname", name).toString());
 		
 		MBBoxel boxel = new MBBoxel(master, name, generator, seed);
 		
@@ -201,7 +204,10 @@ public class MBBoxelManager {
 			if (!boxel.Create(player))
 				return false;
 		
-		master.getLogManager().info("Create new entry in boxels.");
+		master.getLogManager().info(
+				master.getLocalizationManager().getMessage("found")
+						.setMessageVariable("boxeltype", "Group Boxel")
+						.setMessageVariable("boxelname", name).toString());
 		
 		return groupBoxels.add(boxel);
 	}
@@ -297,8 +303,8 @@ public class MBBoxelManager {
 						.scheduleAsyncDelayedTask(
 								master,
 								new BoxelUnloadRunnable(master, box),
-								master.getConfig().getInt(
-										"world-unload-period") * 20));
+								master.getConfig()
+										.getInt("world-unload-period") * 20));
 			} else
 				if (!box.isEmpty() && box.getUnloadTaskId() != -1) {
 					master.getServer().getScheduler()

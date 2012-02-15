@@ -53,7 +53,11 @@ public class MBGroupBoxel extends MBBoxel {
 		} else {
 			player.sendMessage("Failed to create group Boxel.");
 			master.getLogManager().severe(
-					"Failed to create group Boxel " + correspondingWorldName);
+					master.getLocalizationManager()
+							.getMessage("failed-to-create")
+							.setMessageVariable("boxeltype", "Group Boxel")
+							.setMessageVariable("boxelname",
+									correspondingWorldName).toString());
 			return false;
 		}
 		

@@ -33,7 +33,7 @@ public class MBBoxel {
 	/**
 	 * Prefix of this Boxel.
 	 */
-	protected String boxelPrefix = "BOXEL_";
+	protected String	boxelPrefix				= "BOXEL_";
 	
 	/**
 	 * Corresponding Boxel World.
@@ -127,8 +127,9 @@ public class MBBoxel {
 			master.getLogManager().debugLog(
 					Level.INFO,
 					master.getLocalizationManager()
-							.getMessage("load-world")
-							.setMessageVariable("worldname",
+							.getMessage("loaded")
+							.setMessageVariable("boxeltype", "Boxel")
+							.setMessageVariable("boxelname",
 									correspondingWorldName).toString());
 			
 			if (!Load()) {
@@ -136,7 +137,10 @@ public class MBBoxel {
 				master.getLogManager().debugLog(
 						Level.SEVERE,
 						master.getLocalizationManager()
-								.getMessage("unable-to-load-world").toString());
+								.getMessage("failed-to-load")
+								.setMessageVariable("boxeltype", "Boxel")
+								.setMessageVariable("boxelname",
+										correspondingWorldName).toString());
 				return false;
 			}
 			
@@ -178,9 +182,13 @@ public class MBBoxel {
 		MultiverseWorld result = null;
 		
 		if (correspondingWorld != null)
-			master.getLogManager()
-					.debugLog(Level.INFO,
-							"DoCreate was called, but correspondingWorld was already set.");
+			master.getLogManager().debugLog(
+					Level.INFO,
+					master.getLocalizationManager()
+							.getMessage("failed-to-create")
+							.setMessageVariable("boxeltype", "Boxel")
+							.setMessageVariable("boxelname",
+									correspondingWorldName).toString());
 		
 		if (wm.getMVWorld(correspondingWorldName) != null) {
 			sender.sendMessage("Found your boxel. Will port you there now...");
@@ -197,7 +205,14 @@ public class MBBoxel {
 		
 		if (master.getMBWorldManager().getNumBoxels() >= master.getConfig()
 				.getInt("max-boxel-count")) {
-			sender.sendMessage("The maximum number of boxels on this server is reached. Please contact a server admin.");
+			sender.sendMessage(master
+					.getLocalizationManager()
+					.getMessage("maximum-reached")
+					.setMessageVariable(
+							"maximum",
+							String.valueOf(master.getConfig().getInt(
+									"max-boxel-count")))
+					.setMessageVariable("type", "Boxels").toString());
 			return false;
 		}
 		

@@ -1,3 +1,4 @@
+# Localizations
 message-prefix:
     template-message: '[MonoBoxel]'
 private-message-prefix:
@@ -8,7 +9,61 @@ load-world:
     - 'worldname'
 unable-to-load-world:
     template-message: 'Unable to load world.'
-unable-to-create-boxel:
-    template-message: 'Could not create Boxel %boxelname%.'
+new-boxel-entry:
+    template-message: 'Created new entry in boxels.'
+new-boxel-entry:
+    template-message: 'Created new entry in groupboxels.'
+
+# Generic Messages
+failed-to-create:
+    template-message: 'Failed to create %boxeltype% %boxelname%.'
     variables:
+    - 'boxeltype'
     - 'boxelname'
+failed-to-load:
+    templete-message: 'Failed to load %boxeltype% %boxelname%.'
+    variables:
+    - 'boxeltype'
+    - 'boxelname'
+failed-to-remove:
+    template-message: 'Failed to remove %boxeltype% %boxelname%.'
+    variables:
+    - 'boxeltype'
+    - 'boxelname'
+loaded:
+    template-message: 'Loaded %boxeltype% %boxelname%.'
+    variables:
+    - 'boxeltype'
+    - 'boxelname'
+loading:
+    template-message: 'Loading %boxeltype% %boxelname%.'
+    variables:
+    - 'boxeltype'
+    - 'boxelname'
+unloaded:
+    template-message: 'Unloaded %boxeltype% %boxelname%.'
+    variables:
+    - 'boxeltype'
+    - 'boxelname'
+found:
+    template-message: 'Found %boxeltype% %boxelname%.'
+    variables:
+    - 'boxeltype'
+    - 'boxelname'
+created:
+    template-message: 'Created %boxeltype% %boxelname%.'
+    variables:
+    - 'boxeltype'
+    - 'boxelname'
+creating:
+    template-message: 'Creating %boxeltype% %boxelname%.'
+    variables:
+    - 'boxeltype'
+    - 'boxelname'
+teleporting:
+    template-message: 'Teleporting...'
+maximum-reached:
+    template-message: 'Maximum amount (%maximum%) of %type% reached.'
+    variables:
+    - 'maximum'
+    - 'type'
