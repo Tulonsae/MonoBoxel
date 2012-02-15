@@ -154,6 +154,13 @@ public class MonoBoxel extends JavaPlugin {
 	}
 	
 	/**
+	 * @return The Localization Manager
+	 */
+	public LocalizationManager getLocalizationManager() {
+		return localizationManager;
+	}
+	
+	/**
 	 * 
 	 * @return The Boxel prefix
 	 */

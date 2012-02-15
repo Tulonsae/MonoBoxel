@@ -123,15 +123,20 @@ public class MBBoxel {
 		
 		// first check if the Boxel does not already exist
 		if (isExisting()) {
+			
 			master.getLogManager().debugLog(
 					Level.INFO,
-					"MB was supposed to create Boxel " + correspondingWorldName
-							+ " but it already exists. Will load it...");
+					master.getLocalizationManager()
+							.getMessage("load-world")
+							.setMessageVariable("worldname",
+									correspondingWorldName).toString());
 			
 			if (!Load()) {
 				// something went wrong
-				master.getLogManager().debugLog(Level.SEVERE,
-						"Could not load Boxel.");
+				master.getLogManager().debugLog(
+						Level.SEVERE,
+						master.getLocalizationManager()
+								.getMessage("unable-to-load-world").toString());
 				return false;
 			}
 			
@@ -149,8 +154,12 @@ public class MBBoxel {
 			
 			return true;
 		} else {
-			master.getLogManager().debugLog(Level.WARNING,
-					"Could not create Boxel " + correspondingWorldName);
+			master.getLogManager().debugLog(
+					Level.WARNING,
+					master.getLocalizationManager()
+							.getMessage("unable-to-create-boxel")
+							.setMessageVariable("boxelname",
+									correspondingWorldName).toString());
 			return false;
 		}
 	}
@@ -161,7 +170,7 @@ public class MBBoxel {
 	 * @param sender
 	 *            The sender (mostly a player) that will perform this action (I
 	 *            am using CommandSender because so it is possible to create
-	 *            Boxels for specific players from the console)
+	 *            Boxel's for specific players from the console)
 	 * @return true on success, otherwise false
 	 */
 	protected boolean DoCreate(CommandSender sender) {

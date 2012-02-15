@@ -1,6 +1,14 @@
-test:
-    template-message: 'hello there %player%'
+message-prefix:
+    template-message: '[MonoBoxel]'
+private-message-prefix:
+    template-message: '[A divine Voice]'
+load-world:
+    template-message: 'MB was supposed to create Boxel  %worldname% but it already exists. Will load it now...'
     variables:
-    - 'player'
-secondTest:
-    template-message: 'omg another test?'
+    - 'worldname'
+unable-to-load-world:
+    template-message: 'Unable to load world.'
+unable-to-create-boxel:
+    template-message: 'Could not create Boxel %boxelname%.'
+    variables:
+    - 'boxelname'
