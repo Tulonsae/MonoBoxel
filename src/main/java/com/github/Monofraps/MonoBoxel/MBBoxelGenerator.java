@@ -71,8 +71,8 @@ public class MBBoxelGenerator extends ChunkGenerator {
 		// set the spawnpoint to the origin (0|0)
 		if ((x == 0) && (z == 0))
 			return true;
-		else
-			return false;
+		
+		return false;
 	}
 	
 	/**

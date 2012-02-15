@@ -50,8 +50,7 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 				else
 					if (!box.isEmpty())
 						msg += ChatColor.GREEN + "Players inside.";
-			}
-			else
+			} else
 				msg += ChatColor.GOLD + "UNLOADED";
 			
 			sender.sendMessage(msg);
@@ -75,8 +74,7 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 				else
 					if (!box.isEmpty())
 						msg += ChatColor.GREEN + "Players inside.";
-			}
-			else
+			} else
 				msg += ChatColor.GOLD + "UNLOADED";
 			
 			sender.sendMessage(msg);

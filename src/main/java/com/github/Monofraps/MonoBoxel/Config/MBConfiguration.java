@@ -67,8 +67,7 @@ public class MBConfiguration {
 		
 		try {
 			config.save(configFile);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			master.getLogManager().severe(
 					"Could not save Data Configuration File to " + configFile);
 		}

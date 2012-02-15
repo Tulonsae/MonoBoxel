@@ -31,10 +31,10 @@ public class MBAdventureWorldManager {
 	}
 	
 	/**
-	 * Creates an adventure world from a craft bukkit world
+	 * Creates an adventure world from a craft bukkit world.
 	 * 
 	 * @param world
-	 * @return
+	 * @return false
 	 */
 	public boolean CreateAdventureWorldFromWorld(World world) {
 		return false;

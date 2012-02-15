@@ -64,17 +64,17 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		if (senderIsPlayer) {
 			// is this the players own boxel?
 			if (boxelName.equals(master.getBoxelPrefix() + player.getName())) {
-				if (!master.getPermManager().hasPermission(player,
+				if (!master.getPermissionManager().hasPermission(player,
 						new MBPermission(MBPermission.CAN_REMOVE_OWN))) {
-					master.getPermManager().SendNotAllowedMessage(player);
+					master.getPermissionManager().SendNotAllowedMessage(player);
 					return false;
 				}
 			} else { // no, it's not
-				if (!master.getPermManager().hasPermission(
+				if (!master.getPermissionManager().hasPermission(
 						player,
 						new MBPermission(MBPermission.ROOT_CAN_REMOVE,
 								boxelOwner))) {
-					master.getPermManager().SendNotAllowedMessage(player);
+					master.getPermissionManager().SendNotAllowedMessage(player);
 					return false;
 				}
 			}

@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
-import com.github.Monofraps.MonoBoxel.Config.MBLocalizationConfig;
+import com.github.Monofraps.MonoBoxel.Config.MBConfiguration;
 
 
 /**
@@ -77,11 +77,12 @@ public class LocalizationManager {
 	private MonoBoxel								master				= null;
 	
 	private HashMap<String, LocalizationMessage>	messages			= new HashMap<String, LocalizationMessage>();
-	private MBLocalizationConfig					localizationConfig	= null;
+	private MBConfiguration							localizationConfig	= null;
 	
 	/**
 	 * @param node
-	 * @return
+	 * @return New cloned instance of the LocalizationMessage queried, if no such node exists it
+	 *         will return null.
 	 */
 	public LocalizationMessage getMessage(String node) {
 		return messages.containsKey(node) ? messages.get(node).clone() : null;
@@ -89,11 +90,14 @@ public class LocalizationManager {
 	
 	public LocalizationManager(MonoBoxel plugin) {
 		master = plugin;
-		localizationConfig = new MBLocalizationConfig(master);
+		localizationConfig = new MBConfiguration(master, "localization.yml");
 		localizationConfig.reloadConfig();
 		this.reloadLocalization();
 	}
 	
+	/**
+	 * Reload the Localizations.
+	 */
 	public void reloadLocalization() {
 		localizationConfig.reloadConfig();
 		Set<String> temp = localizationConfig.getConfig().getKeys(false);
@@ -103,6 +107,10 @@ public class LocalizationManager {
 		}
 	}
 	
+	/**
+	 * Save the Localizations.
+	 * A wrapper around the Configuration Manager.
+	 */
 	public void SaveLocalization() {
 		localizationConfig.saveConfig();
 	}

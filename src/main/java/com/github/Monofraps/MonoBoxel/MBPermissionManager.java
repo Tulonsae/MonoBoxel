@@ -25,24 +25,60 @@ public class MBPermissionManager {
 	public static class MBPermission {
 		
 		// Template Permissions
+		/**
+		 * Permission Template.
+		 * monoboxel.boxel.create.own
+		 */
 		public static final Permission	CAN_CREATE_OWN			= new Permission(
 																		"monoboxel.boxel.create.own");
+		/**
+		 * Permission Template.
+		 * monoboxel.boxel.create.own
+		 */
 		public static final Permission	CAN_CREATE_GROUP_BOXEL	= new Permission(
-																		"monoboxel.groupboxel.create");
+																		"monoboxel.boxel.create.own");
+		/**
+		 * Permission Template.
+		 * monoboxel.boxel.create.own
+		 */
 		public static final Permission	CAN_VISIT_OWN			= new Permission(
-																		"monoboxel.boxel.visit.own");
+																		"monoboxel.boxel.create.own");
+		/**
+		 * Permission Template.
+		 * monoboxel.boxel.create.own
+		 */
 		public static final Permission	CAN_VISIT_OTHER			= new Permission(
-																		"monoboxel.boxel.visit.other");
+																		"monoboxel.boxel.create.own");
+		/**
+		 * Permission Template.
+		 * monoboxel.boxel.create.own
+		 */
 		public static final Permission	CAN_VISIT_GROUP_BOXEL	= new Permission(
-																		"monoboxel.groupboxel.visit");
+																		"monoboxel.boxel.create.own");
+		/**
+		 * Permission Template.
+		 * monoboxel.boxel.create.own
+		 */
 		public static final Permission	CAN_REMOVE_OWN			= new Permission(
-																		"monoboxel.boxremove.own");
+																		"monoboxel.boxel.create.own");
 		
 		// Root Template Permissions
+		/**
+		 * Permission Template.
+		 * monoboxel.boxel.create
+		 */
 		public static final Permission	ROOT_CAN_CREATE			= new Permission(
 																		"monoboxel.boxel.create");
+		/**
+		 * Permission Template.
+		 * monoboxel.boxel.visit
+		 */
 		public static final Permission	ROOT_CAN_VISIT			= new Permission(
 																		"monoboxel.boxel.visit");
+		/**
+		 * Permission Template.
+		 * monoboxel.boxel.remove
+		 */
 		public static final Permission	ROOT_CAN_REMOVE			= new Permission(
 																		"monoboxel.boxel.remove");
 		

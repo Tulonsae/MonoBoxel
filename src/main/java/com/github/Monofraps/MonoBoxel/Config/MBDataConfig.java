@@ -66,8 +66,7 @@ public class MBDataConfig {
 		
 		try {
 			dataConfig.save(dataConfigFile);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			master.getLogManager().severe(
 					"Could not save Data Configuration File to "
 							+ dataConfigFile);

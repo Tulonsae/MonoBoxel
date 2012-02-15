@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 
 /**
- * This class just allows to quickly hash a string to a MD5 sum
+ * This class just allows to quickly hash a string to a MD5 sum.
  * 
  * @author Monofraps
  * 
@@ -14,8 +14,10 @@ import java.security.NoSuchAlgorithmException;
 public class HashMD5 {
 	
 	/**
-	 * Creates MD5 hash of a given string
-	 * @param str The string to hash
+	 * Creates MD5 hash of a given string.
+	 * 
+	 * @param str
+	 *            The string to hash
 	 * @return the hash
 	 */
 	public static String Hash(String str) {
@@ -25,8 +27,7 @@ public class HashMD5 {
 		
 		try {
 			md5 = MessageDigest.getInstance("MD5");
-		}
-		catch (NoSuchAlgorithmException e) {
+		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			return "";
 		}

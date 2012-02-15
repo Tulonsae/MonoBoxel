@@ -42,8 +42,7 @@ public class MBLogger {
 		File debugLogFile = new File(plugin.getDataFolder(), "debug.log");
 		try {
 			debugLogFile.createNewFile();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		debugLog = new DebugLog(pdFile.getName() + "-debug",
@@ -62,7 +61,7 @@ public class MBLogger {
 		debugLog.close();
 		super.finalize();
 	}
-
+	
 	/**
 	 * Logs a Message to a debug.log file in the Plugin Data directory.
 	 * 
@@ -74,7 +73,6 @@ public class MBLogger {
 			return;
 		
 		debugLog.log(level, logPrefix + msg);
-		
 		
 		// log.info(logPrefix + msg);
 	}

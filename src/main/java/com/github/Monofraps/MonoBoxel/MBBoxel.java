@@ -26,9 +26,18 @@ import com.onarandombox.MultiverseCore.api.MultiverseWorld;
  */
 public class MBBoxel {
 	
+	/**
+	 * Plugin main class reference.
+	 */
 	protected MonoBoxel	master					= null;
 	
+	/**
+	 * Corresponding Boxel World.
+	 */
 	protected World		correspondingWorld		= null;
+	/**
+	 * Corresponding Boxel World Name.
+	 */
 	protected String	correspondingWorldName	= "";
 	private boolean		worldLoaded				= false;
 	private int			unloadTaskId			= -1;
@@ -91,19 +100,19 @@ public class MBBoxel {
 		
 		// check permissions
 		if (isPlayersOwnBoxel
-				&& !master.getPermManager().hasPermission(
+				&& !master.getPermissionManager().hasPermission(
 						player,
 						new MBPermission(MBPermission.ROOT_CAN_CREATE,
 								boxelOwner))) {
-			master.getPermManager().SendNotAllowedMessage(player);
+			master.getPermissionManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		if (!isPlayersOwnBoxel
-				&& !master.getPermManager().hasPermission(
+				&& !master.getPermissionManager().hasPermission(
 						player,
 						new MBPermission(MBPermission.ROOT_CAN_VISIT,
 								boxelOwner))) {
-			master.getPermManager().SendNotAllowedMessage(player);
+			master.getPermissionManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		
@@ -295,18 +304,18 @@ public class MBBoxel {
 		
 		// check permissions
 		if (isPlayersOwnBoxel
-				&& !master.getPermManager().hasPermission(player,
+				&& !master.getPermissionManager().hasPermission(player,
 						new MBPermission(MBPermission.CAN_VISIT_OWN))) {
-			master.getPermManager().SendNotAllowedMessage(player);
+			master.getPermissionManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		
 		if (!isPlayersOwnBoxel
-				&& !master.getPermManager().hasPermission(
+				&& !master.getPermissionManager().hasPermission(
 						player,
 						new MBPermission(MBPermission.ROOT_CAN_VISIT,
 								boxelOwner))) {
-			master.getPermManager().SendNotAllowedMessage(player);
+			master.getPermissionManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		
@@ -462,8 +471,7 @@ public class MBBoxel {
 		
 		if (correspondingWorld.getPlayers().size() == 0)
 			return true;
-		else
-			return false;
+		return false;
 	}
 	
 	/**

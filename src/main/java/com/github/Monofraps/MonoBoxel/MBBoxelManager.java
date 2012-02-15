@@ -81,9 +81,11 @@ public class MBBoxelManager {
 		
 		if (groupBoxelNames != null)
 			for (String s : groupBoxelNames)
-				AddGroupBoxel(s, master.getDataConfig().getConfig()
-						.getString("boxels.groupboxels." + s), false, null, "",
-						"");
+				AddGroupBoxel(
+						s,
+						master.getDataConfig().getConfig()
+								.getString("boxels.groupboxels." + s), false,
+						null, "", "");
 		
 	}
 	
@@ -169,8 +171,8 @@ public class MBBoxelManager {
 	 *            Password of the new Boxel
 	 * @param create
 	 *            If true the Boxels create function will be called
-	 * @param playerThe
-	 *            player that wants to perform this action (only needed if
+	 * @param player
+	 *            The player that wants to perform this action (only needed if
 	 *            create is true)
 	 * @param generator
 	 *            The generator to use to generate the Boxel (only needed if
@@ -179,7 +181,7 @@ public class MBBoxelManager {
 	 * @param seed
 	 *            The seed to use for generating the Boxel (only needed if
 	 *            create is true)
-	 * @return
+	 * @return true if successful, false if unsuccessful
 	 */
 	public boolean AddGroupBoxel(String name, String boxelPassword,
 			boolean create, Player player, String generator, String seed) {

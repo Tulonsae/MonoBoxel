@@ -11,6 +11,11 @@ import com.github.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 
 
+/**
+ * Executor class for /boxelgrp commands.
+ * 
+ * @author Monofraps
+ */
 public class MBBoxelgrpCommandExecutor implements CommandExecutor {
 	
 	private MonoBoxel	master	= null;
@@ -42,9 +47,9 @@ public class MBBoxelgrpCommandExecutor implements CommandExecutor {
 		
 		player = (Player) sender;
 		
-		if (!master.getPermManager().hasPermission(player,
+		if (!master.getPermissionManager().hasPermission(player,
 				new MBPermission(MBPermission.CAN_VISIT_GROUP_BOXEL))) {
-			master.getPermManager().SendNotAllowedMessage(player);
+			master.getPermissionManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		
@@ -54,9 +59,9 @@ public class MBBoxelgrpCommandExecutor implements CommandExecutor {
 		boxelName = master.getBoxelPrefix() + args[0];
 		boxelPassword = args[1];
 		
-		if (!master.getPermManager().hasPermission(player,
+		if (!master.getPermissionManager().hasPermission(player,
 				new MBPermission(MBPermission.CAN_CREATE_GROUP_BOXEL))) {
-			master.getPermManager().SendNotAllowedMessage(player);
+			master.getPermissionManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		

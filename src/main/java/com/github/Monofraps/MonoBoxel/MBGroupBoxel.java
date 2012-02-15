@@ -10,7 +10,7 @@ import com.github.Monofraps.MonoBoxel.Utils.HashMD5;
 
 
 /**
- * A class for holding information about group boxels
+ * A class for holding information about group boxels.
  * 
  * @author Monofraps
  */
@@ -38,9 +38,9 @@ public class MBGroupBoxel extends MBBoxel {
 	@Override
 	public boolean Create(Player player) {
 		
-		if (!master.getPermManager().hasPermission(player,
+		if (!master.getPermissionManager().hasPermission(player,
 				new MBPermission(MBPermission.CAN_CREATE_GROUP_BOXEL))) {
-			master.getPermManager().SendNotAllowedMessage(player);
+			master.getPermissionManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		
@@ -57,6 +57,11 @@ public class MBGroupBoxel extends MBBoxel {
 		
 	}
 	
+	/**
+	 * Sets the Group Boxel's Password Hash.
+	 * 
+	 * @param passwd
+	 */
 	public void setPasswordHash(String passwd) {
 		// let's make group Boxels at least a little bit safe - md5-sum the password, so we don't
 		// have to store the plaintext password in the config
@@ -66,6 +71,8 @@ public class MBGroupBoxel extends MBBoxel {
 	/**
 	 * Override the base class Join. We can not use it since we have to pass a password to the Join
 	 * function.
+	 * 
+	 * @return false
 	 */
 	@Override
 	public boolean Join(Player player) {
@@ -74,7 +81,7 @@ public class MBGroupBoxel extends MBBoxel {
 	}
 	
 	/**
-	 * Teleports the player to the Boxel
+	 * Teleports the player to the Boxel.
 	 * 
 	 * @param player
 	 *            The player to teleport
@@ -89,9 +96,9 @@ public class MBGroupBoxel extends MBBoxel {
 			return false;
 		}
 		
-		if (!master.getPermManager().hasPermission(player,
+		if (!master.getPermissionManager().hasPermission(player,
 				new MBPermission(MBPermission.CAN_VISIT_GROUP_BOXEL))) {
-			master.getPermManager().SendNotAllowedMessage(player);
+			master.getPermissionManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		

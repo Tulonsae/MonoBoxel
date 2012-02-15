@@ -138,7 +138,10 @@ public class MonoBoxel extends JavaPlugin {
 		return new MBBoxelGenerator(getConfig().getLong("max-boxel-size", 16));
 	}
 	
-	public MBPermissionManager getPermManager() {
+	/**
+	 * @return The Permission Manager
+	 */
+	public MBPermissionManager getPermissionManager() {
 		return boxelPermManager;
 	}
 	
