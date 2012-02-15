@@ -18,10 +18,7 @@ import com.github.Monofraps.MonoBoxel.Config.MBConfiguration;
  */
 public class LocalizationManager {
 	
-	/**
-	 * @author MikeMatrix
-	 * 
-	 */
+
 	public class LocalizationMessage {
 		
 		private String					messageTemplate		= null;
