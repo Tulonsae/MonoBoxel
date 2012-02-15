@@ -183,7 +183,7 @@ public class MBBoxel {
 		}
 		
 		if (master.getMBWorldManager().getNumBoxels() >= master.getConfig()
-				.getInt("max-boxel-count", 20)) {
+				.getInt("max-boxel-count")) {
 			sender.sendMessage("The maximum number of boxels on this server is reached. Please contact a server admin.");
 			return false;
 		}
@@ -321,7 +321,7 @@ public class MBBoxel {
 		}
 		
 		// before porting the player, save his location
-		if (master.getConfig().getBoolean("save-exit-location", true)) {
+		if (master.getConfig().getBoolean("save-exit-location")) {
 			// do not save the return/entry location if the player is in a Boxel
 			if (!master.getMBWorldManager()
 					.isBoxel(player.getWorld().getName())[0]) {
@@ -368,7 +368,7 @@ public class MBBoxel {
 		MVWorldManager wm = master.getMVCore().getMVWorldManager();
 		MultiverseWorld entryWorld = null;
 		
-		if (master.getConfig().getBoolean("save-exit-location", true)) {
+		if (master.getConfig().getBoolean("save-exit-location")) {
 			
 			String outWorld = master.getDataConfig().getConfig()
 					.getString("playeroloc." + player.getName() + ".world", "");

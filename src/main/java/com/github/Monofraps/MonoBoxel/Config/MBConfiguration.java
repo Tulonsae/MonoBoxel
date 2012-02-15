@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -39,11 +40,23 @@ public class MBConfiguration {
 		}
 		config = YamlConfiguration.loadConfiguration(configFile);
 		
-		InputStream defDataConfigStream = master.getResource(configFileName);
+		InputStream defDataConfigStream = master
+				.getResource("localization.yml");
 		if (defDataConfigStream != null) {
 			YamlConfiguration defConfig = YamlConfiguration
 					.loadConfiguration(defDataConfigStream);
-			config.setDefaults(defConfig);
+			
+			try {
+				defConfig.save(configFile);
+				config.load(configFile);
+				config.save(configFile);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InvalidConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

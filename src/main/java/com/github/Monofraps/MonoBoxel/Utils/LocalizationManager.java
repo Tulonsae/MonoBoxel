@@ -103,7 +103,8 @@ public class LocalizationManager {
 		Set<String> temp = localizationConfig.getConfig().getKeys(false);
 		for (String string : temp) {
 			master.getLogManager().debugLog(Level.INFO, string);
-			messages.put(string, new LocalizationMessage("hallo"));
+			messages.put(string, new LocalizationMessage(localizationConfig
+					.getConfig().getString(string + ".template-message")));
 		}
 	}
 	

@@ -2,7 +2,6 @@
 
 # For information about the options in this file, check https://github.com/Monofraps/MonoBoxel/wiki/Configuration
 
-version: '0.5'
 
 # Multiverse-Core needs some time to initialize
 # If you get errors saying Multiverse-Core was not found, but you have installed and enabled it increase this value
