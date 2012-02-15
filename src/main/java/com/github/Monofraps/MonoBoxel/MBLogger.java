@@ -129,7 +129,7 @@ public class MBLogger {
 		log.warning(logPrefix + msg);
 	}
 	
-	public static class MBPlayerMessagePrefix {
+	public static final class MBPlayerMessagePrefix {
 		
 		public static final MBPlayerMessagePrefix	PLUGIN_NAME	= new MBPlayerMessagePrefix(
 																		"[MonoBoxel]");

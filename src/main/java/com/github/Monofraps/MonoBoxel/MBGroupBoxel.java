@@ -33,6 +33,8 @@ public class MBGroupBoxel extends MBBoxel {
 			String seed) {
 		super(plugin, worldName, generator, seed);
 		
+		boxelPrefix = master.getBoxelGroupPrefix();
+		
 	}
 	
 	@Override
@@ -45,7 +47,7 @@ public class MBGroupBoxel extends MBBoxel {
 		}
 		
 		if (super.DoCreate(player)) {
-			correspondingWorld = master.GetMVCore().getMVWorldManager()
+			correspondingWorld = master.getMVCore().getMVWorldManager()
 					.getMVWorld(correspondingWorldName).getCBWorld();
 			return true;
 		} else {

@@ -253,7 +253,7 @@ public class MBBoxelManager {
 			name = master.getBoxelPrefix() + name;
 		}
 		
-		Collection<MultiverseWorld> worlds = master.GetMVCore()
+		Collection<MultiverseWorld> worlds = master.getMVCore()
 				.getMVWorldManager().getMVWorlds();
 		for (MultiverseWorld w : worlds) {
 			if (w.getName().equals(name)) {
@@ -262,7 +262,7 @@ public class MBBoxelManager {
 			}
 		}
 		
-		if (master.GetMVCore().getMVWorldManager().getUnloadedWorlds()
+		if (master.getMVCore().getMVWorldManager().getUnloadedWorlds()
 				.contains(name)) {
 			result[0] = true;
 			result[1] = false;
