@@ -54,7 +54,7 @@
 	</profiles>
 
 	<build>
-		<defaultGoal>clean package</defaultGoal>
+		<defaultGoal>clean checkstyle:checkstyle package</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
