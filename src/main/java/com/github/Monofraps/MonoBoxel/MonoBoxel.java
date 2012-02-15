@@ -59,13 +59,6 @@ public class MonoBoxel extends JavaPlugin {
 		
 		reloadConfig();
 		
-		if (getConfig().getString("version", "no config") == "no config") {
-			saveDefaultConfig();
-			reloadConfig();
-			getConfig().set("version", getDescription().getVersion());
-			saveConfig();
-		}
-		
 		boxelPrefix = getConfig().getString("boxel-prefix");
 		boxelGroupPrefix = getConfig().getString("boxelgroup-prefix");
 		
@@ -91,7 +84,7 @@ public class MonoBoxel extends JavaPlugin {
 					public void run() {
 						boxelManager.LoadConfig();
 					}
-				}, getConfig().getInt("word-load-delay", 20) * 20);
+				}, getConfig().getInt("word-load-delay") * 20);
 		
 		logger.info("MonoBoxel enabled!");
 		logger.debugLog(Level.INFO, "Plugin loaded.");
@@ -140,7 +133,7 @@ public class MonoBoxel extends JavaPlugin {
 	 * @return The MonoBoxel chunk generator
 	 */
 	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-		return new MBBoxelGenerator(getConfig().getLong("max-boxel-size", 16));
+		return new MBBoxelGenerator(getConfig().getLong("max-boxel-size"));
 	}
 	
 	/**

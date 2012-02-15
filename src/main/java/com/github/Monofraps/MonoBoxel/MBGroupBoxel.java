@@ -116,7 +116,7 @@ public class MBGroupBoxel extends MBBoxel {
 			}
 		
 		// before porting the player, save his location
-		if (master.getConfig().getBoolean("save-exit-location", true)) {
+		if (master.getConfig().getBoolean("save-exit-location")) {
 			// do not save the return/entry location if the player is in a Boxel
 			if (!master.getMBWorldManager()
 					.isBoxel(player.getWorld().getName())[0]) {

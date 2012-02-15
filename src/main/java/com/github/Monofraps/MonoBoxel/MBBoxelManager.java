@@ -298,7 +298,7 @@ public class MBBoxelManager {
 								master,
 								new BoxelUnloadRunnable(master, box),
 								master.getConfig().getInt(
-										"world-unload-period", 60) * 20));
+										"world-unload-period") * 20));
 			} else
 				if (!box.isEmpty() && box.getUnloadTaskId() != -1) {
 					master.getServer().getScheduler()
