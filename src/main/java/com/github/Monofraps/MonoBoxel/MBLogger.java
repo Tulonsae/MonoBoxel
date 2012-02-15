@@ -43,8 +43,7 @@ public class MBLogger {
 		File debugLogFile = new File(plugin.getDataFolder(), "debug.log");
 		try {
 			debugLogFile.createNewFile();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		debugLog = new DebugLog(pdFile.getName() + "-debug",
@@ -132,12 +131,12 @@ public class MBLogger {
 	
 	public static class MBPlayerMessagePrefix {
 		
-		public static MBPlayerMessagePrefix	PLUGIN_NAME	= new MBPlayerMessagePrefix(
-																"[MonoBoxel]");
-		public static MBPlayerMessagePrefix	NOT_ALLOWED	= new MBPlayerMessagePrefix(
-																"A divine voice says: ");
+		public static final MBPlayerMessagePrefix	PLUGIN_NAME	= new MBPlayerMessagePrefix(
+																		"[MonoBoxel]");
+		public static final MBPlayerMessagePrefix	NOT_ALLOWED	= new MBPlayerMessagePrefix(
+																		"A divine voice says: ");
 		
-		private String						prefix		= "";
+		private String								prefix		= "";
 		
 		public MBPlayerMessagePrefix(String pref) {
 			prefix = pref;
@@ -148,7 +147,8 @@ public class MBLogger {
 		}
 	}
 	
-	public void playerMessage(Player player, MBPlayerMessagePrefix prefix, String msg) {
+	public void playerMessage(Player player, MBPlayerMessagePrefix prefix,
+			String msg) {
 		player.sendMessage(prefix.getPrefix() + msg);
 	}
 }
