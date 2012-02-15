@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.github.Monofraps.MonoBoxel.Adventure.MBAdventureWorldManager;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBAdventureCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelgrpCommandExecutor;
@@ -39,6 +40,7 @@ public class MonoBoxel extends JavaPlugin {
 	
 	private MultiverseCore					mvCore					= null;
 	private MBBoxelManager					boxelManager			= null;
+	private MBAdventureWorldManager			adventureManager		= null;
 	private MBPermissionManager				boxelPermManager		= null;
 	private String							boxelPrefix				= "BOXEL_";
 	private String							boxelGroupPrefix		= "BOXELGRP_";
@@ -76,6 +78,7 @@ public class MonoBoxel extends JavaPlugin {
 		new MBEventListener(this);
 		
 		boxelManager = new MBBoxelManager(this);
+		adventureManager = new MBAdventureWorldManager(this);
 		boxelPermManager = new MBPermissionManager(this);
 		
 		getServer().getScheduler().scheduleSyncDelayedTask(this,
@@ -171,6 +174,14 @@ public class MonoBoxel extends JavaPlugin {
 	 */
 	public MBBoxelManager getMBWorldManager() {
 		return boxelManager;
+	}
+	
+	/**
+	 * 
+	 * @return the adventure manager
+	 */
+	public MBAdventureWorldManager getMBAdventureManager() {
+		return adventureManager;
 	}
 	
 	/**

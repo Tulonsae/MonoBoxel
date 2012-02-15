@@ -79,4 +79,12 @@ public class MBAdventureWorld {
 		
 		return false;
 	}
+	
+	/**
+	 * 
+	 * @return the name of the world
+	 */
+	public String getName() {
+		return worldName;
+	}
 }
