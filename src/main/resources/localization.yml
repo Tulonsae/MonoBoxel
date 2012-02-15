@@ -1,6 +1,6 @@
 test:
     template-message: 'hello there %player%'
     variables:
-    - '%player%'
+    - 'player'
 secondTest:
     template-message: 'omg another test?'

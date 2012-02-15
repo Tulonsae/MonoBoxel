@@ -3,6 +3,7 @@ package com.github.Monofraps.MonoBoxel.Utils;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -60,8 +61,8 @@ public class LocalizationManager {
 					.entrySet().iterator();
 			while (varIt.hasNext()) {
 				Map.Entry<String, String> entry = varIt.next();
-				returnString = returnString.replaceAll(entry.getKey(),
-						entry.getValue());
+				returnString = returnString.replaceAll("%" + entry.getKey()
+						+ "%", entry.getValue());
 			}
 			
 			return returnString;
@@ -88,6 +89,14 @@ public class LocalizationManager {
 		return messages.containsKey(node) ? messages.get(node).clone() : null;
 	}
 	
+	/**
+	 * @param node
+	 * @return true if Message is available, false if not
+	 */
+	public boolean hasMessage(String node) {
+		return messages.containsKey(node);
+	}
+	
 	public LocalizationManager(MonoBoxel plugin) {
 		master = plugin;
 		localizationConfig = new MBConfiguration(master, "localization.yml");
@@ -100,11 +109,19 @@ public class LocalizationManager {
 	 */
 	public void reloadLocalization() {
 		localizationConfig.reloadConfig();
-		Set<String> temp = localizationConfig.getConfig().getKeys(false);
-		for (String string : temp) {
-			master.getLogManager().debugLog(Level.INFO, string);
-			messages.put(string, new LocalizationMessage(localizationConfig
-					.getConfig().getString(string + ".template-message")));
+		Set<String> messageIds = localizationConfig.getConfig().getKeys(false);
+		for (String messageId : messageIds) {
+			master.getLogManager().debugLog(Level.INFO, messageId);
+			LocalizationMessage localizationMessage = new LocalizationMessage(
+					localizationConfig.getConfig().getString(
+							messageId + ".template-message"));
+			List<String> localizationValueKeys = localizationConfig.getConfig()
+					.getStringList(messageId + ".variables");
+			for (String localizationValueKey : localizationValueKeys) {
+				localizationMessage
+						.setMessageVariable(localizationValueKey, "");
+			}
+			messages.put(messageId, localizationMessage);
 		}
 	}
 	

@@ -51,7 +51,10 @@ public class MonoBoxel extends JavaPlugin {
 		localizationManager = new LocalizationManager(this);
 		
 		LocalizationMessage test = localizationManager.getMessage("test");
+		LocalizationMessage secondTest = localizationManager
+				.getMessage("secondTest");
 		logger.debugLog(Level.INFO, String.valueOf(test));
+		logger.debugLog(Level.INFO, String.valueOf(secondTest));
 		
 		dataConfig = new MBConfiguration(this, "data.yml");
 		
