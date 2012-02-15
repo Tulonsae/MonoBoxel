@@ -47,7 +47,8 @@ public final class WorldDuplicator {
 	 * 
 	 * @param src
 	 * @param dest
-	 * @throws IOException Why do I have to comment this?!
+	 * @throws IOException
+	 *             Why do I have to comment this?!
 	 */
 	public static void copyFolder(File src, File dest) throws IOException {
 		
