@@ -21,21 +21,35 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
  */
 public final class WorldDuplicator {
 	
-	public static void DoplicateWorld(World world, MonoBoxel plugin, String destinationName) {
+	/**
+	 * 
+	 * @param world
+	 * @param plugin
+	 * @param destinationName
+	 */
+	public static void DuplicateWorld(World world, MonoBoxel plugin,
+			String destinationName) {
 		world.save();
 		
 		File worldFolder = world.getWorldFolder();
-		File worldDestinationFolder = new File(plugin.getServer().getWorldContainer().getAbsoluteFile() + File.separator + destinationName);
+		File worldDestinationFolder = new File(plugin.getServer()
+				.getWorldContainer().getAbsoluteFile()
+				+ File.separator + destinationName);
 		
 		try {
 			copyFolder(worldFolder, worldDestinationFolder);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private static void copyFolder(File src, File dest) throws IOException {
+	/**
+	 * 
+	 * @param src
+	 * @param dest
+	 * @throws IOException Why do I have to comment this?!
+	 */
+	public static void copyFolder(File src, File dest) throws IOException {
 		
 		if (src.isDirectory()) {
 			
@@ -47,7 +61,7 @@ public final class WorldDuplicator {
 			}
 			
 			// list all the directory contents
-			String files[] = src.list();
+			String[] files = src.list();
 			
 			for (String file : files) {
 				// construct the src and dest file structure
@@ -60,9 +74,9 @@ public final class WorldDuplicator {
 		} else {
 			// if file, then copy it
 			// Use bytes stream to support all file types
-			if(src.getName().equals("session.lock"))
+			if (src.getName().equals("session.lock"))
 				return;
-			if(src.getName().equals("uid.dat"))
+			if (src.getName().equals("uid.dat"))
 				return;
 			
 			InputStream in = new FileInputStream(src);

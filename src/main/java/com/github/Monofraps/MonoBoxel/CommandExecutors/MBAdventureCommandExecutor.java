@@ -7,7 +7,11 @@ import org.bukkit.command.CommandSender;
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
 import com.github.Monofraps.MonoBoxel.Utils.WorldDuplicator;
 
-
+/**
+ * Executes /adventure commands.
+ * @author Monofraps
+ *
+ */
 public class MBAdventureCommandExecutor implements CommandExecutor {
 	
 	private MonoBoxel	master = null;
@@ -22,7 +26,7 @@ public class MBAdventureCommandExecutor implements CommandExecutor {
 		
 		String worldName = args[0];
 		
-		WorldDuplicator.DoplicateWorld(master.getMVCore().getMVWorldManager().getMVWorld(worldName).getCBWorld(), master, worldName + ".template");
+		WorldDuplicator.DuplicateWorld(master.getMVCore().getMVWorldManager().getMVWorld(worldName).getCBWorld(), master, worldName + ".template");
 		
 		
 		return true;

@@ -45,7 +45,7 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 			
 			senderIsPlayer = false;
 			
-			// TODO: implement/enable Boxel creation from server console
+			//@TODO: implement/enable Boxel creation from server console
 			return true;
 		}
 		
