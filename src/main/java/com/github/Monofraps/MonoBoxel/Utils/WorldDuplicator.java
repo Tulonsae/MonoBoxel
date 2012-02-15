@@ -21,7 +21,13 @@ import com.github.Monofraps.MonoBoxel.MonoBoxel;
  */
 public final class WorldDuplicator {
 	
-	public static void DoplicateWorld(World world, MonoBoxel plugin,
+	/**
+	 * 
+	 * @param world
+	 * @param plugin
+	 * @param destinationName
+	 */
+	public static void DuplicateWorld(World world, MonoBoxel plugin,
 			String destinationName) {
 		world.save();
 		
@@ -37,7 +43,13 @@ public final class WorldDuplicator {
 		}
 	}
 	
-	private static void copyFolder(File src, File dest) throws IOException {
+	/**
+	 * 
+	 * @param src
+	 * @param dest
+	 * @throws IOException Why do I have to comment this?!
+	 */
+	public static void copyFolder(File src, File dest) throws IOException {
 		
 		if (src.isDirectory()) {
 			
@@ -49,7 +61,7 @@ public final class WorldDuplicator {
 			}
 			
 			// list all the directory contents
-			String files[] = src.list();
+			String[] files = src.list();
 			
 			for (String file : files) {
 				// construct the src and dest file structure

@@ -38,7 +38,7 @@ public class MBAdventureWorldManager {
 	 * @return false
 	 */
 	public boolean addAdventureWorld(World world) {
-		WorldDuplicator.DoplicateWorld(world, master, world.getName() + ".template");
+		WorldDuplicator.DuplicateWorld(world, master, world.getName() + ".template");
 		
 		return false;
 	}

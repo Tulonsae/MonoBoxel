@@ -31,6 +31,11 @@ public class MBBoxel {
 	protected MonoBoxel	master					= null;
 	
 	/**
+	 * Prefix of this Boxel.
+	 */
+	protected String boxelPrefix = "BOXEL_";
+	
+	/**
 	 * Corresponding Boxel World.
 	 */
 	protected World		correspondingWorld		= null;
@@ -43,8 +48,6 @@ public class MBBoxel {
 	
 	private String		boxelGenerator			= "MonoBoxel";
 	private String		boxelSeed				= "ThisSeedIsCool";
-	
-	protected String	boxelPrefix				= "BOXEL_";
 	
 	/**
 	 * 

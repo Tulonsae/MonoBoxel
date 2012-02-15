@@ -129,10 +129,21 @@ public class MBLogger {
 		log.warning(logPrefix + msg);
 	}
 	
+	/**
+	 * 
+	 * @author Monofraps
+	 * 
+	 */
 	public static final class MBPlayerMessagePrefix {
 		
+		/**
+		 * 
+		 */
 		public static final MBPlayerMessagePrefix	PLUGIN_NAME	= new MBPlayerMessagePrefix(
 																		"[MonoBoxel]");
+		/**
+		 * 
+		 */
 		public static final MBPlayerMessagePrefix	NOT_ALLOWED	= new MBPlayerMessagePrefix(
 																		"A divine voice says: ");
 		
@@ -142,11 +153,21 @@ public class MBLogger {
 			prefix = pref;
 		}
 		
+		/**
+		 * 
+		 * @return the prefix
+		 */
 		public String getPrefix() {
 			return prefix;
 		}
 	}
 	
+	/**
+	 * 
+	 * @param player
+	 * @param prefix
+	 * @param msg
+	 */
 	public void playerMessage(Player player, MBPlayerMessagePrefix prefix,
 			String msg) {
 		player.sendMessage(prefix.getPrefix() + msg);
