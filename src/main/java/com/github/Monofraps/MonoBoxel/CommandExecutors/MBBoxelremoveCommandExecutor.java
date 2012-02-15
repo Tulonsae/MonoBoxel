@@ -33,7 +33,7 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		
 		boolean senderIsPlayer = false;
 		Player player = null;
-		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
+		MVWorldManager wm = master.getMVCore().getMVWorldManager();
 		
 		String boxelName = "";
 		String boxelOwner = "";

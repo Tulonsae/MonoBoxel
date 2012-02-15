@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.World;
 
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
+import com.github.Monofraps.MonoBoxel.Utils.WorldDuplicator;
 
 
 /**
@@ -36,7 +37,11 @@ public class MBAdventureWorldManager {
 	 * @param world
 	 * @return false
 	 */
-	public boolean CreateAdventureWorldFromWorld(World world) {
+	public boolean addAdventureWorld(World world) {
+		WorldDuplicator.DoplicateWorld(world, master, world.getName() + ".template");
+		
 		return false;
 	}
+	
+	
 }

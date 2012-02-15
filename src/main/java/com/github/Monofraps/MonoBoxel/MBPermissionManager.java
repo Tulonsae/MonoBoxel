@@ -47,12 +47,6 @@ public class MBPermissionManager {
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_VISIT_OTHER			= new Permission(
-																		"monoboxel.boxel.create.own");
-		/**
-		 * Permission Template.
-		 * monoboxel.boxel.create.own
-		 */
 		public static final Permission	CAN_VISIT_GROUP_BOXEL	= new Permission(
 																		"monoboxel.groupboxel.visit");
 		/**

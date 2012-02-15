@@ -29,3 +29,8 @@ commands:
         description: Get global MonoBoxel info
         permissions: monoboxel.boxinfo
         usage: /<command>
+        
+    adventure:
+        description: blahblah
+        permissions: monoboxel.adv
+        usage: /<command>

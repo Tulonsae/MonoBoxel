@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.github.Monofraps.MonoBoxel.CommandExecutors.MBAdventureCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelgrpCommandExecutor;
 import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelinfoCommandExecutor;
@@ -34,6 +35,7 @@ public class MonoBoxel extends JavaPlugin {
 	private MBBoxellookupCommandExecutor	boxellookupCmdExecutor	= null;
 	private MBBoxelremoveCommandExecutor	boxelremoveCmdExecutor	= null;
 	private MBBoxelinfoCommandExecutor		boxelinfoCmdExecutor	= null;
+	private MBAdventureCommandExecutor		adventureCmdExecutor	= null;
 	
 	private MultiverseCore					mvCore					= null;
 	private MBBoxelManager					boxelManager			= null;
@@ -69,11 +71,13 @@ public class MonoBoxel extends JavaPlugin {
 		boxellookupCmdExecutor = new MBBoxellookupCommandExecutor(this);
 		boxelremoveCmdExecutor = new MBBoxelremoveCommandExecutor(this);
 		boxelinfoCmdExecutor = new MBBoxelinfoCommandExecutor(this);
+		adventureCmdExecutor = new MBAdventureCommandExecutor(this);
 		getCommand("boxel").setExecutor(boxelCmdExecutor);
 		getCommand("boxelgrp").setExecutor(boxelgrpCommandExecutor);
 		getCommand("boxlookup").setExecutor(boxellookupCmdExecutor);
 		getCommand("boxremove").setExecutor(boxelremoveCmdExecutor);
 		getCommand("boxinfo").setExecutor(boxelinfoCmdExecutor);
+		getCommand("adventure").setExecutor(adventureCmdExecutor);
 		
 		new MBEventListener(this);
 		
@@ -97,7 +101,7 @@ public class MonoBoxel extends JavaPlugin {
 	 * 
 	 * @return The MultiverCore or null on failure.
 	 */
-	public MultiverseCore GetMVCore() {
+	public MultiverseCore getMVCore() {
 		if (mvCore == null) {
 			mvCore = (MultiverseCore) getServer().getPluginManager().getPlugin(
 					"Multiverse-Core");

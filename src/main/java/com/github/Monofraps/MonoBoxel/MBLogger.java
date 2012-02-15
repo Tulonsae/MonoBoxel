@@ -130,10 +130,10 @@ public class MBLogger {
 		log.warning(logPrefix + msg);
 	}
 	
-	public static class MBPlayerMessagePrefix {
+	public static final class MBPlayerMessagePrefix {
 		
 		public static MBPlayerMessagePrefix	PLUGIN_NAME	= new MBPlayerMessagePrefix(
-																"[MonoBoxel]");
+																"[MonoBoxel] ");
 		public static MBPlayerMessagePrefix	NOT_ALLOWED	= new MBPlayerMessagePrefix(
 																"A divine voice says: ");
 		
@@ -148,7 +148,8 @@ public class MBLogger {
 		}
 	}
 	
-	public void playerMessage(Player player, MBPlayerMessagePrefix prefix, String msg) {
+	public void playerMessage(Player player, MBPlayerMessagePrefix prefix,
+			String msg) {
 		player.sendMessage(prefix.getPrefix() + msg);
 	}
 }

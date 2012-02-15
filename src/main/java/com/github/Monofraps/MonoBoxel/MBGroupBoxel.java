@@ -33,6 +33,8 @@ public class MBGroupBoxel extends MBBoxel {
 			String seed) {
 		super(plugin, worldName, generator, seed);
 		
+		boxelPrefix = master.getBoxelGroupPrefix();
+		
 	}
 	
 	@Override
@@ -45,7 +47,7 @@ public class MBGroupBoxel extends MBBoxel {
 		}
 		
 		if (super.DoCreate(player)) {
-			correspondingWorld = master.GetMVCore().getMVWorldManager()
+			correspondingWorld = master.getMVCore().getMVWorldManager()
 					.getMVWorld(correspondingWorldName).getCBWorld();
 			return true;
 		} else {
@@ -116,7 +118,7 @@ public class MBGroupBoxel extends MBBoxel {
 			}
 		
 		// before porting the player, save his location
-		if (master.getConfig().getBoolean("save-exit-location", true)) {
+		if (master.getConfig().getBoolean("save-exit-location")) {
 			// do not save the return/entry location if the player is in a Boxel
 			if (!master.getMBWorldManager()
 					.isBoxel(player.getWorld().getName())[0]) {

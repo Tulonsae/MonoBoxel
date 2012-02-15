@@ -4,7 +4,6 @@ package com.github.Monofraps.MonoBoxel;
 import java.util.Collection;
 import java.util.logging.Level;
 
-import org.bukkit.Difficulty;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldType;
@@ -45,6 +44,7 @@ public class MBBoxel {
 	private String		boxelGenerator			= "MonoBoxel";
 	private String		boxelSeed				= "ThisSeedIsCool";
 	
+	protected String boxelPrefix = "BOXEL_";
 	/**
 	 * 
 	 * @param plugin
@@ -63,8 +63,8 @@ public class MBBoxel {
 		master = plugin;
 		correspondingWorldName = worldName;
 		
-		if (master.GetMVCore().getMVWorldManager().getMVWorld(worldName) != null) {
-			correspondingWorld = master.GetMVCore().getMVWorldManager()
+		if (master.getMVCore().getMVWorldManager().getMVWorld(worldName) != null) {
+			correspondingWorld = master.getMVCore().getMVWorldManager()
 					.getMVWorld(correspondingWorldName).getCBWorld();
 			worldLoaded = true;
 		}
@@ -75,6 +75,8 @@ public class MBBoxel {
 			boxelGenerator = generator;
 		
 		boxelSeed = seed;
+		
+		boxelPrefix = master.getBoxelPrefix();
 	}
 	
 	/**
@@ -91,9 +93,8 @@ public class MBBoxel {
 		String boxelOwner = "";
 		
 		// should always be true
-		if (correspondingWorldName.startsWith(master.getBoxelPrefix()))
-			boxelOwner = correspondingWorldName.substring(master
-					.getBoxelPrefix().length());
+		if (correspondingWorldName.startsWith(boxelPrefix))
+			boxelOwner = correspondingWorldName.substring(boxelPrefix.length());
 		
 		if (boxelOwner.equals(player.getName()))
 			isPlayersOwnBoxel = true;
@@ -132,16 +133,15 @@ public class MBBoxel {
 			
 			// the world exists, but we have no reference to it
 			if (correspondingWorld == null) {
-				correspondingWorld = master.GetMVCore().getMVWorldManager()
+				correspondingWorld = master.getMVCore().getMVWorldManager()
 						.getMVWorld(correspondingWorldName).getCBWorld();
 			}
 		}
 		
 		// create the Boxel now
 		if (DoCreate(player)) {
-			correspondingWorld = master.GetMVCore().getMVWorldManager()
+			correspondingWorld = master.getMVCore().getMVWorldManager()
 					.getMVWorld(correspondingWorldName).getCBWorld();
-			correspondingWorld.setDifficulty(Difficulty.PEACEFUL);
 			
 			return true;
 		} else {
@@ -161,7 +161,7 @@ public class MBBoxel {
 	 * @return true on success, otherwise false
 	 */
 	protected boolean DoCreate(CommandSender sender) {
-		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
+		MVWorldManager wm = master.getMVCore().getMVWorldManager();
 		MultiverseWorld result = null;
 		
 		if (correspondingWorld != null)
@@ -209,6 +209,7 @@ public class MBBoxel {
 			result.setAllowMonsterSpawn(false);
 			result.setEnableWeather(false);
 			result.setGameMode("CREATIVE");
+			result.setDifficulty("PEACEFUL");
 			result.setPVPMode(false);
 			result.setAutoLoad(false);
 			
@@ -243,7 +244,7 @@ public class MBBoxel {
 			return true;
 		}
 		
-		if (!master.GetMVCore().getMVWorldManager()
+		if (!master.getMVCore().getMVWorldManager()
 				.loadWorld(correspondingWorldName)) {
 			// failed to load Boxel
 			master.getLogManager().severe("Failed to load Boxel.");
@@ -251,7 +252,7 @@ public class MBBoxel {
 		}
 		
 		// the world should be loaded now
-		correspondingWorld = master.GetMVCore().getMVWorldManager()
+		correspondingWorld = master.getMVCore().getMVWorldManager()
 				.getMVWorld(correspondingWorldName).getCBWorld();
 		worldLoaded = true;
 		
@@ -364,7 +365,7 @@ public class MBBoxel {
 	 * @return true on success, otherwise false
 	 */
 	public boolean Leave(Player player) {
-		MVWorldManager wm = master.GetMVCore().getMVWorldManager();
+		MVWorldManager wm = master.getMVCore().getMVWorldManager();
 		MultiverseWorld entryWorld = null;
 		
 		if (master.getConfig().getBoolean("save-exit-location", true)) {
@@ -445,7 +446,7 @@ public class MBBoxel {
 	public boolean Unload() {
 		
 		if (isEmpty() && isLoaded()) {
-			if (master.GetMVCore().getMVWorldManager()
+			if (master.getMVCore().getMVWorldManager()
 					.unloadWorld(correspondingWorldName)) {
 				
 				worldLoaded = false;
