@@ -135,8 +135,14 @@ public class MonoBoxel extends JavaPlugin {
 	 * 
 	 * @return The MonoBoxel chunk generator
 	 */
-	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-		return new MBBoxelGenerator(getConfig().getLong("max-boxel-size"), false);
+	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {		
+		if (id != null)
+			return new MBBoxelGenerator(getConfig().getLong("max-boxel-size"),
+					id.equals("ssehc") ? true : false);
+		
+		else
+			return new MBBoxelGenerator(getConfig().getLong("max-boxel-size"),
+					false);
 	}
 	
 	/**

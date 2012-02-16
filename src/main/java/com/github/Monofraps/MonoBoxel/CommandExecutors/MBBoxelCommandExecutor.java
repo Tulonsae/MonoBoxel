@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.github.Monofraps.MonoBoxel.MBBoxel;
 import com.github.Monofraps.MonoBoxel.MBGroupBoxel;
 import com.github.Monofraps.MonoBoxel.MonoBoxel;
+import com.github.Monofraps.MonoBoxel.Utils.HashMD5;
 
 
 /**
@@ -45,7 +46,7 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 			
 			senderIsPlayer = false;
 			
-			//@TODO: implement/enable Boxel creation from server console
+			// @TODO: implement/enable Boxel creation from server console
 			return true;
 		}
 		
@@ -57,6 +58,9 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		if (args.length > 0) {
 			if (args[0].equals("-") && senderIsPlayer)
 				boxelName = boxelName + player.getName();
+			
+			if (boxelName.equals("-s") || boxelName.equals("-g"))
+				boxelName = master.getBoxelPrefix() + player.getName();
 			
 			else
 				if (args[0].equals("getmeout") && senderIsPlayer) {
@@ -93,6 +97,11 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 			
 			if (args[i].equals("-s"))
 				boxelSeed = args[i + 1];
+		}
+		
+		if (HashMD5.Hash(boxelSeed).equals("051d785c41b4605c174054d194d4e136")) {
+			sender.sendMessage("Really? Do you? Well, I'll create something to play with...");
+			boxelGenerator = "MonoBoxel:ssehc";
 		}
 		
 		if (master.getMBWorldManager().AddBoxel(boxelName, true, player,

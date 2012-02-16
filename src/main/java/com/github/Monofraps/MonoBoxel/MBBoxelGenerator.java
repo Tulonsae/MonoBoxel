@@ -32,57 +32,53 @@ public class MBBoxelGenerator extends ChunkGenerator {
 	private long				maxBoxelSize	= 16;
 	private int					landHeight		= 6;
 	
-	private boolean tmx = false;
 	
 	public MBBoxelGenerator(long maxBoxelSize, boolean tmx) {
 		
 		flatChunk = new byte[CHUNK_SIZE];
 		borderChunk = new byte[CHUNK_SIZE];
 		
-		this.tmx = tmx;
-		
 		this.maxBoxelSize = maxBoxelSize;
 		
-		for (int x = 0; x < CHUNK_WIDTH; x++) {
-			for (int z = 0; z < CHUNK_LENGHT; z++) {
-				flatChunk[xyzToByte(x, 0, z)] = (byte) Material.BEDROCK.getId();
-			}
-		}
-		
-		for (int x = 0; x < CHUNK_WIDTH; x++) {
-			for (int z = 0; z < CHUNK_LENGHT; z++) {
-				for (int y = 1; y < landHeight; y++) {
-					flatChunk[xyzToByte(x, y, z)] = (byte) Material.DIRT
+		if (!tmx) {
+			for (int x = 0; x < CHUNK_WIDTH; x++) {
+				for (int z = 0; z < CHUNK_LENGHT; z++) {
+					flatChunk[xyzToByte(x, 0, z)] = (byte) Material.BEDROCK
 							.getId();
 				}
 			}
-		}
-		
-		if(!tmx)
-		{
+			
+			for (int x = 0; x < CHUNK_WIDTH; x++) {
+				for (int z = 0; z < CHUNK_LENGHT; z++) {
+					for (int y = 1; y < landHeight; y++) {
+						flatChunk[xyzToByte(x, y, z)] = (byte) Material.DIRT
+								.getId();
+					}
+				}
+			}
+			
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
 				for (int z = 0; z < CHUNK_LENGHT; z++) {
 					flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.GRASS
 							.getId();
 				}
 			}
-		}
-		else
-		{
+		} else {
+			
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
-				for (int z = (x % 2); z < CHUNK_LENGHT; z+=2) {
-					flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.WOOD
-							.getId();
-				}
+				for (int z = 0; z < CHUNK_LENGHT; z++)
+					for (int y = 0; y <= landHeight; y++) {
+						flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.SNOW_BLOCK
+								.getId();
+					}
 			}
+			
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
-				for (int z = 1; z < CHUNK_LENGHT; z+=2) {
-					if(z >= CHUNK_LENGHT)
-						continue;
-					
-					flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.WOOL
-							.getId();
-				}
+				for (int z = (x % 2); z < CHUNK_LENGHT; z += 2)
+					for (int y = 0; y <= landHeight; y++) {
+						flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.OBSIDIAN
+								.getId();
+					}
 			}
 		}
 		

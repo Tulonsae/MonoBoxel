@@ -64,9 +64,9 @@ public class MBAdventureWorld {
 	 * @return true on success, otherwise false
 	 */
 	public boolean Reset() {
-		if(!master.getMVCore().getMVWorldManager().deleteWorld(worldName))
-		{
-			master.getLogManager().debugLog(Level.SEVERE, "Failed to delete used adventure world.");
+		if (!master.getMVCore().getMVWorldManager().deleteWorld(worldName)) {
+			master.getLogManager().debugLog(Level.SEVERE,
+					"Failed to delete used adventure world.");
 			return false;
 		}
 		
@@ -77,12 +77,17 @@ public class MBAdventureWorld {
 					+ worldName
 					+ ".template"), new File(master.getServer().getWorldContainer() + File.separator + worldName));
 		} catch (IOException e) {
-			master.getLogManager().debugLog(Level.SEVERE, "Failed to copy world folder for " + worldName);
+			master.getLogManager().debugLog(Level.SEVERE,
+					"Failed to copy world folder for " + worldName);
 			e.printStackTrace();
 			return false;
 		}
 		
-		return master.getMVCore().getMVWorldManager().addWorld(worldName, World.Environment.valueOf("NORMAL"), null, null, null, "", false);
+		return master
+				.getMVCore()
+				.getMVWorldManager()
+				.addWorld(worldName, World.Environment.valueOf("NORMAL"), null,
+						null, null, "", false);
 	}
 	
 	/**
