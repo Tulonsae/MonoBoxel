@@ -32,10 +32,14 @@ public class MBBoxelGenerator extends ChunkGenerator {
 	private long				maxBoxelSize	= 16;
 	private int					landHeight		= 6;
 	
-	public MBBoxelGenerator(long maxBoxelSize) {
+	private boolean tmx = false;
+	
+	public MBBoxelGenerator(long maxBoxelSize, boolean tmx) {
 		
 		flatChunk = new byte[CHUNK_SIZE];
 		borderChunk = new byte[CHUNK_SIZE];
+		
+		this.tmx = tmx;
 		
 		this.maxBoxelSize = maxBoxelSize;
 		
@@ -54,10 +58,34 @@ public class MBBoxelGenerator extends ChunkGenerator {
 			}
 		}
 		
-		for (int x = 0; x < CHUNK_WIDTH; x++) {
-			for (int z = 0; z < CHUNK_LENGHT; z++) {
-				flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.GRASS
-						.getId();
+		if(!tmx)
+		{
+			for (int x = 0; x < CHUNK_WIDTH; x++) {
+				for (int z = 0; z < CHUNK_LENGHT; z++) {
+					flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.GRASS
+							.getId();
+				}
+			}
+		}
+		else
+		{
+			for (int x = 0; x < CHUNK_WIDTH; x+=2) {
+				for (int z = 0; z < CHUNK_LENGHT; z+=2) {
+					flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.WOOD
+							.getId();
+				}
+			}
+			for (int x = 1; x < CHUNK_WIDTH; x+=2) {
+				for (int z = 1; z < CHUNK_LENGHT; z+=2) {
+					if(z >= CHUNK_LENGHT)
+						continue;
+					
+					flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.WOOL
+							.getId();
+				}
+				
+				if(x >= CHUNK_WIDTH)
+					continue;
 			}
 		}
 		
