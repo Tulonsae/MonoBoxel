@@ -40,9 +40,7 @@ public class MBAdventureWorldManager {
 	public boolean addAdventureWorld(World world) {
 		WorldDuplicator.DuplicateWorld(world, master, world.getName()
 				+ ".template");
-		adventureWorlds.add(new MBAdventureWorld(master, world.getName()));
-		
-		return false;
+		return adventureWorlds.add(new MBAdventureWorld(master, world.getName()));
 	}
 	
 	/**

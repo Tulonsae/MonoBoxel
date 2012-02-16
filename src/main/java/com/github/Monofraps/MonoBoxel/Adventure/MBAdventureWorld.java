@@ -3,6 +3,7 @@ package com.github.Monofraps.MonoBoxel.Adventure;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 import org.bukkit.World;
 
@@ -63,7 +64,11 @@ public class MBAdventureWorld {
 	 * @return true on success, otherwise false
 	 */
 	public boolean Reset() {
-		master.getMVCore().getMVWorldManager().deleteWorld(worldName);
+		if(!master.getMVCore().getMVWorldManager().deleteWorld(worldName))
+		{
+			master.getLogManager().debugLog(Level.SEVERE, "Failed to delete used adventure world.");
+			return false;
+		}
 		
 		try {
 			WorldDuplicator.copyFolder(new File(master.getServer()
@@ -72,12 +77,12 @@ public class MBAdventureWorld {
 					+ worldName
 					+ ".template"), new File(master.getServer().getWorldContainer() + File.separator + worldName));
 		} catch (IOException e) {
+			master.getLogManager().debugLog(Level.SEVERE, "Failed to copy world folder for " + worldName);
 			e.printStackTrace();
+			return false;
 		}
 		
-		master.getMVCore().getMVWorldManager().addWorld(worldName, World.Environment.valueOf("NORMAL"), null, null, null, "", false);
-		
-		return false;
+		return master.getMVCore().getMVWorldManager().addWorld(worldName, World.Environment.valueOf("NORMAL"), null, null, null, "", false);
 	}
 	
 	/**
