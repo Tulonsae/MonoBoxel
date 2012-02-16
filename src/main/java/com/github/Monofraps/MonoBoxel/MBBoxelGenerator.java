@@ -69,13 +69,13 @@ public class MBBoxelGenerator extends ChunkGenerator {
 		}
 		else
 		{
-			for (int x = 0; x < CHUNK_WIDTH; x+=2) {
+			for (int x = 0; x < CHUNK_WIDTH; x++) {
 				for (int z = 0; z < CHUNK_LENGHT; z+=2) {
 					flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.WOOD
 							.getId();
 				}
 			}
-			for (int x = 1; x < CHUNK_WIDTH; x+=2) {
+			for (int x = 1; x < CHUNK_WIDTH; x++) {
 				for (int z = 1; z < CHUNK_LENGHT; z+=2) {
 					if(z >= CHUNK_LENGHT)
 						continue;
@@ -83,9 +83,6 @@ public class MBBoxelGenerator extends ChunkGenerator {
 					flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.WOOL
 							.getId();
 				}
-				
-				if(x >= CHUNK_WIDTH)
-					continue;
 			}
 		}
 		
