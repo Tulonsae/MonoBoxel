@@ -27,9 +27,13 @@ public class MBAdventureCommandExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
-		
-		sender.sendMessage("This feature is not fully implemented!");
 	
+		if (master.getConfig().getBoolean("enable-adventure", false)) {
+			sender.sendMessage("This feature is not fully implemented! "
+					+ "If you want to try this feature out, set 'enable-adventure' in the config file to true.");
+			return true;
+		}
+		
 		String worldName = "";
 		boolean resetDone = false;
 		

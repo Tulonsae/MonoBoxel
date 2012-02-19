@@ -105,11 +105,9 @@ public class MBBoxel {
 		
 		// check permissions
 		if (isPlayersOwnBoxel
-				&& !master.getPermissionManager().hasPermission(
-						player,
+				&& !master.getPermissionManager().hasPermission(player,
 						new MBPermission(MBPermission.CAN_CREATE_OWN))) {
 			master.getPermissionManager().SendNotAllowedMessage(player);
-			master.getLogManager().info("Failed at test 1");
 			return false;
 		}
 		if (!isPlayersOwnBoxel
@@ -118,7 +116,6 @@ public class MBBoxel {
 						new MBPermission(MBPermission.ROOT_CAN_CREATE,
 								boxelOwner))) {
 			master.getPermissionManager().SendNotAllowedMessage(player);
-			master.getLogManager().info("Failed at test 2");
 			return false;
 		}
 		

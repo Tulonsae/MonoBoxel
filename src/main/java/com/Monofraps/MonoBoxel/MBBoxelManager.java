@@ -4,7 +4,6 @@ package com.Monofraps.MonoBoxel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -197,7 +196,7 @@ public class MBBoxelManager {
 				return true;
 		}
 		
-		if (!name.startsWith(master.getBoxelPrefix()))
+		if (!name.startsWith(master.getBoxelGroupPrefix()))
 			name = master.getBoxelGroupPrefix() + name;
 		
 		MBGroupBoxel boxel = new MBGroupBoxel(master, name, generator, seed);
@@ -265,10 +264,10 @@ public class MBBoxelManager {
 		result[0] = false;
 		result[1] = false;
 		
-		if (!name.startsWith(master.getBoxelPrefix())) {
+		/*if (!name.startsWith(master.getBoxelPrefix())) {
 			master.getLogManager().debugLog(Level.WARNING, "isBoxel called woth a non-prefixed name.");
 			return result;
-		}
+		}*/
 		
 		Collection<MultiverseWorld> worlds = master.getMVCore().getMVWorldManager().getMVWorlds();
 		for (MultiverseWorld w : worlds) {

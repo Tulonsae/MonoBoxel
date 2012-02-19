@@ -56,7 +56,7 @@ public class MonoBoxel extends JavaPlugin {
 		
 		dataConfig = new MBConfiguration(this, "data.yml");
 		
-		if(getConfig().getBoolean("first-run", true))
+		if (getConfig().getBoolean("first-run", true))
 			saveDefaultConfig();
 		
 		reloadConfig();
@@ -128,7 +128,7 @@ public class MonoBoxel extends JavaPlugin {
 		saveConfig();
 		dataConfig.saveConfig();
 		boxelManager.SaveBoxels();
-		localizationManager.SaveLocalization();		
+		localizationManager.SaveLocalization();
 		
 		if (mvCore != null)
 			mvCore.decrementPluginCount();
