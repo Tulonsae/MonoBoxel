@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel;
+package com.Monofraps.MonoBoxel;
 
 
 import java.util.Arrays;
@@ -11,12 +11,7 @@ import org.bukkit.generator.ChunkGenerator;
 
 /**
  * This chunk generator will generate a flat chunk.
- * Chunk layers:
- * 0 - Bedrock
- * 1 - 5 - dirt
- * 6 - grass
  * 
- * @version 0.4
  * @author Monofraps
  */
 public class MBBoxelGenerator extends ChunkGenerator {
@@ -32,9 +27,8 @@ public class MBBoxelGenerator extends ChunkGenerator {
 	private long				maxBoxelSize	= 16;
 	private int					landHeight		= 6;
 	
-	
 	public MBBoxelGenerator(long maxBoxelSize, boolean tmx) {
-		
+	
 		flatChunk = new byte[CHUNK_SIZE];
 		borderChunk = new byte[CHUNK_SIZE];
 		
@@ -43,24 +37,21 @@ public class MBBoxelGenerator extends ChunkGenerator {
 		if (!tmx) {
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
 				for (int z = 0; z < CHUNK_LENGHT; z++) {
-					flatChunk[xyzToByte(x, 0, z)] = (byte) Material.BEDROCK
-							.getId();
+					flatChunk[xyzToByte(x, 0, z)] = (byte) Material.BEDROCK.getId();
 				}
 			}
 			
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
 				for (int z = 0; z < CHUNK_LENGHT; z++) {
 					for (int y = 1; y < landHeight; y++) {
-						flatChunk[xyzToByte(x, y, z)] = (byte) Material.DIRT
-								.getId();
+						flatChunk[xyzToByte(x, y, z)] = (byte) Material.DIRT.getId();
 					}
 				}
 			}
 			
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
 				for (int z = 0; z < CHUNK_LENGHT; z++) {
-					flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.GRASS
-							.getId();
+					flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.GRASS.getId();
 				}
 			}
 		} else {
@@ -68,16 +59,14 @@ public class MBBoxelGenerator extends ChunkGenerator {
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
 				for (int z = 0; z < CHUNK_LENGHT; z++)
 					for (int y = 0; y <= landHeight; y++) {
-						flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.SNOW_BLOCK
-								.getId();
+						flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.SNOW_BLOCK.getId();
 					}
 			}
 			
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
 				for (int z = (x % 2); z < CHUNK_LENGHT; z += 2)
 					for (int y = 0; y <= landHeight; y++) {
-						flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.OBSIDIAN
-								.getId();
+						flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.OBSIDIAN.getId();
 					}
 			}
 		}
@@ -88,7 +77,7 @@ public class MBBoxelGenerator extends ChunkGenerator {
 	
 	@Override
 	public boolean canSpawn(World world, int x, int z) {
-		
+	
 		// set the spawnpoint to the origin (0|0)
 		if ((x == 0) && (z == 0))
 			return true;
@@ -105,12 +94,13 @@ public class MBBoxelGenerator extends ChunkGenerator {
 	 * @return 1 Dimensional Index for Chunk array's
 	 */
 	public int xyzToByte(int x, int y, int z) {
+	
 		return (x * CHUNK_WIDTH + z) * CHUNK_HEIGHT + y;
 	}
 	
 	@Override
 	public byte[] generate(World world, Random rand, int chunkx, int chunkz) {
-		
+	
 		// max-boxel-size set to 0 will result in non-limited worlds
 		if (maxBoxelSize != 0) {
 			if (chunkx > maxBoxelSize / 2)

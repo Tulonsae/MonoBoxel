@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel.Adventure;
+package com.Monofraps.MonoBoxel.Adventure;
 
 
 import java.io.File;
@@ -7,8 +7,8 @@ import java.util.logging.Level;
 
 import org.bukkit.World;
 
-import com.github.Monofraps.MonoBoxel.MonoBoxel;
-import com.github.Monofraps.MonoBoxel.Utils.WorldDuplicator;
+import com.Monofraps.MonoBoxel.MonoBoxel;
+import com.Monofraps.MonoBoxel.Utils.WorldDuplicator;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
 
@@ -34,12 +34,13 @@ public class MBAdventureWorld {
 	 *            The name of the adventure world (without .template)
 	 */
 	public MBAdventureWorld(MonoBoxel plugin, String worldName) {
+	
 		master = plugin;
 		this.worldName = worldName;
 		
 		if (isWorldLoaded())
-			adventureWorld = master.getMVCore().getMVWorldManager()
-					.getMVWorld(worldName);
+			adventureWorld = master.getMVCore().getMVWorldManager().getMVWorld(
+					worldName);
 		
 	}
 	
@@ -49,11 +50,12 @@ public class MBAdventureWorld {
 	 * @return true if the world is loaded by multiverse, otherwise false
 	 */
 	private boolean isWorldLoaded() {
+	
 		if (master.getMVCore().getMVWorldManager().getMVWorld(worldName) != null)
 			return true;
 		
-		if (master.getMVCore().getMVWorldManager().getUnloadedWorlds()
-				.contains(worldName))
+		if (master.getMVCore().getMVWorldManager().getUnloadedWorlds().contains(
+				worldName))
 			return false;
 		
 		return false;
@@ -64,6 +66,7 @@ public class MBAdventureWorld {
 	 * @return true on success, otherwise false
 	 */
 	public boolean Reset() {
+	
 		if (!master.getMVCore().getMVWorldManager().deleteWorld(worldName)) {
 			master.getLogManager().debugLog(Level.SEVERE,
 					"Failed to delete used adventure world.");
@@ -71,11 +74,11 @@ public class MBAdventureWorld {
 		}
 		
 		try {
-			WorldDuplicator.copyFolder(new File(master.getServer()
-					.getWorldContainer()
-					+ File.separator
-					+ worldName
-					+ ".template"), new File(master.getServer().getWorldContainer() + File.separator + worldName));
+			WorldDuplicator.copyFolder(
+					new File(master.getServer().getWorldContainer()
+							+ File.separator + worldName + ".template"),
+					new File(master.getServer().getWorldContainer()
+							+ File.separator + worldName));
 		} catch (IOException e) {
 			master.getLogManager().debugLog(Level.SEVERE,
 					"Failed to copy world folder for " + worldName);
@@ -83,11 +86,9 @@ public class MBAdventureWorld {
 			return false;
 		}
 		
-		return master
-				.getMVCore()
-				.getMVWorldManager()
-				.addWorld(worldName, World.Environment.valueOf("NORMAL"), null,
-						null, null, "", false);
+		return master.getMVCore().getMVWorldManager().addWorld(worldName,
+				World.Environment.valueOf("NORMAL"), null, null, null, "",
+				false);
 	}
 	
 	/**
@@ -95,6 +96,7 @@ public class MBAdventureWorld {
 	 * @return the name of the world
 	 */
 	public String getName() {
+	
 		return worldName;
 	}
 }

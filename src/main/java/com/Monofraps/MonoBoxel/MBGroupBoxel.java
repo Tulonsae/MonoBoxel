@@ -1,12 +1,12 @@
-package com.github.Monofraps.MonoBoxel;
+package com.Monofraps.MonoBoxel;
 
 
 import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
 
-import com.github.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
-import com.github.Monofraps.MonoBoxel.Utils.HashMD5;
+import com.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
+import com.Monofraps.MonoBoxel.Utils.HashMD5;
 
 
 /**
@@ -31,6 +31,7 @@ public class MBGroupBoxel extends MBBoxel {
 	 */
 	public MBGroupBoxel(MonoBoxel plugin, String worldName, String generator,
 			String seed) {
+	
 		super(plugin, worldName, generator, seed);
 		
 		boxelPrefix = master.getBoxelGroupPrefix();
@@ -39,7 +40,7 @@ public class MBGroupBoxel extends MBBoxel {
 	
 	@Override
 	public boolean Create(Player player) {
-		
+	
 		if (!master.getPermissionManager().hasPermission(player,
 				new MBPermission(MBPermission.CAN_CREATE_GROUP_BOXEL))) {
 			master.getPermissionManager().SendNotAllowedMessage(player);
@@ -47,28 +48,28 @@ public class MBGroupBoxel extends MBBoxel {
 		}
 		
 		if (super.DoCreate(player)) {
-			correspondingWorld = master.getMVCore().getMVWorldManager()
-					.getMVWorld(correspondingWorldName).getCBWorld();
+			correspondingWorld = master.getMVCore().getMVWorldManager().getMVWorld(
+					correspondingWorldName).getCBWorld();
 			return true;
 		} else {
 			player.sendMessage("Failed to create group Boxel.");
 			master.getLogManager().severe(
-					master.getLocalizationManager()
-							.getMessage("failed-to-create")
-							.setMessageVariable("boxeltype", "Group Boxel")
-							.setMessageVariable("boxelname",
-									correspondingWorldName).toString());
+					master.getLocalizationManager().getMessage(
+							"failed-to-create").setMessageVariable("boxeltype",
+							"Group Boxel").setMessageVariable("boxelname",
+							correspondingWorldName).toString());
 			return false;
 		}
 		
 	}
 	
 	/**
-	 * Sets the Group Boxel's Password Hash.
+	 * Sets the Group Boxel's password hash.
 	 * 
 	 * @param passwd
 	 */
 	public void setPasswordHash(String passwd) {
+	
 		// let's make group Boxels at least a little bit safe - md5-sum the password, so we don't
 		// have to store the plaintext password in the config
 		passwdMD5 = HashMD5.Hash(passwd);
@@ -82,7 +83,8 @@ public class MBGroupBoxel extends MBBoxel {
 	 */
 	@Override
 	public boolean Join(Player player) {
-		master.getLogManager().warning("Join was called on a goup Boxel.");
+	
+		master.getLogManager().warning("Boxel-Join was called on a goup Boxel.");
 		return false;
 	}
 	
@@ -96,54 +98,44 @@ public class MBGroupBoxel extends MBBoxel {
 	 * @return true on success, otherwise false
 	 */
 	public boolean Join(Player player, String passwd) {
-		// validate password
-		if (!HashMD5.Hash(passwd).equals(passwdMD5)) {
-			player.sendMessage("The security man said: NO! - Have you entered the correct password?");
-			return false;
-		}
-		
+	
 		if (!master.getPermissionManager().hasPermission(player,
 				new MBPermission(MBPermission.CAN_VISIT_GROUP_BOXEL))) {
 			master.getPermissionManager().SendNotAllowedMessage(player);
 			return false;
 		}
 		
+		// validate password
+		if (!HashMD5.Hash(passwd).equals(passwdMD5)) {
+			player.sendMessage("The security man said: NO! - Have you entered the correct password?");
+			return false;
+		}
+		
 		if (!isLoaded())
 			if (!Load()) {
-				master.getLogManager()
-						.severe("Failed to load group Boxel: "
-								+ correspondingWorldName);
-				master.getLogManager()
-						.debugLog(
-								Level.WARNING,
-								"Failed to load group Boxel: "
-										+ correspondingWorldName);
+				master.getLogManager().severe(
+						"Failed to load group Boxel: " + correspondingWorldName);
+				master.getLogManager().debugLog(Level.WARNING,
+						"Failed to load group Boxel: " + correspondingWorldName);
 				return false;
 			}
 		
 		// before porting the player, save his location
-		if (master.getConfig().getBoolean("save-exit-location")) {
-			// do not save the return/entry location if the player is in a Boxel
-			if (!master.getMBWorldManager()
-					.isBoxel(player.getWorld().getName())[0]) {
-				master.getDataConfig()
-						.getConfig()
-						.set("playeroloc." + player.getName() + ".world",
-								player.getWorld().getName());
-				master.getDataConfig()
-						.getConfig()
-						.set("playeroloc." + player.getName() + ".position",
-								player.getLocation().toVector());
-				master.getDataConfig()
-						.getConfig()
-						.set("playeroloc." + player.getName() + ".yaw",
-								player.getLocation().getYaw());
-				master.getDataConfig()
-						.getConfig()
-						.set("playeroloc." + player.getName() + ".pitch",
-								player.getLocation().getPitch());
-				master.getDataConfig().saveConfig();
-			}
+		// do not save the return/entry location if the player is in a Boxel
+		if (!master.getMBWorldManager().isBoxel(player.getWorld().getName())[0]) {
+			master.getDataConfig().getConfig().set(
+					"playeroloc." + player.getName() + ".world",
+					player.getWorld().getName());
+			master.getDataConfig().getConfig().set(
+					"playeroloc." + player.getName() + ".position",
+					player.getLocation().toVector());
+			master.getDataConfig().getConfig().set(
+					"playeroloc." + player.getName() + ".yaw",
+					player.getLocation().getYaw());
+			master.getDataConfig().getConfig().set(
+					"playeroloc." + player.getName() + ".pitch",
+					player.getLocation().getPitch());
+			master.getDataConfig().saveConfig();
 		}
 		
 		if (player.teleport(correspondingWorld.getSpawnLocation()))
@@ -160,6 +152,7 @@ public class MBGroupBoxel extends MBBoxel {
 	 * @return the password hash
 	 */
 	public String getPasswordHash() {
+	
 		return passwdMD5;
 	}
 	

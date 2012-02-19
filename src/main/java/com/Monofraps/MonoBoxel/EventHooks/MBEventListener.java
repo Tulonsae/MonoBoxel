@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel.EventHooks;
+package com.Monofraps.MonoBoxel.EventHooks;
 
 
 import org.bukkit.Chunk;
@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 
-import com.github.Monofraps.MonoBoxel.MonoBoxel;
+import com.Monofraps.MonoBoxel.MonoBoxel;
 
 
 /**
@@ -35,6 +35,7 @@ public class MBEventListener implements Listener {
 	 * @param plugin
 	 */
 	public MBEventListener(MonoBoxel plugin) {
+	
 		master = plugin;
 		master.getServer().getPluginManager().registerEvents(this, master);
 	}
@@ -47,6 +48,7 @@ public class MBEventListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
+	
 		master.getMBWorldManager().CheckForUnusedWorlds();
 		master.getLogManager().info(
 				"player is in world:" + event.getPlayer().getWorld().getName());
@@ -59,13 +61,14 @@ public class MBEventListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		
+	
 		// wait two seconds before checking for unused worlds, because if this
 		// event handler is called
-		master.getServer().getScheduler()
-				.scheduleSyncDelayedTask(master, new Runnable() {
+		master.getServer().getScheduler().scheduleSyncDelayedTask(master,
+				new Runnable() {
 					
 					public void run() {
+					
 						master.getMBWorldManager().CheckForUnusedWorlds();
 					}
 				}, 2 * 20);
@@ -80,7 +83,7 @@ public class MBEventListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerQuit(PlayerJoinEvent event) {
-		
+	
 		// wait two seconds before checking for unused worlds, because if this
 		// event handler is called
 		master.getMBWorldManager().CheckForUnusedWorlds();
@@ -94,6 +97,7 @@ public class MBEventListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerMoveEvent(PlayerMoveEvent event) {
+	
 		if (master.getMBWorldManager().isBoxel(event.getTo().getWorld())[0]) {
 			int maxBoxelSize = master.getConfig().getInt("max-boxel-size");
 			
@@ -131,6 +135,7 @@ public class MBEventListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerVelocityEvent(PlayerVelocityEvent event) {
+	
 		Player player = event.getPlayer();
 		if (master.getMBWorldManager().isBoxel(player.getWorld())[0]) {
 			int maxBoxelSize = master.getConfig().getInt("max-boxel-size");

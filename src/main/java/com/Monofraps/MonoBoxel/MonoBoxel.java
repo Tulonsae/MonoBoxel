@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel;
+package com.Monofraps.MonoBoxel;
 
 
 import java.util.logging.Level;
@@ -6,16 +6,16 @@ import java.util.logging.Level;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.Monofraps.MonoBoxel.Adventure.MBAdventureWorldManager;
-import com.github.Monofraps.MonoBoxel.CommandExecutors.MBAdventureCommandExecutor;
-import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelCommandExecutor;
-import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelgrpCommandExecutor;
-import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelinfoCommandExecutor;
-import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxellookupCommandExecutor;
-import com.github.Monofraps.MonoBoxel.CommandExecutors.MBBoxelremoveCommandExecutor;
-import com.github.Monofraps.MonoBoxel.Config.MBConfiguration;
-import com.github.Monofraps.MonoBoxel.EventHooks.MBEventListener;
-import com.github.Monofraps.MonoBoxel.Utils.LocalizationManager;
+import com.Monofraps.MonoBoxel.Adventure.MBAdventureWorldManager;
+import com.Monofraps.MonoBoxel.CommandExecutors.MBAdventureCommandExecutor;
+import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelCommandExecutor;
+import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelgrpCommandExecutor;
+import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelinfoCommandExecutor;
+import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxellookupCommandExecutor;
+import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelremoveCommandExecutor;
+import com.Monofraps.MonoBoxel.Config.MBConfiguration;
+import com.Monofraps.MonoBoxel.EventHooks.MBEventListener;
+import com.Monofraps.MonoBoxel.Utils.LocalizationManager;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
 
@@ -49,13 +49,12 @@ public class MonoBoxel extends JavaPlugin {
 	 * Hooks up the command executors and initializes the scheduled tasks.
 	 */
 	public void onEnable() {
-		this.logger = new MBLogger("Minecraft", this);
+	
+		logger = new MBLogger("Minecraft", this);
 		
 		localizationManager = new LocalizationManager(this);
 		
 		dataConfig = new MBConfiguration(this, "data.yml");
-		
-		// logger.debugLog(Level.INFO, localizationManager.getMessage("myKey").toString());
 		
 		reloadConfig();
 		
@@ -85,6 +84,7 @@ public class MonoBoxel extends JavaPlugin {
 				new Runnable() {
 					
 					public void run() {
+					
 						boxelManager.LoadConfig();
 					}
 				}, getConfig().getInt("word-load-delay") * 20);
@@ -99,6 +99,7 @@ public class MonoBoxel extends JavaPlugin {
 	 * @return The MultiverCore or null on failure.
 	 */
 	public MultiverseCore getMVCore() {
+	
 		if (mvCore == null) {
 			mvCore = (MultiverseCore) getServer().getPluginManager().getPlugin(
 					"Multiverse-Core");
@@ -120,22 +121,25 @@ public class MonoBoxel extends JavaPlugin {
 	 * onDisable hook for Bukkit.
 	 */
 	public void onDisable() {
+	
 		saveConfig();
 		dataConfig.saveConfig();
 		boxelManager.SaveBoxels();
-		localizationManager.SaveLocalization();
-		logger.info("MonoBoxel disabled!");
-		logger.debugLog(Level.INFO, "Plugin unloaded.");
+		localizationManager.SaveLocalization();		
 		
 		if (mvCore != null)
 			mvCore.decrementPluginCount();
+		
+		logger.info("MonoBoxel disabled!");
+		logger.debugLog(Level.INFO, "Plugin unloaded.");
 	}
 	
 	/**
 	 * 
 	 * @return The MonoBoxel chunk generator
 	 */
-	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {		
+	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
+	
 		if (id != null)
 			return new MBBoxelGenerator(getConfig().getLong("max-boxel-size"),
 					id.equals("ssehc") ? true : false);
@@ -149,6 +153,7 @@ public class MonoBoxel extends JavaPlugin {
 	 * @return The Permission Manager
 	 */
 	public MBPermissionManager getPermissionManager() {
+	
 		return boxelPermManager;
 	}
 	
@@ -156,6 +161,7 @@ public class MonoBoxel extends JavaPlugin {
 	 * @return The Localization Manager
 	 */
 	public LocalizationManager getLocalizationManager() {
+	
 		return localizationManager;
 	}
 	
@@ -164,6 +170,7 @@ public class MonoBoxel extends JavaPlugin {
 	 * @return The Boxel prefix
 	 */
 	public String getBoxelPrefix() {
+	
 		return boxelPrefix;
 	}
 	
@@ -171,6 +178,7 @@ public class MonoBoxel extends JavaPlugin {
 	 * @return The Boxel Group prefix
 	 */
 	public String getBoxelGroupPrefix() {
+	
 		return boxelGroupPrefix;
 	}
 	
@@ -179,6 +187,7 @@ public class MonoBoxel extends JavaPlugin {
 	 * @return The BoxelManager
 	 */
 	public MBBoxelManager getMBWorldManager() {
+	
 		return boxelManager;
 	}
 	
@@ -187,6 +196,7 @@ public class MonoBoxel extends JavaPlugin {
 	 * @return the adventure manager
 	 */
 	public MBAdventureWorldManager getMBAdventureManager() {
+	
 		return adventureManager;
 	}
 	
@@ -195,6 +205,7 @@ public class MonoBoxel extends JavaPlugin {
 	 * @return The LogManager
 	 */
 	public MBLogger getLogManager() {
+	
 		return logger;
 	}
 	
@@ -203,6 +214,7 @@ public class MonoBoxel extends JavaPlugin {
 	 * @return The data configuration
 	 */
 	public MBConfiguration getDataConfig() {
+	
 		return dataConfig;
 	}
 }

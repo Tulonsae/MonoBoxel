@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel.CommandExecutors;
+package com.Monofraps.MonoBoxel.CommandExecutors;
 
 
 import java.util.List;
@@ -8,9 +8,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.github.Monofraps.MonoBoxel.MBBoxel;
-import com.github.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
-import com.github.Monofraps.MonoBoxel.MonoBoxel;
+import com.Monofraps.MonoBoxel.MBBoxel;
+import com.Monofraps.MonoBoxel.MonoBoxel;
+import com.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 
 
@@ -24,19 +24,21 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 	private MonoBoxel	master	= null;
 	
 	public MBBoxelremoveCommandExecutor(MonoBoxel plugin) {
+	
 		master = plugin;
 	}
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
-		
+	
 		boolean senderIsPlayer = false;
 		Player player = null;
 		MVWorldManager wm = master.getMVCore().getMVWorldManager();
 		
 		String boxelName = "";
 		String boxelOwner = "";
+		String boxelPrefix = master.getBoxelPrefix();
 		
 		if (sender instanceof Player) {
 			player = (Player) sender;
@@ -52,18 +54,18 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 			
 			boxelName = master.getBoxelPrefix() + player.getName();
 		} else {
-			if (args[0].startsWith(master.getBoxelPrefix()))
+			if (args[0].startsWith(boxelPrefix))
 				boxelName = args[0];
 			else
-				boxelName = master.getBoxelPrefix() + args[0];
+				boxelName = boxelPrefix + args[0];
 		}
 		
-		if (boxelName.startsWith(master.getBoxelPrefix()))
-			boxelOwner = boxelName.substring(master.getBoxelPrefix().length());
+		if (boxelName.startsWith(boxelPrefix))
+			boxelOwner = boxelName.substring(boxelPrefix.length());
 		
 		if (senderIsPlayer) {
 			// is this the players own boxel?
-			if (boxelName.equals(master.getBoxelPrefix() + player.getName())) {
+			if (boxelName.equals(boxelPrefix + player.getName())) {
 				if (!master.getPermissionManager().hasPermission(player,
 						new MBPermission(MBPermission.CAN_REMOVE_OWN))) {
 					master.getPermissionManager().SendNotAllowedMessage(player);
@@ -72,8 +74,7 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 			} else { // no, it's not
 				if (!master.getPermissionManager().hasPermission(
 						player,
-						new MBPermission(MBPermission.ROOT_CAN_REMOVE,
-								boxelOwner))) {
+						new MBPermission(MBPermission.ROOT_CAN_REMOVE, boxelOwner))) {
 					master.getPermissionManager().SendNotAllowedMessage(player);
 					return false;
 				}
@@ -92,10 +93,8 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 			wm.loadWorld(boxelName);
 		
 		// Are there still players in this boxel? (there can't be some if the
-		// boxel was unloaded
 		if (boxlupResult[1]) {
-			List<Player> players = wm.getMVWorld(boxelName).getCBWorld()
-					.getPlayers();
+			List<Player> players = wm.getMVWorld(boxelName).getCBWorld().getPlayers();
 			if (players != null) {
 				for (Player p : players) {
 					p.sendMessage("Ooops... You are in a Boxel that is supposed to be deleted... will port you to the spawn world...");

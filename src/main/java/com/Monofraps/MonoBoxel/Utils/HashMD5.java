@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel.Utils;
+package com.Monofraps.MonoBoxel.Utils;
 
 
 import java.security.MessageDigest;
@@ -21,6 +21,7 @@ public class HashMD5 {
 	 * @return the hash
 	 */
 	public static String Hash(String str) {
+	
 		MessageDigest md5 = null;
 		StringBuffer sbMD5sum = new StringBuffer();
 		byte[] digest = null;
@@ -38,8 +39,8 @@ public class HashMD5 {
 		digest = md5.digest();
 		
 		for (byte b : digest) {
-			sbMD5sum.append(Integer.toHexString((b & 0xFF) | 0x100)
-					.toLowerCase().substring(1, 3));
+			sbMD5sum.append(Integer.toHexString((b & 0xFF) | 0x100).toLowerCase().substring(
+					1, 3));
 		}
 		
 		return sbMD5sum.toString();

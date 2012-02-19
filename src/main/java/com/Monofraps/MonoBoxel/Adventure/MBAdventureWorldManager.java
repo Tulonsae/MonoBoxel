@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel.Adventure;
+package com.Monofraps.MonoBoxel.Adventure;
 
 
 import java.util.ArrayList;
@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.bukkit.World;
 
-import com.github.Monofraps.MonoBoxel.MonoBoxel;
-import com.github.Monofraps.MonoBoxel.Utils.WorldDuplicator;
+import com.Monofraps.MonoBoxel.MonoBoxel;
+import com.Monofraps.MonoBoxel.Utils.WorldDuplicator;
 
 
 /**
@@ -27,6 +27,7 @@ public class MBAdventureWorldManager {
 	 *            A reference to the main plugin class
 	 */
 	public MBAdventureWorldManager(MonoBoxel plugin) {
+	
 		master = plugin;
 		adventureWorlds = new ArrayList<MBAdventureWorld>();
 	}
@@ -38,6 +39,7 @@ public class MBAdventureWorldManager {
 	 * @return false
 	 */
 	public boolean addAdventureWorld(World world) {
+	
 		WorldDuplicator.DuplicateWorld(world, master, world.getName()
 				+ ".template");
 		return adventureWorlds.add(new MBAdventureWorld(master, world.getName()));
@@ -48,6 +50,7 @@ public class MBAdventureWorldManager {
 	 * @return a list of all adventure worlds
 	 */
 	public List<MBAdventureWorld> getAdventureWorlds() {
+	
 		return adventureWorlds;
 	}
 	

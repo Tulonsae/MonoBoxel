@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel.CommandExecutors;
+package com.Monofraps.MonoBoxel.CommandExecutors;
 
 
 import org.bukkit.ChatColor;
@@ -6,9 +6,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.github.Monofraps.MonoBoxel.MBBoxel;
-import com.github.Monofraps.MonoBoxel.MBGroupBoxel;
-import com.github.Monofraps.MonoBoxel.MonoBoxel;
+import com.Monofraps.MonoBoxel.MBBoxel;
+import com.Monofraps.MonoBoxel.MBGroupBoxel;
+import com.Monofraps.MonoBoxel.MonoBoxel;
 
 
 /**
@@ -21,13 +21,14 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 	private MonoBoxel	master	= null;
 	
 	public MBBoxelinfoCommandExecutor(MonoBoxel plugin) {
+	
 		master = plugin;
 	}
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
-		
+	
 		master.getMBWorldManager().LoadConfig();
 		
 		sender.sendMessage(ChatColor.RED + "=====[ MonoBoxel Info ] =====");
@@ -80,16 +81,16 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 			sender.sendMessage(msg);
 		}
 		
-		sender.sendMessage(String.valueOf(master.getMBWorldManager()
-				.getNumBoxels())
+		sender.sendMessage(String.valueOf(master.getMBWorldManager().getNumBoxels())
 				+ " Boxels are currently registered on this server.");
 		
-		sender.sendMessage(String.valueOf(master.getMBWorldManager()
-				.getNumGroupBoxels())
+		sender.sendMessage(String.valueOf(master.getMBWorldManager().getNumGroupBoxels())
 				+ " group Boxels are currently registered on this server.");
 		
 		sender.sendMessage("The current Boxel prefix is: "
 				+ master.getBoxelPrefix());
+		sender.sendMessage("The current group Boxel prefix is: "
+				+ master.getBoxelGroupPrefix());
 		
 		return true;
 	}
