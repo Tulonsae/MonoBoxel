@@ -1,5 +1,5 @@
 name: MonoBoxel
-main: com.github.Monofraps.MonoBoxel.MonoBoxel
+main: com.Monofraps.MonoBoxel.MonoBoxel
 version: maven-version-number
 load: STARTUP
 authors: [Monofraps, MikeMatrix]

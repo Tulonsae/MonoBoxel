@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel.CommandExecutors;
+package com.Monofraps.MonoBoxel.CommandExecutors;
 
 
 import org.bukkit.command.Command;
@@ -6,10 +6,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.github.Monofraps.MonoBoxel.MBBoxel;
-import com.github.Monofraps.MonoBoxel.MBGroupBoxel;
-import com.github.Monofraps.MonoBoxel.MonoBoxel;
-import com.github.Monofraps.MonoBoxel.Utils.HashMD5;
+import com.Monofraps.MonoBoxel.MBBoxel;
+import com.Monofraps.MonoBoxel.MBGroupBoxel;
+import com.Monofraps.MonoBoxel.MonoBoxel;
+import com.Monofraps.MonoBoxel.Utils.HashMD5;
 
 
 /**
@@ -27,18 +27,20 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 	 *            A reference to the plugin class instance
 	 */
 	public MBBoxelCommandExecutor(MonoBoxel plugin) {
+	
 		master = plugin;
 	}
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
-		
+	
 		boolean senderIsPlayer = true;
 		Player player = null;
 		String boxelName = "";
 		String boxelGenerator = "MonoBoxel";
 		String boxelSeed = "";
+		String boxelPrefix = master.getBoxelPrefix();
 		
 		if (!(sender instanceof Player)) {
 			master.getLogManager().info(
@@ -53,14 +55,12 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		if (senderIsPlayer)
 			player = (Player) sender;
 		
-		boxelName = master.getBoxelPrefix();
-		
 		if (args.length > 0) {
 			if (args[0].equals("-") && senderIsPlayer)
-				boxelName = boxelName + player.getName();
+				boxelName = boxelPrefix + player.getName();
 			
 			if (boxelName.equals("-s") || boxelName.equals("-g"))
-				boxelName = master.getBoxelPrefix() + player.getName();
+				boxelName = boxelPrefix + player.getName();
 			
 			else
 				if (args[0].equals("getmeout") && senderIsPlayer) {
@@ -69,8 +69,7 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 								player.getWorld().getName()))
 							return box.Leave(player);
 					}
-					for (MBGroupBoxel box : master.getMBWorldManager()
-							.getGroupBoxels()) {
+					for (MBGroupBoxel box : master.getMBWorldManager().getGroupBoxels()) {
 						if (box.getCorrespondingWorldName().equals(
 								player.getWorld().getName()))
 							return box.Leave(player);
@@ -82,7 +81,7 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 					boxelName = boxelName + args[0];
 			
 		} else
-			boxelName = boxelName + player.getName();
+			boxelName = boxelPrefix + player.getName();
 		
 		// check if the Boxel already exists
 		for (MBBoxel box : master.getMBWorldManager().getBoxels()) {

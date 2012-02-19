@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel;
+package com.Monofraps.MonoBoxel;
 
 
 import java.io.File;
@@ -36,6 +36,7 @@ public class MBLogger {
 	 *            Plugin reference
 	 */
 	protected MBLogger(String name, JavaPlugin plugin) {
+	
 		log = Logger.getLogger(name);
 		pdFile = plugin.getDescription();
 		
@@ -46,8 +47,8 @@ public class MBLogger {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		debugLog = new DebugLog(pdFile.getName() + "-debug",
-				plugin.getDataFolder() + File.separator + "debug.log");
+		debugLog = new DebugLog(pdFile.getName() + "-debug", plugin.getDataFolder()
+				+ File.separator + "debug.log");
 		
 		printDebugLog = plugin.getConfig().getBoolean("log-debug");
 		
@@ -59,6 +60,7 @@ public class MBLogger {
 	
 	@Override
 	protected void finalize() throws Throwable {
+	
 		debugLog.close();
 		super.finalize();
 	}
@@ -70,6 +72,7 @@ public class MBLogger {
 	 * @param msg
 	 */
 	public void debugLog(Level level, String msg) {
+	
 		if (!printDebugLog)
 			return;
 		
@@ -84,6 +87,7 @@ public class MBLogger {
 	 * @param msg
 	 */
 	public void info(String msg) {
+	
 		if (logStackTrace) {
 			msg += "\n With stack: \n";
 			
@@ -93,6 +97,8 @@ public class MBLogger {
 			msg += "\n====================";
 		}
 		log.info(logPrefix + msg);
+		
+		debugLog.log(Level.INFO, logPrefix + msg);
 	}
 	
 	/**
@@ -101,6 +107,7 @@ public class MBLogger {
 	 * @param msg
 	 */
 	public void severe(String msg) {
+	
 		if (logStackTrace) {
 			msg += "\n With stack: \n";
 			
@@ -110,6 +117,8 @@ public class MBLogger {
 			msg += "\n====================";
 		}
 		log.severe(logPrefix + msg);
+		
+		debugLog.log(Level.SEVERE, logPrefix + msg);
 	}
 	
 	/**
@@ -118,6 +127,7 @@ public class MBLogger {
 	 * @param msg
 	 */
 	public void warning(String msg) {
+	
 		if (logStackTrace) {
 			msg += "\n With stack: \n";
 			
@@ -127,6 +137,8 @@ public class MBLogger {
 			msg += "\n====================";
 		}
 		log.warning(logPrefix + msg);
+		
+		debugLog.log(Level.WARNING, logPrefix + msg);
 	}
 	
 	/**
@@ -139,17 +151,16 @@ public class MBLogger {
 		/**
 		 * 
 		 */
-		public static final MBPlayerMessagePrefix	PLUGIN_NAME	= new MBPlayerMessagePrefix(
-																		"[MonoBoxel]");
+		public static final MBPlayerMessagePrefix	PLUGIN_NAME	= new MBPlayerMessagePrefix("[MonoBoxel]");
 		/**
 		 * 
 		 */
-		public static final MBPlayerMessagePrefix	NOT_ALLOWED	= new MBPlayerMessagePrefix(
-																		"A divine voice says: ");
+		public static final MBPlayerMessagePrefix	NOT_ALLOWED	= new MBPlayerMessagePrefix("A divine voice says: ");
 		
 		private String								prefix		= "";
 		
 		public MBPlayerMessagePrefix(String pref) {
+		
 			prefix = pref;
 		}
 		
@@ -158,6 +169,7 @@ public class MBLogger {
 		 * @return the prefix
 		 */
 		public String getPrefix() {
+		
 			return prefix;
 		}
 	}
@@ -170,6 +182,7 @@ public class MBLogger {
 	 */
 	public void playerMessage(Player player, MBPlayerMessagePrefix prefix,
 			String msg) {
+	
 		player.sendMessage(prefix.getPrefix() + msg);
 	}
 }

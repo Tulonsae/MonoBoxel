@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel.Utils;
+package com.Monofraps.MonoBoxel.Utils;
 
 
 import java.io.File;
@@ -10,7 +10,7 @@ import java.io.OutputStream;
 
 import org.bukkit.World;
 
-import com.github.Monofraps.MonoBoxel.MonoBoxel;
+import com.Monofraps.MonoBoxel.MonoBoxel;
 
 
 /**
@@ -29,11 +29,11 @@ public final class WorldDuplicator {
 	 */
 	public static void DuplicateWorld(World world, MonoBoxel plugin,
 			String destinationName) {
+	
 		world.save();
 		
 		File worldFolder = world.getWorldFolder();
-		File worldDestinationFolder = new File(plugin.getServer()
-				.getWorldContainer().getAbsoluteFile()
+		File worldDestinationFolder = new File(plugin.getServer().getWorldContainer().getAbsoluteFile()
 				+ File.separator + destinationName);
 		
 		try {
@@ -51,14 +51,12 @@ public final class WorldDuplicator {
 	 *             Why do I have to comment this?!
 	 */
 	public static void copyFolder(File src, File dest) throws IOException {
-		
+	
 		if (src.isDirectory()) {
 			
 			// if directory not exists, create it
 			if (!dest.exists()) {
 				dest.mkdir();
-				System.out.println("Directory copied from " + src + "  to "
-						+ dest);
 			}
 			
 			// list all the directory contents
@@ -93,7 +91,6 @@ public final class WorldDuplicator {
 			
 			in.close();
 			out.close();
-			System.out.println("File copied from " + src + " to " + dest);
 		}
 	}
 }

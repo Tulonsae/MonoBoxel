@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel;
+package com.Monofraps.MonoBoxel;
 
 
 import java.util.ArrayList;
@@ -29,52 +29,44 @@ public class MBPermissionManager {
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_CREATE_OWN			= new Permission(
-																		"monoboxel.boxel.create.own");
+		public static final Permission	CAN_CREATE_OWN			= new Permission("monoboxel.boxel.create.own");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_CREATE_GROUP_BOXEL	= new Permission(
-																		"monoboxel.groupboxel.create");
+		public static final Permission	CAN_CREATE_GROUP_BOXEL	= new Permission("monoboxel.groupboxel.create");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_VISIT_OWN			= new Permission(
-																		"monoboxel.boxel.visit.own");
+		public static final Permission	CAN_VISIT_OWN			= new Permission("monoboxel.boxel.visit.own");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_VISIT_GROUP_BOXEL	= new Permission(
-																		"monoboxel.groupboxel.visit");
+		public static final Permission	CAN_VISIT_GROUP_BOXEL	= new Permission("monoboxel.groupboxel.visit");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_REMOVE_OWN			= new Permission(
-																		"monoboxel.boxel.remove.own");
+		public static final Permission	CAN_REMOVE_OWN			= new Permission("monoboxel.boxel.remove.own");
 		
 		// Root Template Permissions
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create
 		 */
-		public static final Permission	ROOT_CAN_CREATE			= new Permission(
-																		"monoboxel.boxel.create");
+		public static final Permission	ROOT_CAN_CREATE			= new Permission("monoboxel.boxel.create");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.visit
 		 */
-		public static final Permission	ROOT_CAN_VISIT			= new Permission(
-																		"monoboxel.boxel.visit");
+		public static final Permission	ROOT_CAN_VISIT			= new Permission("monoboxel.boxel.visit");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.remove
 		 */
-		public static final Permission	ROOT_CAN_REMOVE			= new Permission(
-																		"monoboxel.boxel.remove");
+		public static final Permission	ROOT_CAN_REMOVE			= new Permission("monoboxel.boxel.remove");
 		
 		private Permission				permission				= null;
 		private String					permissionNode			= "";
@@ -83,6 +75,7 @@ public class MBPermissionManager {
 		 * @param permission
 		 */
 		public MBPermission(Permission permission) {
+		
 			this.permission = permission;
 			this.permissionNode = this.permission.getName();
 		}
@@ -92,6 +85,7 @@ public class MBPermissionManager {
 		 *            The Permission Node.
 		 */
 		public MBPermission(String node) {
+		
 			this.permission = new Permission(node);
 			this.permissionNode = this.permission.getName();
 		}
@@ -103,6 +97,7 @@ public class MBPermissionManager {
 		 *            create the permission example.visit.test)
 		 */
 		public MBPermission(Permission perm, String subnode) {
+		
 			this.permission = new Permission(perm.getName() + "." + subnode);
 			this.permissionNode = this.permission.getName();
 		}
@@ -115,6 +110,7 @@ public class MBPermissionManager {
 		 *            create the permission example.visit.test)
 		 */
 		public MBPermission(String node, String subnode) {
+		
 			this.permission = new Permission(node + "." + subnode);
 			this.permissionNode = this.permission.getName();
 		}
@@ -123,6 +119,7 @@ public class MBPermissionManager {
 		 * @return The permission.
 		 */
 		public Permission getPermission() {
+		
 			return this.permission;
 		}
 		
@@ -133,6 +130,7 @@ public class MBPermissionManager {
 		 * @return The List of Wildcard Permissions for this node.
 		 */
 		public ArrayList<Permission> getWildcardPermissions() {
+		
 			ArrayList<Permission> wildcards = new ArrayList<Permission>();
 			
 			String[] nodeSplit = null;
@@ -153,6 +151,7 @@ public class MBPermissionManager {
 	 *            A reference to the main plugin class
 	 */
 	public MBPermissionManager(MonoBoxel plugin) {
+	
 		master = plugin;
 	}
 	
@@ -164,6 +163,7 @@ public class MBPermissionManager {
 	 * @return true if Player has the Permission, false if Player doesn't have the Permission
 	 */
 	public boolean hasPermission(Player player, MBPermission permission) {
+	
 		if (player.hasPermission(permission.getPermission()))
 			return true;
 		ArrayList<Permission> wildcards = permission.getWildcardPermissions();
@@ -181,6 +181,7 @@ public class MBPermissionManager {
 	 * @param sender
 	 */
 	public void SendNotAllowedMessage(CommandSender sender) {
+	
 		sender.sendMessage("A divine voice says: 'You are not allowed to do this!'");
 	}
 }

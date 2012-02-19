@@ -1,9 +1,10 @@
-package com.github.Monofraps.MonoBoxel;
+package com.Monofraps.MonoBoxel;
 
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -29,13 +30,14 @@ public class MBBoxelManager {
 		private MBBoxel		box		= null;
 		
 		public BoxelUnloadRunnable(MonoBoxel monoBoxel, MBBoxel boxel) {
+		
 			master = monoBoxel;
 			box = boxel;
 		}
 		
 		@Override
 		public void run() {
-			master.getLogManager().info("runable execute");
+		
 			if (!box.Unload())
 				master.getLogManager().warning(
 						"Failed to unload Boxel "
@@ -56,6 +58,7 @@ public class MBBoxelManager {
 	 *            The reference to the core plugin instance
 	 */
 	public MBBoxelManager(MonoBoxel plugin) {
+	
 		master = plugin;
 		boxels = new ArrayList<MBBoxel>();
 		groupBoxels = new ArrayList<MBGroupBoxel>();
@@ -65,15 +68,16 @@ public class MBBoxelManager {
 	 * Loads the Boxels.
 	 */
 	public void LoadConfig() {
+	
 		if (worldsCounted)
 			return;
 		
 		worldsCounted = true;
 		
-		List<String> boxelNames = master.getDataConfig().getConfig()
-				.getStringList("boxels.boxels");
-		List<String> groupBoxelNames = master.getDataConfig().getConfig()
-				.getStringList("boxels.groupboxels");
+		List<String> boxelNames = master.getDataConfig().getConfig().getStringList(
+				"boxels.boxels");
+		List<String> groupBoxelNames = master.getDataConfig().getConfig().getStringList(
+				"boxels.groupboxels");
 		
 		if (boxelNames != null)
 			for (String s : boxelNames)
@@ -83,9 +87,8 @@ public class MBBoxelManager {
 			for (String s : groupBoxelNames)
 				AddGroupBoxel(
 						s,
-						master.getDataConfig().getConfig()
-								.getString("boxels.groupboxels." + s), false,
-						null, "", "");
+						master.getDataConfig().getConfig().getString(
+								"boxels.groupboxels." + s), false, null, "", "");
 		
 	}
 	
@@ -93,10 +96,10 @@ public class MBBoxelManager {
 	 * Saves Boxels to data config file.
 	 */
 	public void SaveBoxels() {
+	
 		if ((getNumBoxels() == 0) && (getNumGroupBoxels() == 0))
 			return;
 		
-		// save all "normal" Boxels to the data confif
 		List<String> boxelNames = new ArrayList<String>();
 		for (MBBoxel box : boxels)
 			boxelNames.add(box.getCorrespondingWorldName());
@@ -105,18 +108,17 @@ public class MBBoxelManager {
 		for (MBGroupBoxel box : groupBoxels)
 			groupBoxelNames.add(box.getCorrespondingWorldName());
 		
-		master.getDataConfig().getConfig()
-				.set("boxels.boxels", boxelNames.toArray());
+		master.getDataConfig().getConfig().set("boxels.boxels",
+				boxelNames.toArray());
 		
-		master.getDataConfig().getConfig()
-				.set("boxels.groupboxels", groupBoxelNames.toArray());
+		master.getDataConfig().getConfig().set("boxels.groupboxels",
+				groupBoxelNames.toArray());
 		
 		for (MBGroupBoxel box : groupBoxels)
-			master.getDataConfig()
-					.getConfig()
-					.set("boxels.groupboxels.passwords"
+			master.getDataConfig().getConfig().set(
+					"boxels.groupboxels.passwords."
 							+ box.getCorrespondingWorldName(),
-							box.getPasswordHash());
+					box.getPasswordHash());
 		
 		master.getDataConfig().saveConfig();
 	}
@@ -142,6 +144,7 @@ public class MBBoxelManager {
 	 */
 	public boolean AddBoxel(String name, boolean create, Player player,
 			String generator, String seed) {
+	
 		// check for duplicates
 		for (MBBoxel b : boxels) {
 			if (b.getCorrespondingWorldName().equals(name))
@@ -152,9 +155,9 @@ public class MBBoxelManager {
 			name = master.getBoxelPrefix() + name;
 		
 		master.getLogManager().info(
-				master.getLocalizationManager().getMessage("found")
-						.setMessageVariable("boxeltype", "Boxel")
-						.setMessageVariable("boxelname", name).toString());
+				master.getLocalizationManager().getMessage("found").setMessageVariable(
+						"boxeltype", "Boxel").setMessageVariable("boxelname",
+						name).toString());
 		
 		MBBoxel boxel = new MBBoxel(master, name, generator, seed);
 		
@@ -188,14 +191,14 @@ public class MBBoxelManager {
 	 */
 	public boolean AddGroupBoxel(String name, String boxelPassword,
 			boolean create, Player player, String generator, String seed) {
-		
+	
 		for (MBGroupBoxel b : groupBoxels) {
 			if (b.getCorrespondingWorldName().equals(name))
 				return true;
 		}
 		
 		if (!name.startsWith(master.getBoxelPrefix()))
-			name = master.getBoxelPrefix() + name;
+			name = master.getBoxelGroupPrefix() + name;
 		
 		MBGroupBoxel boxel = new MBGroupBoxel(master, name, generator, seed);
 		boxel.setPasswordHash(boxelPassword);
@@ -205,9 +208,9 @@ public class MBBoxelManager {
 				return false;
 		
 		master.getLogManager().info(
-				master.getLocalizationManager().getMessage("found")
-						.setMessageVariable("boxeltype", "Group Boxel")
-						.setMessageVariable("boxelname", name).toString());
+				master.getLocalizationManager().getMessage("found").setMessageVariable(
+						"boxeltype", "Group Boxel").setMessageVariable(
+						"boxelname", name).toString());
 		
 		return groupBoxels.add(boxel);
 	}
@@ -217,6 +220,7 @@ public class MBBoxelManager {
 	 * @return A reference to the list of all registered (loaded + unloaded) Boxels
 	 */
 	public List<MBBoxel> getBoxels() {
+	
 		return boxels;
 	}
 	
@@ -225,6 +229,7 @@ public class MBBoxelManager {
 	 * @return a list of group all Boxels
 	 */
 	public List<MBGroupBoxel> getGroupBoxels() {
+	
 		return groupBoxels;
 	}
 	
@@ -233,6 +238,7 @@ public class MBBoxelManager {
 	 * @return The total number of all registered (loaded + unloaded) Boxels
 	 */
 	public long getNumBoxels() {
+	
 		return boxels.size();
 	}
 	
@@ -241,6 +247,7 @@ public class MBBoxelManager {
 	 * @return the total nu,ber of group Boxels
 	 */
 	public long getNumGroupBoxels() {
+	
 		return groupBoxels.size();
 	}
 	
@@ -253,14 +260,17 @@ public class MBBoxelManager {
 	 *         Component 2(1) is true if the Boxel is loaded.
 	 */
 	public boolean[] isBoxel(String name) {
+	
 		boolean[] result = new boolean[2];
+		result[0] = false;
+		result[1] = false;
 		
 		if (!name.startsWith(master.getBoxelPrefix())) {
-			name = master.getBoxelPrefix() + name;
+			master.getLogManager().debugLog(Level.WARNING, "isBoxel called woth a non-prefixed name.");
+			return result;
 		}
 		
-		Collection<MultiverseWorld> worlds = master.getMVCore()
-				.getMVWorldManager().getMVWorlds();
+		Collection<MultiverseWorld> worlds = master.getMVCore().getMVWorldManager().getMVWorlds();
 		for (MultiverseWorld w : worlds) {
 			if (w.getName().equals(name)) {
 				result[0] = true;
@@ -268,8 +278,8 @@ public class MBBoxelManager {
 			}
 		}
 		
-		if (master.getMVCore().getMVWorldManager().getUnloadedWorlds()
-				.contains(name)) {
+		if (master.getMVCore().getMVWorldManager().getUnloadedWorlds().contains(
+				name)) {
 			result[0] = true;
 			result[1] = false;
 		}
@@ -286,6 +296,7 @@ public class MBBoxelManager {
 	 *         Component 2(1) is true if the Boxel is loaded.
 	 */
 	public boolean[] isBoxel(World world) {
+	
 		return this.isBoxel(world.getName());
 	}
 	
@@ -293,22 +304,17 @@ public class MBBoxelManager {
 	 * Starts/Cancels a delayed world unload if a Boxel is empty.
 	 */
 	public void CheckForUnusedWorlds() {
-		
+	
 		// normal boxels
 		for (MBBoxel box : boxels) {
 			if (box.isEmpty() && box.getUnloadTaskId() == -1 && box.isLoaded()) {
-				box.setUnloadTaskId(master
-						.getServer()
-						.getScheduler()
-						.scheduleAsyncDelayedTask(
-								master,
-								new BoxelUnloadRunnable(master, box),
-								master.getConfig()
-										.getInt("world-unload-period") * 20));
+				box.setUnloadTaskId(master.getServer().getScheduler().scheduleAsyncDelayedTask(
+						master, new BoxelUnloadRunnable(master, box),
+						master.getConfig().getInt("world-unload-period") * 20));
 			} else
 				if (!box.isEmpty() && box.getUnloadTaskId() != -1) {
-					master.getServer().getScheduler()
-							.cancelTask(box.getUnloadTaskId());
+					master.getServer().getScheduler().cancelTask(
+							box.getUnloadTaskId());
 					box.setUnloadTaskId(-1);
 				}
 		}
@@ -316,18 +322,14 @@ public class MBBoxelManager {
 		// group boxels
 		for (MBGroupBoxel box : groupBoxels) {
 			if (box.isEmpty() && box.getUnloadTaskId() == -1 && box.isLoaded()) {
-				box.setUnloadTaskId(master
-						.getServer()
-						.getScheduler()
-						.scheduleAsyncDelayedTask(
-								master,
-								new BoxelUnloadRunnable(master, box),
-								master.getConfig().getInt(
-										"world-unload-period", 60) * 20));
+				box.setUnloadTaskId(master.getServer().getScheduler().scheduleAsyncDelayedTask(
+						master,
+						new BoxelUnloadRunnable(master, box),
+						master.getConfig().getInt("world-unload-period", 60) * 20));
 			} else
 				if (!box.isEmpty() && box.getUnloadTaskId() != -1) {
-					master.getServer().getScheduler()
-							.cancelTask(box.getUnloadTaskId());
+					master.getServer().getScheduler().cancelTask(
+							box.getUnloadTaskId());
 					box.setUnloadTaskId(-1);
 				}
 		}

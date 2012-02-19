@@ -1,12 +1,12 @@
-package com.github.Monofraps.MonoBoxel.CommandExecutors;
+package com.Monofraps.MonoBoxel.CommandExecutors;
 
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.github.Monofraps.MonoBoxel.MonoBoxel;
-import com.github.Monofraps.MonoBoxel.Adventure.MBAdventureWorld;
+import com.Monofraps.MonoBoxel.MonoBoxel;
+import com.Monofraps.MonoBoxel.Adventure.MBAdventureWorld;
 
 
 /**
@@ -20,6 +20,7 @@ public class MBAdventureCommandExecutor implements CommandExecutor {
 	private MonoBoxel	master	= null;
 	
 	public MBAdventureCommandExecutor(MonoBoxel plugin) {
+	
 		master = plugin;
 	}
 	
@@ -27,6 +28,8 @@ public class MBAdventureCommandExecutor implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
 		
+		sender.sendMessage("This feature is not fully implemented!");
+	
 		String worldName = "";
 		boolean resetDone = false;
 		
@@ -42,8 +45,7 @@ public class MBAdventureCommandExecutor implements CommandExecutor {
 			// WorldDuplicator.DuplicateWorld(master.getMVCore().getMVWorldManager().getMVWorld(worldName).getCBWorld(),
 			// master, worldName + ".template");
 			if (!master.getMBAdventureManager().addAdventureWorld(
-					master.getMVCore().getMVWorldManager()
-							.getMVWorld(worldName).getCBWorld())) {
+					master.getMVCore().getMVWorldManager().getMVWorld(worldName).getCBWorld())) {
 				sender.sendMessage("Could not create adventure world!");
 				return false;
 			} else {
@@ -58,8 +60,7 @@ public class MBAdventureCommandExecutor implements CommandExecutor {
 			if (args[0].equals("reset")) {
 				worldName = args[1];
 				
-				for (MBAdventureWorld advW : master.getMBAdventureManager()
-						.getAdventureWorlds()) {
+				for (MBAdventureWorld advW : master.getMBAdventureManager().getAdventureWorlds()) {
 					if (advW.getName().equals(worldName)) {
 						resetDone = advW.Reset();
 					}

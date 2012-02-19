@@ -1,4 +1,4 @@
-package com.github.Monofraps.MonoBoxel.CommandExecutors;
+package com.Monofraps.MonoBoxel.CommandExecutors;
 
 
 import org.bukkit.command.Command;
@@ -6,9 +6,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.github.Monofraps.MonoBoxel.MBGroupBoxel;
-import com.github.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
-import com.github.Monofraps.MonoBoxel.MonoBoxel;
+import com.Monofraps.MonoBoxel.MBGroupBoxel;
+import com.Monofraps.MonoBoxel.MonoBoxel;
+import com.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
 
 
 /**
@@ -26,18 +26,20 @@ public class MBBoxelgrpCommandExecutor implements CommandExecutor {
 	 *            A reference to the plugin class instance
 	 */
 	public MBBoxelgrpCommandExecutor(MonoBoxel plugin) {
+	
 		master = plugin;
 	}
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
-		
+	
 		Player player = null;
 		String boxelPassword = "";
 		String boxelName = "";
 		String boxelGenerator = "MonoBoxel";
 		String boxelSeed = "";
+		String boxelPrefix = master.getBoxelGroupPrefix();
 		
 		if (!(sender instanceof Player)) {
 			master.getLogManager().info(
@@ -56,19 +58,19 @@ public class MBBoxelgrpCommandExecutor implements CommandExecutor {
 		if (args.length <= 1)
 			player.sendMessage("You have to specify a Boxel name and a password to join/create a group Boxel.");
 		
-		boxelName = master.getBoxelPrefix() + args[0];
+		boxelName = boxelPrefix + args[0];
 		boxelPassword = args[1];
-		
-		if (!master.getPermissionManager().hasPermission(player,
-				new MBPermission(MBPermission.CAN_CREATE_GROUP_BOXEL))) {
-			master.getPermissionManager().SendNotAllowedMessage(player);
-			return false;
-		}
 		
 		// check if the Boxel already exists
 		for (MBGroupBoxel box : master.getMBWorldManager().getGroupBoxels()) {
 			if (box.getCorrespondingWorldName().equals(boxelName))
 				return box.Join(player, boxelPassword);
+		}
+		
+		if (!master.getPermissionManager().hasPermission(player,
+				new MBPermission(MBPermission.CAN_CREATE_GROUP_BOXEL))) {
+			master.getPermissionManager().SendNotAllowedMessage(player);
+			return false;
 		}
 		
 		// the Boxel does not exist, so we have to create it
