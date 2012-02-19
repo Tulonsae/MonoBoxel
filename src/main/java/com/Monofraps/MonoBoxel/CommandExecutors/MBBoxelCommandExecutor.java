@@ -52,8 +52,6 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 			return true;
 		}
 		
-		master.getLogManager().info(boxelPrefix);
-		
 		if (senderIsPlayer)
 			player = (Player) sender;
 		
@@ -87,7 +85,6 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 		
 		// check if the Boxel already exists
 		for (MBBoxel box : master.getMBWorldManager().getBoxels()) {
-			master.getLogManager().info(boxelName);
 			if (box.getCorrespondingWorldName().equals(boxelName))
 				return box.Join(player);
 		}

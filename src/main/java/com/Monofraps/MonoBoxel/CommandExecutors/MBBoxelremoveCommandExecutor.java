@@ -52,7 +52,7 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 				return false;
 			}
 			
-			boxelName = master.getBoxelPrefix() + player.getName();
+			boxelName = boxelPrefix + player.getName();
 		} else {
 			if (args[0].startsWith(boxelPrefix))
 				boxelName = args[0];
