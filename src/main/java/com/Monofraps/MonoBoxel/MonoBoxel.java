@@ -56,6 +56,9 @@ public class MonoBoxel extends JavaPlugin {
 		
 		dataConfig = new MBConfiguration(this, "data.yml");
 		
+		if(getConfig().getBoolean("first-run", true))
+			saveDefaultConfig();
+		
 		reloadConfig();
 		
 		boxelPrefix = getConfig().getString("boxel-prefix");

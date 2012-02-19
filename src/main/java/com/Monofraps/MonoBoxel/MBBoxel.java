@@ -68,8 +68,10 @@ public class MBBoxel {
 		master = plugin;
 		correspondingWorldName = worldName;
 		
-		correspondingWorld = master.getMVCore().getMVWorldManager().getMVWorld(
-				correspondingWorldName).getCBWorld();
+		if (master.getMVCore().getMVWorldManager().getMVWorld(
+				correspondingWorldName) != null)
+			correspondingWorld = master.getMVCore().getMVWorldManager().getMVWorld(
+					correspondingWorldName).getCBWorld();
 		
 		if (generator.isEmpty())
 			boxelGenerator = "MonoBoxel";

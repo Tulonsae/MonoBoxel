@@ -40,3 +40,5 @@ max-boxel-size: 16
 
 # Enable debug output
 log-debug: false
+
+first-run: false
