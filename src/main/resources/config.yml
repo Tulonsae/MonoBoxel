@@ -19,11 +19,6 @@ world-unload-period: 60
 max-boxel-count: 20
 
 
-# Set this to true and MonoBoxel will save the position of a player before he enters a Boxel and will send him back
-# to where he was on exit
-save-exit-location: true
-
-
 # Prefix of Boxel world names
 boxel-prefix: 'BOXEL_'
 

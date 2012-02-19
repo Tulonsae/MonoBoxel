@@ -50,8 +50,6 @@ public class MBEventListener implements Listener {
 	public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
 	
 		master.getMBWorldManager().CheckForUnusedWorlds();
-		master.getLogManager().info(
-				"player is in world:" + event.getPlayer().getWorld().getName());
 	}
 	
 	/**
@@ -82,7 +80,7 @@ public class MBEventListener implements Listener {
 	 * @param event
 	 */
 	@EventHandler
-	public void onPlayerQuit(PlayerJoinEvent event) {
+	public void onPlayerJoin(PlayerJoinEvent event) {
 	
 		// wait two seconds before checking for unused worlds, because if this
 		// event handler is called
