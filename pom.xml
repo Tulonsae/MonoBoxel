@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.Monofraps.MonoBoxel</groupId>
 	<artifactId>MonoBoxel</artifactId>
-	<version>0.5.R1</version>
+	<version>0.5.R1-SNAPSHOT</version>
 	<name>MonoBoxel</name>
 
 	<properties>
