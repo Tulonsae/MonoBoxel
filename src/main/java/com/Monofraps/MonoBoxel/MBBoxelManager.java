@@ -264,10 +264,17 @@ public class MBBoxelManager {
 		result[0] = false;
 		result[1] = false;
 		
-		/*if (!name.startsWith(master.getBoxelPrefix())) {
-			master.getLogManager().debugLog(Level.WARNING, "isBoxel called woth a non-prefixed name.");
+		if (!name.startsWith(master.getBoxelPrefix())
+				&& !name.startsWith(master.getBoxelGroupPrefix()))
 			return result;
-		}*/
+		
+		/*
+		 * if (!name.startsWith(master.getBoxelPrefix())) {
+		 * master.getLogManager().debugLog(Level.WARNING,
+		 * "isBoxel called woth a non-prefixed name.");
+		 * return result;
+		 * }
+		 */
 		
 		Collection<MultiverseWorld> worlds = master.getMVCore().getMVWorldManager().getMVWorlds();
 		for (MultiverseWorld w : worlds) {
