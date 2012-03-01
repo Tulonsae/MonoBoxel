@@ -359,7 +359,7 @@ public class MBBoxel {
 						player.getWorld().getName());
 				master.getDataConfig().getConfig().set(
 						"playeroloc." + player.getName() + ".position",
-						player.getLocation().toVector());
+						player.getLocation().toVector().add(new Vector(0, 1, 0)));
 				master.getDataConfig().getConfig().set(
 						"playeroloc." + player.getName() + ".yaw",
 						player.getLocation().getYaw());

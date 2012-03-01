@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 
+import com.Monofraps.MonoBoxel.MBBoxel;
 import com.Monofraps.MonoBoxel.MonoBoxel;
 
 
@@ -60,8 +61,15 @@ public class MBEventListener implements Listener {
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 	
-		// wait two seconds before checking for unused worlds, because if this
-		// event handler is called
+		// wait two seconds before checking for unused worlds
+		if (master.getMBWorldManager().isBoxel(event.getPlayer().getWorld())[0]) {
+			for (MBBoxel boxel : master.getMBWorldManager().getBoxels()) {
+				if (boxel.getCorrespondingWorldName().equals(
+						event.getPlayer().getWorld().getName()))
+					boxel.Leave(event.getPlayer());
+			}
+		}
+		
 		master.getServer().getScheduler().scheduleSyncDelayedTask(master,
 				new Runnable() {
 					
@@ -82,8 +90,6 @@ public class MBEventListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 	
-		// wait two seconds before checking for unused worlds, because if this
-		// event handler is called
 		master.getMBWorldManager().CheckForUnusedWorlds();
 	}
 	
