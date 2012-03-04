@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -47,8 +46,8 @@ public class MBLogger {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		debugLog = new DebugLog(pdFile.getName() + "-debug", plugin.getDataFolder()
-				+ File.separator + "debug.log");
+		debugLog = new DebugLog(pdFile.getName() + "-debug",
+				plugin.getDataFolder() + File.separator + "debug.log");
 		
 		printDebugLog = plugin.getConfig().getBoolean("log-debug");
 		
@@ -98,7 +97,7 @@ public class MBLogger {
 		}
 		log.info(logPrefix + msg);
 		
-		debugLog.log(Level.INFO, logPrefix + msg);
+		debugLog(Level.INFO, logPrefix + msg);
 	}
 	
 	/**
@@ -118,7 +117,7 @@ public class MBLogger {
 		}
 		log.severe(logPrefix + msg);
 		
-		debugLog.log(Level.SEVERE, logPrefix + msg);
+		debugLog(Level.SEVERE, logPrefix + msg);
 	}
 	
 	/**
@@ -138,51 +137,6 @@ public class MBLogger {
 		}
 		log.warning(logPrefix + msg);
 		
-		debugLog.log(Level.WARNING, logPrefix + msg);
-	}
-	
-	/**
-	 * 
-	 * @author Monofraps
-	 * 
-	 */
-	public static final class MBPlayerMessagePrefix {
-		
-		/**
-		 * 
-		 */
-		public static final MBPlayerMessagePrefix	PLUGIN_NAME	= new MBPlayerMessagePrefix("[MonoBoxel]");
-		/**
-		 * 
-		 */
-		public static final MBPlayerMessagePrefix	NOT_ALLOWED	= new MBPlayerMessagePrefix("A divine voice says: ");
-		
-		private String								prefix		= "";
-		
-		public MBPlayerMessagePrefix(String pref) {
-		
-			prefix = pref;
-		}
-		
-		/**
-		 * 
-		 * @return the prefix
-		 */
-		public String getPrefix() {
-		
-			return prefix;
-		}
-	}
-	
-	/**
-	 * 
-	 * @param player
-	 * @param prefix
-	 * @param msg
-	 */
-	public void playerMessage(Player player, MBPlayerMessagePrefix prefix,
-			String msg) {
-	
-		player.sendMessage(prefix.getPrefix() + msg);
+		debugLog(Level.WARNING, logPrefix + msg);
 	}
 }

@@ -18,7 +18,7 @@ public class MBBoxelGenerator extends ChunkGenerator {
 	
 	private static final int	CHUNK_WIDTH		= 16;
 	private static final int	CHUNK_LENGTH	= 16;
-	private static final int	CHUNK_HEIGHT	= 128; // does not work with 256 ?!
+	private static final int	CHUNK_HEIGHT	= 128;					// does not work with 256 ?!
 	private static final int	CHUNK_SIZE		= CHUNK_WIDTH * CHUNK_LENGTH
 														* CHUNK_HEIGHT;
 	

@@ -74,7 +74,8 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 			} else { // no, it's not
 				if (!master.getPermissionManager().hasPermission(
 						player,
-						new MBPermission(MBPermission.ROOT_CAN_REMOVE, boxelOwner))) {
+						new MBPermission(MBPermission.ROOT_CAN_REMOVE,
+								boxelOwner))) {
 					master.getPermissionManager().SendNotAllowedMessage(player);
 					return false;
 				}

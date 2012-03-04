@@ -55,8 +55,10 @@ public class MBBoxelgrpCommandExecutor implements CommandExecutor {
 			return false;
 		}
 		
-		if (args.length <= 1)
+		if (args.length <= 1) {
 			player.sendMessage("You have to specify a Boxel name and a password to join/create a group Boxel.");
+			return false;
+		}
 		
 		boxelName = boxelPrefix + args[0];
 		boxelPassword = args[1];

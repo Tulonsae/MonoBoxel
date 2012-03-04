@@ -77,7 +77,8 @@ public class LocalizationManager {
 		@Override
 		protected LocalizationMessage clone() {
 		
-			return new LocalizationMessage(this.messageTemplate, this.messageVariables);
+			return new LocalizationMessage(this.messageTemplate,
+					this.messageVariables);
 		}
 	}
 	
@@ -123,8 +124,9 @@ public class LocalizationManager {
 		Set<String> messageIds = localizationConfig.getConfig().getKeys(false);
 		for (String messageId : messageIds) {
 			master.getLogManager().debugLog(Level.INFO, messageId);
-			LocalizationMessage localizationMessage = new LocalizationMessage(localizationConfig.getConfig().getString(
-					messageId + ".template-message"));
+			LocalizationMessage localizationMessage = new LocalizationMessage(
+					localizationConfig.getConfig().getString(
+							messageId + ".template-message"));
 			List<String> localizationValueKeys = localizationConfig.getConfig().getStringList(
 					messageId + ".variables");
 			for (String localizationValueKey : localizationValueKeys) {

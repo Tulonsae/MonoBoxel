@@ -29,44 +29,52 @@ public class MBPermissionManager {
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_CREATE_OWN			= new Permission("monoboxel.boxel.create.own");
+		public static final Permission	CAN_CREATE_OWN			= new Permission(
+																		"monoboxel.boxel.create.own");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_CREATE_GROUP_BOXEL	= new Permission("monoboxel.groupboxel.create");
+		public static final Permission	CAN_CREATE_GROUP_BOXEL	= new Permission(
+																		"monoboxel.groupboxel.create");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_VISIT_OWN			= new Permission("monoboxel.boxel.visit.own");
+		public static final Permission	CAN_VISIT_OWN			= new Permission(
+																		"monoboxel.boxel.visit.own");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_VISIT_GROUP_BOXEL	= new Permission("monoboxel.groupboxel.visit");
+		public static final Permission	CAN_VISIT_GROUP_BOXEL	= new Permission(
+																		"monoboxel.groupboxel.visit");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_REMOVE_OWN			= new Permission("monoboxel.boxel.remove.own");
+		public static final Permission	CAN_REMOVE_OWN			= new Permission(
+																		"monoboxel.boxel.remove.own");
 		
 		// Root Template Permissions
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create
 		 */
-		public static final Permission	ROOT_CAN_CREATE			= new Permission("monoboxel.boxel.create");
+		public static final Permission	ROOT_CAN_CREATE			= new Permission(
+																		"monoboxel.boxel.create");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.visit
 		 */
-		public static final Permission	ROOT_CAN_VISIT			= new Permission("monoboxel.boxel.visit");
+		public static final Permission	ROOT_CAN_VISIT			= new Permission(
+																		"monoboxel.boxel.visit");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.remove
 		 */
-		public static final Permission	ROOT_CAN_REMOVE			= new Permission("monoboxel.boxel.remove");
+		public static final Permission	ROOT_CAN_REMOVE			= new Permission(
+																		"monoboxel.boxel.remove");
 		
 		private Permission				permission				= null;
 		private String					permissionNode			= "";
@@ -182,6 +190,7 @@ public class MBPermissionManager {
 	 */
 	public void SendNotAllowedMessage(CommandSender sender) {
 	
-		sender.sendMessage("A divine voice says: 'You are not allowed to do this!'");
+		sender.sendMessage(master.getLocalizationManager().getMessage("private-message-prefix").toString() + "You are not allowed to do this!");
+		//sender.sendMessage("A divine voice says: 'You are not allowed to do this!'");
 	}
 }

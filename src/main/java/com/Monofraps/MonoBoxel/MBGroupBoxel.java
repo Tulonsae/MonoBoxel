@@ -36,6 +36,37 @@ public class MBGroupBoxel extends MBBoxel {
 		
 		boxelPrefix = master.getBoxelGroupPrefix();
 		
+		if (correspondingWorldName.startsWith(boxelPrefix))
+			boxelOwner = correspondingWorldName.substring(boxelPrefix.length());
+		
+		msgFoundBoxel = master.getLocalizationManager().getMessage("found").setMessageVariable(
+				"boxeltype", "Groupboxel").setMessageVariable("boxelname",
+				boxelOwner).toString();
+		msgLoading = master.getLocalizationManager().getMessage("loading").setMessageVariable(
+				"boxeltype", "Groupboxel").setMessageVariable("boxelname",
+				boxelOwner).toString();
+		msgLoaded = master.getLocalizationManager().getMessage("loaded").setMessageVariable(
+				"boxeltype", "Groupboxel").setMessageVariable("boxelname",
+				boxelOwner).toString();
+		msgFailedToLoad = master.getLocalizationManager().getMessage(
+				"failed-to-load").setMessageVariable("boxeltype", "Groupboxel").setMessageVariable(
+				"boxelname", boxelOwner).toString();
+		msgCreating = master.getLocalizationManager().getMessage("creating").setMessageVariable(
+				"boxeltype", "Groupboxel").setMessageVariable("boxelname",
+				boxelOwner).toString();
+		msgCreated = master.getLocalizationManager().getMessage("created").setMessageVariable(
+				"boxeltype", "Groupboxel").setMessageVariable("boxelname",
+				boxelOwner).toString();
+		msgFailedToCreate = master.getLocalizationManager().getMessage(
+				"failed-to-create").setMessageVariable("boxeltype",
+				"Groupboxel").setMessageVariable("boxelname", boxelOwner).toString();
+		msgTeleporting = master.getLocalizationManager().getMessage(
+				"teleporting").toString();
+		msgTooManyBoxels = master.getLocalizationManager().getMessage(
+				"maximum-reached").setMessageVariable("maximum",
+				String.valueOf(master.getConfig().getInt("max-boxel-count"))).setMessageVariable(
+				"type", "Boxels").toString();
+		
 	}
 	
 	@Override
@@ -47,17 +78,47 @@ public class MBGroupBoxel extends MBBoxel {
 			return false;
 		}
 		
+		if (isExisting() && isLoaded()) {
+			player.sendMessage(msgFoundBoxel);
+			
+			correspondingWorld = master.getMVCore().getMVWorldManager().getMVWorld(
+					correspondingWorldName).getCBWorld();
+			return true;
+		}
+		
+		if (isExisting() && !isLoaded()) {
+			player.sendMessage(msgFoundBoxel);
+			player.sendMessage(msgLoading);
+			
+			if (Load()) {
+				player.sendMessage(msgLoaded);
+				return true;
+			} else {
+				player.sendMessage(msgFailedToLoad);
+				return false;
+			}
+		}
+		
+		if (!isExisting()) {
+			if (DoCreate(player)) {
+				correspondingWorld = master.getMVCore().getMVWorldManager().getMVWorld(
+						correspondingWorldName).getCBWorld();
+				
+				return true;
+			} else {
+				master.getLogManager().debugLog(Level.WARNING,
+						msgFailedToCreate);
+				return false;
+			}
+		}
+		
 		if (super.DoCreate(player)) {
 			correspondingWorld = master.getMVCore().getMVWorldManager().getMVWorld(
 					correspondingWorldName).getCBWorld();
 			return true;
 		} else {
-			player.sendMessage("Failed to create group Boxel.");
-			master.getLogManager().severe(
-					master.getLocalizationManager().getMessage(
-							"failed-to-create").setMessageVariable("boxeltype",
-							"Group Boxel").setMessageVariable("boxelname",
-							correspondingWorldName).toString());
+			player.sendMessage(msgFailedToCreate);
+			master.getLogManager().severe(msgFailedToCreate);
 			return false;
 		}
 		
@@ -84,7 +145,8 @@ public class MBGroupBoxel extends MBBoxel {
 	@Override
 	public boolean Join(Player player) {
 	
-		master.getLogManager().warning("Boxel-Join was called on a goup Boxel.");
+		master.getLogManager().debugLog(Level.WARNING,
+				"Boxel-Join was called on a goup Boxel.");
 		return false;
 	}
 	
@@ -111,14 +173,26 @@ public class MBGroupBoxel extends MBBoxel {
 			return false;
 		}
 		
-		if (!isLoaded())
-			if (!Load()) {
-				master.getLogManager().severe(
-						"Failed to load group Boxel: " + correspondingWorldName);
-				master.getLogManager().debugLog(Level.WARNING,
-						"Failed to load group Boxel: " + correspondingWorldName);
+		if (!isExisting()) {
+			master.getLogManager().severe(
+					"The Boxel " + correspondingWorldName + " does not exist.");
+			player.sendMessage("The Boxel " + correspondingWorldName
+					+ " does not exist.");
+			return false;
+		}
+		
+		if (!isLoaded()) {
+			player.sendMessage(msgFoundBoxel);
+			player.sendMessage(msgLoading);
+			
+			if (Load()) {
+				player.sendMessage(msgLoaded);
+			} else {
+				master.getLogManager().severe(msgFailedToLoad);
+				player.sendMessage(msgFailedToLoad);
 				return false;
 			}
+		}
 		
 		// before porting the player, save his location
 		// do not save the return/entry location if the player is in a Boxel
@@ -138,13 +212,8 @@ public class MBGroupBoxel extends MBBoxel {
 			master.getDataConfig().saveConfig();
 		}
 		
-		if (player.teleport(correspondingWorld.getSpawnLocation()))
-			return true;
-		
-		master.getLogManager().debugLog(Level.WARNING,
-				"Player teleport failed!");
-		player.sendMessage("Teleport failed!");
-		return false;
+		player.sendMessage(msgTeleporting);
+		return player.teleport(correspondingWorld.getSpawnLocation());
 	}
 	
 	/**

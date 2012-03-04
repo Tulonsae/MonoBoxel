@@ -74,11 +74,13 @@ public class MBAdventureWorld {
 		}
 		
 		try {
-			WorldDuplicator.copyFolder(
-					new File(master.getServer().getWorldContainer()
-							+ File.separator + worldName + ".template"),
-					new File(master.getServer().getWorldContainer()
-							+ File.separator + worldName));
+			File worldContainer = master.getServer().getWorldContainer();
+			File templateFile = new File(worldContainer + File.separator
+					+ worldName + ".template");
+			File sourceFile = new File(worldContainer + File.separator
+					+ worldName);
+			
+			WorldDuplicator.copyFolder(templateFile, sourceFile);
 		} catch (IOException e) {
 			master.getLogManager().debugLog(Level.SEVERE,
 					"Failed to copy world folder for " + worldName);

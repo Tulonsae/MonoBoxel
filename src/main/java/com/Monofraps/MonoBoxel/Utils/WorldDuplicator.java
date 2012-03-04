@@ -33,8 +33,9 @@ public final class WorldDuplicator {
 		world.save();
 		
 		File worldFolder = world.getWorldFolder();
-		File worldDestinationFolder = new File(plugin.getServer().getWorldContainer().getAbsoluteFile()
-				+ File.separator + destinationName);
+		File worldDestinationFolder = new File(
+				plugin.getServer().getWorldContainer().getAbsoluteFile()
+						+ File.separator + destinationName);
 		
 		try {
 			copyFolder(worldFolder, worldDestinationFolder);
