@@ -39,6 +39,7 @@ public class MBAdventureCommandExecutor implements CommandExecutor {
 		
 		if (args.length < 2) {
 			sender.sendMessage("This function needs exactly two (2) arguments.");
+			sender.sendMessage("/adventure [create|reset] <worldname>");
 			return false;
 		}
 		
@@ -59,7 +60,6 @@ public class MBAdventureCommandExecutor implements CommandExecutor {
 				return true;
 			}
 			
-			// TODO: no log messages for now; waiting for new i18n/log manager
 		} else
 			if (args[0].equals("reset")) {
 				worldName = args[1];

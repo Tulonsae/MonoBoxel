@@ -4,9 +4,9 @@ message-prefix:
 private-message-prefix:
     template-message: '[A divine Voice]'
 load-world:
-    template-message: 'MB was supposed to create Boxel  %worldname% but it already exists. Will load it now...'
+    template-message: 'MB was supposed to create Boxel %boxelname% but it already exists. Will load it now...'
     variables:
-    - 'worldname'
+    - 'boxelname'
 unable-to-load-world:
     template-message: 'Unable to load world.'
 new-boxel-entry:
@@ -21,7 +21,7 @@ failed-to-create:
     - 'boxeltype'
     - 'boxelname'
 failed-to-load:
-    templete-message: 'Failed to load %boxeltype% %boxelname%.'
+    template-message: 'Failed to load %boxeltype% %boxelname%.'
     variables:
     - 'boxeltype'
     - 'boxelname'

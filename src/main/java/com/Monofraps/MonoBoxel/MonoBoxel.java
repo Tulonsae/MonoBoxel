@@ -108,7 +108,8 @@ public class MonoBoxel extends JavaPlugin {
 					"Multiverse-Core");
 			
 			if (mvCore == null) {
-				logger.severe("Multiverse-Core *NOT* found! Is it installed and enabled?");
+				logger.severe("Multiverse-Core *NOT* found! Is it installed and enabled? "
+						+ "If you are using any Beta or Dev builds of Bukkit, make sure you have compatible builds of Multiverse-Core.");
 				logger.debugLog(Level.SEVERE, "Multiverse Core not found!");
 				return null;
 			} else

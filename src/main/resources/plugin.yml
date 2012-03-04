@@ -31,6 +31,6 @@ commands:
         usage: /<command>
         
     adventure:
-        description: blahblah
+        description: This feature is still in development
         permissions: monoboxel.adv
         usage: /<command>

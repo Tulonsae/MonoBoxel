@@ -82,7 +82,7 @@ public class MBEventListener implements Listener {
 	}
 	
 	/**
-	 * Also handle the auto unload if a player joind the server.
+	 * Also handle the auto unload if a player joined the server.
 	 * (the auto unload check will also check if it has to cancel a planned unload)
 	 * 
 	 * @param event

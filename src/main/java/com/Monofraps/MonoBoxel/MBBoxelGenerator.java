@@ -17,9 +17,9 @@ import org.bukkit.generator.ChunkGenerator;
 public class MBBoxelGenerator extends ChunkGenerator {
 	
 	private static final int	CHUNK_WIDTH		= 16;
-	private static final int	CHUNK_LENGHT	= 16;
-	private static final int	CHUNK_HEIGHT	= 128;
-	private static final int	CHUNK_SIZE		= CHUNK_WIDTH * CHUNK_LENGHT
+	private static final int	CHUNK_LENGTH	= 16;
+	private static final int	CHUNK_HEIGHT	= 128; // does not work with 256 ?!
+	private static final int	CHUNK_SIZE		= CHUNK_WIDTH * CHUNK_LENGTH
 														* CHUNK_HEIGHT;
 	
 	private byte[]				flatChunk;
@@ -36,13 +36,13 @@ public class MBBoxelGenerator extends ChunkGenerator {
 		
 		if (!tmx) {
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
-				for (int z = 0; z < CHUNK_LENGHT; z++) {
+				for (int z = 0; z < CHUNK_LENGTH; z++) {
 					flatChunk[xyzToByte(x, 0, z)] = (byte) Material.BEDROCK.getId();
 				}
 			}
 			
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
-				for (int z = 0; z < CHUNK_LENGHT; z++) {
+				for (int z = 0; z < CHUNK_LENGTH; z++) {
 					for (int y = 1; y < landHeight; y++) {
 						flatChunk[xyzToByte(x, y, z)] = (byte) Material.DIRT.getId();
 					}
@@ -50,21 +50,21 @@ public class MBBoxelGenerator extends ChunkGenerator {
 			}
 			
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
-				for (int z = 0; z < CHUNK_LENGHT; z++) {
+				for (int z = 0; z < CHUNK_LENGTH; z++) {
 					flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.GRASS.getId();
 				}
 			}
 		} else {
 			
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
-				for (int z = 0; z < CHUNK_LENGHT; z++)
+				for (int z = 0; z < CHUNK_LENGTH; z++)
 					for (int y = 0; y <= landHeight; y++) {
 						flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.SNOW_BLOCK.getId();
 					}
 			}
 			
 			for (int x = 0; x < CHUNK_WIDTH; x++) {
-				for (int z = (x % 2); z < CHUNK_LENGHT; z += 2)
+				for (int z = (x % 2); z < CHUNK_LENGTH; z += 2)
 					for (int y = 0; y <= landHeight; y++) {
 						flatChunk[xyzToByte(x, landHeight, z)] = (byte) Material.OBSIDIAN.getId();
 					}
