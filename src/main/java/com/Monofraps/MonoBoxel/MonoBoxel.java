@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.Monofraps.MonoBoxel.Adventure.MBAdventureWorldManager;
 import com.Monofraps.MonoBoxel.CommandExecutors.MBAdventureCommandExecutor;
 import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelCommandExecutor;
+import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelDbgCommandExecutor;
 import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelgrpCommandExecutor;
 import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelinfoCommandExecutor;
 import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxellookupCommandExecutor;
@@ -36,6 +37,8 @@ public class MonoBoxel extends JavaPlugin {
 	private MBBoxellookupCommandExecutor	boxellookupCmdExecutor	= null;
 	private MBBoxelremoveCommandExecutor	boxelremoveCmdExecutor	= null;
 	private MBBoxelinfoCommandExecutor		boxelinfoCmdExecutor	= null;
+	private MBBoxelDbgCommandExecutor		boxelDbgCMDE			= null;		// just for
+																					// debugging
 	private MBAdventureCommandExecutor		adventureCmdExecutor	= null;
 	
 	private MultiverseCore					mvCore					= null;
@@ -70,11 +73,13 @@ public class MonoBoxel extends JavaPlugin {
 		boxelremoveCmdExecutor = new MBBoxelremoveCommandExecutor(this);
 		boxelinfoCmdExecutor = new MBBoxelinfoCommandExecutor(this);
 		adventureCmdExecutor = new MBAdventureCommandExecutor(this);
+		boxelDbgCMDE = new MBBoxelDbgCommandExecutor(this);
 		getCommand("boxel").setExecutor(boxelCmdExecutor);
 		getCommand("boxelgrp").setExecutor(boxelgrpCommandExecutor);
 		getCommand("boxlookup").setExecutor(boxellookupCmdExecutor);
 		getCommand("boxremove").setExecutor(boxelremoveCmdExecutor);
 		getCommand("boxinfo").setExecutor(boxelinfoCmdExecutor);
+		getCommand("boxeldbg").setExecutor(boxelDbgCMDE);
 		getCommand("adventure").setExecutor(adventureCmdExecutor);
 		
 		new MBEventListener(this);

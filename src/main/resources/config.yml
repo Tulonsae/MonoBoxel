@@ -27,13 +27,13 @@ boxelgroup-prefix: 'BOXELGRP_'
 
 
 # Just for debugging
-log-stack-trace: false
+log-stack-trace: true
 
 
 # Use this to set the maximum boxel size
 max-boxel-size: 16
 
 # Enable debug output
-log-debug: false
+log-debug: true
 
 first-run: false

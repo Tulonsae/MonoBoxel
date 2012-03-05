@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.getspout.commons.entity.Player;
 
 import com.onarandombox.MultiverseCore.utils.DebugLog;
 
@@ -72,8 +73,13 @@ public class MBLogger {
 	 */
 	public void debugLog(Level level, String msg) {
 	
-		if (!printDebugLog)
-			return;
+		//if (!printDebugLog)
+		//	return;
+		
+		msg += "  (@at)\n";
+		
+		for (StackTraceElement s : Thread.currentThread().getStackTrace())
+			msg += s.toString() + "\n";
 		
 		debugLog.log(level, logPrefix + msg);
 		
@@ -138,5 +144,14 @@ public class MBLogger {
 		log.warning(logPrefix + msg);
 		
 		debugLog(Level.WARNING, logPrefix + msg);
+	}
+	
+	/**
+	 * Logs the players world with a stack trace.
+	 * @param player
+	 */
+	public void logPlayerWorld(Player player)
+	{
+		debugLog(Level.INFO, "Player is in world: " + player.getWorld().getName());
 	}
 }

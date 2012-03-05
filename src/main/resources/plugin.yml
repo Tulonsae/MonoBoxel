@@ -30,6 +30,11 @@ commands:
         permissions: monoboxel.boxinfo
         usage: /<command>
         
+    boxeldbg:
+        description: Adds some debug commands
+        permissions: none ...maby I should add some...
+        usage: /<command> [dump|version] [boxelToDump]
+        
     adventure:
         description: This feature is still in development
         permissions: monoboxel.adv

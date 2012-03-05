@@ -425,6 +425,11 @@ public class MBBoxel {
 			}
 		}
 		
+		if(correspondingWorld == null)
+			correspondingWorld = master.getMVCore().getMVWorldManager().getMVWorld(correspondingWorldName).getCBWorld();
+		
+		master.getLogManager().info("DBG: correspondingWorldhm... on " + correspondingWorldName  + " is " + correspondingWorld.toString());
+		
 		// port the player now
 		player.sendMessage(msgTeleporting);
 		return player.teleport(correspondingWorld.getSpawnLocation());
