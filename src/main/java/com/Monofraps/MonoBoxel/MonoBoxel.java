@@ -8,12 +8,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.Monofraps.MonoBoxel.Adventure.MBAdventureWorldManager;
 import com.Monofraps.MonoBoxel.CommandExecutors.MBAdventureCommandExecutor;
+import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxacceptCommandExecutor;
 import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelCommandExecutor;
 import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelDbgCommandExecutor;
 import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelgrpCommandExecutor;
 import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelinfoCommandExecutor;
 import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxellookupCommandExecutor;
 import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxelremoveCommandExecutor;
+import com.Monofraps.MonoBoxel.CommandExecutors.MBBoxinviteCommandExecutor;
 import com.Monofraps.MonoBoxel.Config.MBConfiguration;
 import com.Monofraps.MonoBoxel.EventHooks.MBEventListener;
 import com.Monofraps.MonoBoxel.Utils.LocalizationManager;
@@ -37,6 +39,8 @@ public class MonoBoxel extends JavaPlugin {
 	private MBBoxellookupCommandExecutor	boxellookupCmdExecutor	= null;
 	private MBBoxelremoveCommandExecutor	boxelremoveCmdExecutor	= null;
 	private MBBoxelinfoCommandExecutor		boxelinfoCmdExecutor	= null;
+	private MBBoxinviteCommandExecutor		boxelinviteCmdExecutor	= null;
+	private MBBoxacceptCommandExecutor		boxelacceptCmdExecutor	= null;
 	private MBBoxelDbgCommandExecutor		boxelDbgCMDE			= null;		// just for
 																					// debugging
 	private MBAdventureCommandExecutor		adventureCmdExecutor	= null;
@@ -74,12 +78,16 @@ public class MonoBoxel extends JavaPlugin {
 		boxelinfoCmdExecutor = new MBBoxelinfoCommandExecutor(this);
 		adventureCmdExecutor = new MBAdventureCommandExecutor(this);
 		boxelDbgCMDE = new MBBoxelDbgCommandExecutor(this);
+		boxelinviteCmdExecutor = new MBBoxinviteCommandExecutor(this);
+		boxelacceptCmdExecutor = new MBBoxacceptCommandExecutor(this);
 		getCommand("boxel").setExecutor(boxelCmdExecutor);
 		getCommand("boxelgrp").setExecutor(boxelgrpCommandExecutor);
 		getCommand("boxlookup").setExecutor(boxellookupCmdExecutor);
 		getCommand("boxremove").setExecutor(boxelremoveCmdExecutor);
 		getCommand("boxinfo").setExecutor(boxelinfoCmdExecutor);
 		getCommand("boxeldbg").setExecutor(boxelDbgCMDE);
+		getCommand("boxinvite").setExecutor(boxelinviteCmdExecutor);
+		getCommand("boxaccept").setExecutor(boxelacceptCmdExecutor);
 		getCommand("adventure").setExecutor(adventureCmdExecutor);
 		
 		new MBEventListener(this);
@@ -189,6 +197,16 @@ public class MonoBoxel extends JavaPlugin {
 	public String getBoxelGroupPrefix() {
 	
 		return boxelGroupPrefix;
+	}
+	
+	/**
+	 * Returns the invite command executor.
+	 * 
+	 * @return The command executor
+	 */
+	public MBBoxinviteCommandExecutor getInviteCmdExecutor() {
+	
+		return boxelinviteCmdExecutor;
 	}
 	
 	/**

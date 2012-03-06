@@ -4,7 +4,6 @@ package com.Monofraps.MonoBoxel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -169,6 +168,22 @@ public class MBBoxelManager {
 	}
 	
 	/**
+	 * Reload the Boxel manager.
+	 */
+	public void Reload() {
+	
+		SaveBoxels();
+		
+		boxels = new ArrayList<MBBoxel>();
+		groupBoxels = new ArrayList<MBGroupBoxel>();
+		
+		worldsCounted = false;
+		
+		LoadConfig();
+		
+	}
+	
+	/**
 	 * Adds a group Boxel.
 	 * 
 	 * @param name
@@ -282,12 +297,6 @@ public class MBBoxelManager {
 			result[0] = true;
 			result[1] = false;
 		}
-		
-		master.getLogManager().debugLog(
-				Level.INFO,
-				"Is Boxel called for " + name + " with result of "
-						+ String.valueOf(result[0]) + " and "
-						+ String.valueOf(result[1]));
 		
 		return result;
 	}

@@ -56,13 +56,12 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 			player = (Player) sender;
 		
 		if (args.length > 0) {
-			if (args[0].equals("-") && senderIsPlayer)
+			if (args[0].equals("-") && senderIsPlayer) {
 				boxelName = boxelPrefix + player.getName();
-			
-			if (boxelName.equals("-s") || boxelName.equals("-g"))
-				boxelName = boxelPrefix + player.getName();
-			
-			else
+				
+				if (boxelName.contains("-s") || boxelName.contains("-g"))
+					boxelName = boxelPrefix + player.getName();
+			} else
 				if (args[0].equals("getmeout") && senderIsPlayer) {
 					for (MBBoxel box : master.getMBWorldManager().getBoxels()) {
 						if (box.getCorrespondingWorldName().equals(
@@ -82,6 +81,9 @@ public class MBBoxelCommandExecutor implements CommandExecutor {
 			
 		} else
 			boxelName = boxelPrefix + player.getName();
+		
+		if (master.getMBWorldManager().isBoxel(boxelName)[0])
+			master.getMBWorldManager().AddBoxel(boxelName, true, player, "", "");
 		
 		// check if the Boxel already exists
 		for (MBBoxel box : master.getMBWorldManager().getBoxels()) {

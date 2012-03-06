@@ -42,18 +42,20 @@ public class MBConfiguration {
 		}
 		config = YamlConfiguration.loadConfiguration(configFile);
 		
-		InputStream defDataConfigStream = master.getResource("localization.yml");
-		if (defDataConfigStream != null) {
-			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defDataConfigStream);
-			
-			try {
-				defConfig.save(configFile);
-				config.load(configFile);
-				config.save(configFile);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} catch (InvalidConfigurationException e) {
-				e.printStackTrace();
+		if (configFileName.equals("localization.yml")) {
+			InputStream defDataConfigStream = master.getResource("localization.yml");
+			if (defDataConfigStream != null) {
+				YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defDataConfigStream);
+				
+				try {
+					defConfig.save(configFile);
+					config.load(configFile);
+					config.save(configFile);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (InvalidConfigurationException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

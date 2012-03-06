@@ -34,6 +34,6 @@ log-stack-trace: true
 max-boxel-size: 16
 
 # Enable debug output
-log-debug: true
+log-debug: false
 
 first-run: false

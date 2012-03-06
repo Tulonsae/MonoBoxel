@@ -190,7 +190,9 @@ public class MBPermissionManager {
 	 */
 	public void SendNotAllowedMessage(CommandSender sender) {
 	
-		sender.sendMessage(master.getLocalizationManager().getMessage("private-message-prefix").toString() + "You are not allowed to do this!");
-		//sender.sendMessage("A divine voice says: 'You are not allowed to do this!'");
+		sender.sendMessage(master.getLocalizationManager().getMessage(
+				"private-message-prefix").toString()
+				+ "You are not allowed to do this!");
+		// sender.sendMessage("A divine voice says: 'You are not allowed to do this!'");
 	}
 }

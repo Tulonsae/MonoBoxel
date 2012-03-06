@@ -142,7 +142,11 @@ public class MBEventListener implements Listener {
 	
 		Player player = event.getPlayer();
 		if (master.getMBWorldManager().isBoxel(player.getWorld())[0]) {
-			int maxBoxelSize = master.getConfig().getInt("max-boxel-size");
+			int maxBoxelSize = master.getConfig().getInt("max-boxel-size", 0);
+			
+			if (maxBoxelSize == 0)
+				return;
+			
 			Location targetLocation = player.getLocation();
 			targetLocation.add(event.getVelocity());
 			Chunk targetChunk = targetLocation.getChunk();

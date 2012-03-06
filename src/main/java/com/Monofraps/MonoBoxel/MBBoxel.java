@@ -315,6 +315,8 @@ public class MBBoxel {
 		
 		if (isLoaded()) {
 			master.getLogManager().debugLog(Level.INFO, msgLoaded);
+			correspondingWorld = master.getMVCore().getMVWorldManager().getMVWorld(
+					correspondingWorldName).getCBWorld();
 			return true;
 		} else {
 			if (!master.getMVCore().getMVWorldManager().loadWorld(
@@ -392,24 +394,21 @@ public class MBBoxel {
 			return false;
 		}
 		
-		// before porting the player, save his location
-		if (master.getConfig().getBoolean("save-exit-location")) {
-			// do not save the return/entry location if the player is in a Boxel
-			if (!master.getMBWorldManager().isBoxel(player.getWorld().getName())[0]) {
-				master.getDataConfig().getConfig().set(
-						"playeroloc." + player.getName() + ".world",
-						player.getWorld().getName());
-				master.getDataConfig().getConfig().set(
-						"playeroloc." + player.getName() + ".position",
-						player.getLocation().toVector().add(new Vector(0, 1, 0)));
-				master.getDataConfig().getConfig().set(
-						"playeroloc." + player.getName() + ".yaw",
-						player.getLocation().getYaw());
-				master.getDataConfig().getConfig().set(
-						"playeroloc." + player.getName() + ".pitch",
-						player.getLocation().getPitch());
-				master.getDataConfig().saveConfig();
-			}
+		// do not save the return/entry location if the player is in a Boxel
+		if (!master.getMBWorldManager().isBoxel(player.getWorld().getName())[0]) {
+			master.getDataConfig().getConfig().set(
+					"playerloc." + player.getName() + ".world",
+					player.getWorld().getName());
+			master.getDataConfig().getConfig().set(
+					"playerloc." + player.getName() + ".position",
+					player.getLocation().toVector().add(new Vector(0, 1, 0)));
+			master.getDataConfig().getConfig().set(
+					"playerloc." + player.getName() + ".yaw",
+					player.getLocation().getYaw());
+			master.getDataConfig().getConfig().set(
+					"playerloc." + player.getName() + ".pitch",
+					player.getLocation().getPitch());
+			master.getDataConfig().saveConfig();
 		}
 		
 		if (!isLoaded()) {
@@ -425,10 +424,13 @@ public class MBBoxel {
 			}
 		}
 		
-		if(correspondingWorld == null)
-			correspondingWorld = master.getMVCore().getMVWorldManager().getMVWorld(correspondingWorldName).getCBWorld();
+		if (correspondingWorld == null)
+			correspondingWorld = master.getMVCore().getMVWorldManager().getMVWorld(
+					correspondingWorldName).getCBWorld();
 		
-		master.getLogManager().info("DBG: correspondingWorldhm... on " + correspondingWorldName  + " is " + correspondingWorld.toString());
+		master.getLogManager().info(
+				"DBG: correspondingWorldname on " + correspondingWorldName
+						+ " is " + correspondingWorld.toString());
 		
 		// port the player now
 		player.sendMessage(msgTeleporting);
@@ -448,15 +450,24 @@ public class MBBoxel {
 		MultiverseWorld entryWorld = null;
 		
 		String outWorld = master.getDataConfig().getConfig().getString(
-				"playeroloc." + player.getName() + ".world", "");
+				"playerloc." + player.getName() + ".world", "");
 		Vector outPosition = master.getDataConfig().getConfig().getVector(
-				"playeroloc." + player.getName() + ".position",
+				"playerloc." + player.getName() + ".position",
 				new org.bukkit.util.Vector());
 		double outPitch = master.getDataConfig().getConfig().getDouble(
-				"playeroloc." + player.getName() + ".pitch", 0.0);
+				"playerloc." + player.getName() + ".pitch", 0.0);
 		
 		double outYaw = master.getDataConfig().getConfig().getDouble(
-				"playeroloc." + player.getName() + ".yaw", 0.0);
+				"playerloc." + player.getName() + ".yaw", 0.0);
+		
+		master.getLogManager().debugLog(
+				Level.INFO,
+				"CBSpawn is "
+						+ wm.getSpawnWorld().getCBWorld().getSpawnLocation().toString());
+		master.getLogManager().debugLog(
+				Level.INFO,
+				"MVSpawn is "
+						+ wm.getSpawnWorld().getSpawnLocation().toString());
 		
 		// the saved location could not be loaded correctly
 		if (outWorld.isEmpty()) {
@@ -464,7 +475,12 @@ public class MBBoxel {
 					Level.WARNING,
 					"No entry location for player " + player.getName()
 							+ " was found.");
-			return player.teleport(wm.getSpawnWorld().getSpawnLocation());
+			return player.teleport(wm.getSpawnWorld().getCBWorld().getSpawnLocation());
+		}
+		
+		if (master.getMBWorldManager().isBoxel(outWorld)[0]) {
+			master.getLogManager().debugLog(Level.INFO, "outWorld is a Boxel.");
+			return player.teleport(wm.getSpawnWorld().getCBWorld().getSpawnLocation());
 		}
 		
 		// we have load the entry location, now see if the entry
@@ -480,7 +496,7 @@ public class MBBoxel {
 						Level.INFO,
 						"Entry world " + outWorld + " for player "
 								+ player.getName() + " was found.");
-				return player.teleport(wm.getSpawnWorld().getSpawnLocation());
+				return player.teleport(wm.getSpawnWorld().getCBWorld().getSpawnLocation());
 			} else {
 				// the entry world of the player is in the
 				// Multiverse config, but not loaded; load it!
@@ -532,13 +548,33 @@ public class MBBoxel {
 	 */
 	public boolean isEmpty() {
 	
-		if (correspondingWorld == null)
+		Refresh(true);
+		
+		if (correspondingWorld == null) {
+			master.getLogManager().debugLog(
+					Level.INFO,
+					correspondingWorldName
+							+ " correspondingWorldName was null in isEmpty");
 			return true;
+		}
 		
 		if (correspondingWorld.getPlayers().size() == 0)
 			return true;
 		
 		return false;
+	}
+	
+	/**
+	 * Refreshes the correspondingWorld variable.
+	 */
+	public void Refresh(boolean noLoad) {
+	
+		if (isLoaded())
+			correspondingWorld = master.getMVCore().getMVWorldManager().getMVWorld(
+					correspondingWorldName).getCBWorld();
+		else
+			if (!noLoad)
+				Load();
 	}
 	
 	/**

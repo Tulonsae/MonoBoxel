@@ -73,8 +73,8 @@ public class MBLogger {
 	 */
 	public void debugLog(Level level, String msg) {
 	
-		//if (!printDebugLog)
-		//	return;
+		if (!printDebugLog)
+			return;
 		
 		msg += "  (@at)\n";
 		
@@ -148,10 +148,12 @@ public class MBLogger {
 	
 	/**
 	 * Logs the players world with a stack trace.
+	 * 
 	 * @param player
 	 */
-	public void logPlayerWorld(Player player)
-	{
-		debugLog(Level.INFO, "Player is in world: " + player.getWorld().getName());
+	public void logPlayerWorld(Player player) {
+	
+		debugLog(Level.INFO, "Player is in world: "
+				+ player.getWorld().getName());
 	}
 }

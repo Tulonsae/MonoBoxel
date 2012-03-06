@@ -31,7 +31,8 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 	
 		master.getMBWorldManager().LoadConfig();
 		
-		sender.sendMessage(ChatColor.RED + "=====[ MonoBoxel v" + master.getDescription().getVersion() +  " Info ] =====");
+		sender.sendMessage(ChatColor.RED + "=====[ MonoBoxel v"
+				+ master.getDescription().getVersion() + " Info ] =====");
 		
 		sender.sendMessage(ChatColor.WHITE + "Boxels:");
 		for (MBBoxel box : master.getMBWorldManager().getBoxels()) {

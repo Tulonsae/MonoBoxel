@@ -32,8 +32,18 @@ commands:
         
     boxeldbg:
         description: Adds some debug commands
-        permissions: none ...maby I should add some...
+        permissions: monoboxel.debug
         usage: /<command> [dump|version] [boxelToDump]
+        
+    boxinvite:
+        desciption: Invites some player into your Boxel. (in-dev)
+        permissions: none yet
+        usage: /<command> <player>
+        
+    boxaccept:
+       desciption: Accepts a Boxel invite.
+       permissions: none yet
+       usage: /<command> <player>
         
     adventure:
         description: This feature is still in development
