@@ -42,8 +42,8 @@ public class MonoBoxel extends JavaPlugin {
 	private MBBoxelinfoCommandExecutor		boxelinfoCmdExecutor	= null;
 	private MBBoxinviteCommandExecutor		boxelinviteCmdExecutor	= null;
 	private MBBoxacceptCommandExecutor		boxelacceptCmdExecutor	= null;
-	private MBBoxelDbgCommandExecutor		boxelDbgCMDE			= null;		// just for
-																					// debugging
+	private MBBoxelDbgCommandExecutor		boxelDbgCMDE			= null;
+	
 	private MBAdventureCommandExecutor		adventureCmdExecutor	= null;
 	
 	private MultiverseCore					mvCore					= null;
@@ -239,9 +239,11 @@ public class MonoBoxel extends JavaPlugin {
 	
 	/**
 	 * Returns the standard Java logger object of MBLogger instance.
+	 * 
 	 * @return the standard Java logger
 	 */
 	public Logger getLogger() {
+	
 		logger.debugLog(Level.SEVERE, "getLogger was called");
 		return logger.getLogger();
 	}

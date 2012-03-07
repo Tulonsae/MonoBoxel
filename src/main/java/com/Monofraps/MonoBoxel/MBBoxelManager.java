@@ -10,7 +10,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import com.sun.corba.se.impl.ior.WireObjectKeyTemplate;
 
 
 /**
@@ -41,7 +40,7 @@ public class MBBoxelManager {
 		
 			if (!box.Unload())
 				master.getLogManager().warning(
-						"Failed to unload Boxel "
+						MBMessages.getMessage("msgUnloadFailed")
 								+ box.getCorrespondingWorldName());
 			box.setUnloadTaskId(-1);
 		}
@@ -76,14 +75,14 @@ public class MBBoxelManager {
 		worldsCounted = true;
 		
 		List<String> boxelNames = master.getDataConfig().getConfig().getStringList(
-				"boxels.boxels");
+				"boxels.boxels"); //$NON-NLS-1$
 		List<String> groupBoxelNames = master.getDataConfig().getConfig().getStringList(
-				"boxels.groupboxels");
+				"boxels.groupboxels"); //$NON-NLS-1$
 		
 		if (boxelNames != null)
 			for (String s : boxelNames)
-				AddBoxel(s, false, null, "", "");
-		
+				AddBoxel(s, false, null, "", ""); //$NON-NLS-1$ //$NON-NLS-2$
+			
 		if (groupBoxelNames != null)
 			for (String s : groupBoxelNames)
 				AddGroupBoxel(
@@ -248,14 +247,16 @@ public class MBBoxelManager {
 	 *            The name of the Boxels world.
 	 * @return the Boxel.
 	 */
-	public MBBoxel getBoxel(String worldName) {
+	public MBBoxel getBoxel(String worldName, boolean createIfNotExsisting,
+			String generator, String seed) {
 	
 		for (MBBoxel box : boxels)
 			if (box.getCorrespondingWorldName().equals(worldName))
 				return box;
 		
-		master.getLogManager().debugLog(Level.INFO,
-				"Error finding Boxel with worldName " + worldName);
+		master.getLogManager().debugLog(
+				Level.INFO,
+				MBMessages.getMessage("msgFailedToFindBoxel_WorldName") + worldName); //$NON-NLS-1$
 		
 		return null;
 	}
@@ -274,17 +275,26 @@ public class MBBoxelManager {
 	
 		// create methode failed string
 		String msgMethodFailed = String.format(
-				"End of MBBoxelManager.getBoxel(%s, %b, %s, %s) with null return result!",
-				player, createIfNotExsisting, generator, seed);
+				MBMessages.getMessage("msgMethodFailedBMgetBoxel"), player,
+				createIfNotExsisting, generator, seed);
 		String msgFailedToFindBoxelForPlayer = String.format(
-				"Error finding Boxel for player %s!", player.getName());
+				MBMessages.getMessage("msgFaildToFindBoxel_Player"),
+				player.getName());
+		String msgFailedToAdd = String.format("Failed to add Boxel %s",
+				master.getBoxelPrefix() + player.getName());
+		String msgFailedToGet = String.format("Failed to get Boxel %s",
+				master.getBoxelPrefix() + player.getName());
+		String msgFailedToCreateBoxel = String.format(
+				"Failed to create Boxel %s",
+				master.getBoxelPrefix() + player.getName());
 		
 		for (MBBoxel box : boxels)
 			if (box.getCorrespondingWorldName().equals(
 					master.getBoxelPrefix() + player.getName()))
 				return box;
 		
-		master.getLogManager().debugLog(Level.INFO, msgFailedToFindBoxelForPlayer);
+		master.getLogManager().debugLog(Level.INFO,
+				msgFailedToFindBoxelForPlayer);
 		
 		// abort and return null, if the boxel was not found and the create parameter is false
 		if (!createIfNotExsisting) {
@@ -295,13 +305,24 @@ public class MBBoxelManager {
 		// now create the Boxel
 		if (!AddBoxel(master.getBoxelPrefix() + player.getName(), false,
 				player, generator, seed)) {
-			master.getLogManager().debugLog(
-					Level.SEVERE,
-					String.format(msgMethodFailed, player,
-							createIfNotExsisting, generator, seed));
-			return null;
+			master.getLogManager().debugLog(Level.SEVERE, msgFailedToAdd);
+			
+			MBBoxel boxel = getBoxel(player, false, "", "");
+			if (boxel == null) {
+				master.getLogManager().debugLog(Level.SEVERE, msgFailedToGet);
+				return null;
+			}
+			
+			if (!boxel.Create(player)) {
+				master.getLogManager().debugLog(Level.SEVERE,
+						msgFailedToCreateBoxel);
+				return null;
+			}
+			
+			return boxel;
 		}
 		
+		master.getLogManager().debugLog(Level.SEVERE, msgMethodFailed);
 		return null;
 	}
 	
@@ -311,6 +332,9 @@ public class MBBoxelManager {
 	 */
 	public List<MBGroupBoxel> getGroupBoxels() {
 	
+		if (groupBoxels.isEmpty())
+			master.getLogManager().debugLog(Level.INFO,
+					"MBBoxelManager.getGroupBoxels() will return an empty list!");
 		return groupBoxels;
 	}
 	
