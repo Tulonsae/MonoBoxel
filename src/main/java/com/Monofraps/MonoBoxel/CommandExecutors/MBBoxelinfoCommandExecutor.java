@@ -29,7 +29,7 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String lable, String[] args) {
 	
-		master.getMBWorldManager().LoadConfig();
+		master.getMBWorldManager().LoadBoxels();
 		
 		sender.sendMessage(ChatColor.RED + "=====[ MonoBoxel v"
 				+ master.getDescription().getVersion() + " Info ] =====");

@@ -4,11 +4,13 @@ package com.Monofraps.MonoBoxel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import com.sun.corba.se.impl.ior.WireObjectKeyTemplate;
 
 
 /**
@@ -66,7 +68,7 @@ public class MBBoxelManager {
 	/**
 	 * Loads the Boxels.
 	 */
-	public void LoadConfig() {
+	public void LoadBoxels() {
 	
 		if (worldsCounted)
 			return;
@@ -123,7 +125,7 @@ public class MBBoxelManager {
 	}
 	
 	/**
-	 * Adds a Boxel to the boxels list.
+	 * Adds a Boxel to the Boxel list.
 	 * 
 	 * @param name
 	 *            Name of the Boxel
@@ -179,7 +181,7 @@ public class MBBoxelManager {
 		
 		worldsCounted = false;
 		
-		LoadConfig();
+		LoadBoxels();
 		
 	}
 	
@@ -237,6 +239,70 @@ public class MBBoxelManager {
 	public List<MBBoxel> getBoxels() {
 	
 		return boxels;
+	}
+	
+	/**
+	 * Returns the Boxel with the name worldName.
+	 * 
+	 * @param worldName
+	 *            The name of the Boxels world.
+	 * @return the Boxel.
+	 */
+	public MBBoxel getBoxel(String worldName) {
+	
+		for (MBBoxel box : boxels)
+			if (box.getCorrespondingWorldName().equals(worldName))
+				return box;
+		
+		master.getLogManager().debugLog(Level.INFO,
+				"Error finding Boxel with worldName " + worldName);
+		
+		return null;
+	}
+	
+	/**
+	 * Returns the Boxel of [player], or creates it if [createIfNotExsisting] is true.
+	 * 
+	 * @param player
+	 * @param createIfNotExsisting
+	 * @param generator
+	 * @param seed
+	 * @return The Boxel.
+	 */
+	public MBBoxel getBoxel(Player player, boolean createIfNotExsisting,
+			String generator, String seed) {
+	
+		// create methode failed string
+		String msgMethodFailed = String.format(
+				"End of MBBoxelManager.getBoxel(%s, %b, %s, %s) with null return result!",
+				player, createIfNotExsisting, generator, seed);
+		String msgFailedToFindBoxelForPlayer = String.format(
+				"Error finding Boxel for player %s!", player.getName());
+		
+		for (MBBoxel box : boxels)
+			if (box.getCorrespondingWorldName().equals(
+					master.getBoxelPrefix() + player.getName()))
+				return box;
+		
+		master.getLogManager().debugLog(Level.INFO, msgFailedToFindBoxelForPlayer);
+		
+		// abort and return null, if the boxel was not found and the create parameter is false
+		if (!createIfNotExsisting) {
+			master.getLogManager().debugLog(Level.SEVERE, msgMethodFailed);
+			return null;
+		}
+		
+		// now create the Boxel
+		if (!AddBoxel(master.getBoxelPrefix() + player.getName(), false,
+				player, generator, seed)) {
+			master.getLogManager().debugLog(
+					Level.SEVERE,
+					String.format(msgMethodFailed, player,
+							createIfNotExsisting, generator, seed));
+			return null;
+		}
+		
+		return null;
 	}
 	
 	/**

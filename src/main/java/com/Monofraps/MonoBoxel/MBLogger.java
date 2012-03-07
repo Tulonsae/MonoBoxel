@@ -156,4 +156,14 @@ public class MBLogger {
 		debugLog(Level.INFO, "Player is in world: "
 				+ player.getWorld().getName());
 	}
+	
+	/**
+	 * Returns the standard Java logger.
+	 * 
+	 * @return the std. Java logger
+	 */
+	public Logger getLogger() {
+	
+		return log;
+	}
 }
