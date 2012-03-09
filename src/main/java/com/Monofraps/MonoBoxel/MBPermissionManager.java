@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 
+import com.Monofraps.MonoBoxel.Utils.GenUtils;
+
 
 /**
  * Managing all available Permissions for MonoBoxel.
@@ -29,52 +31,44 @@ public class MBPermissionManager {
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_CREATE_OWN			= new Permission(
-																		"monoboxel.boxel.create.own");
+		public static final Permission	CAN_CREATE_OWN			= new Permission("monoboxel.boxel.create.own");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_CREATE_GROUP_BOXEL	= new Permission(
-																		"monoboxel.groupboxel.create");
+		public static final Permission	CAN_CREATE_GROUP_BOXEL	= new Permission("monoboxel.groupboxel.create");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_VISIT_OWN			= new Permission(
-																		"monoboxel.boxel.visit.own");
+		public static final Permission	CAN_VISIT_OWN			= new Permission("monoboxel.boxel.visit.own");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_VISIT_GROUP_BOXEL	= new Permission(
-																		"monoboxel.groupboxel.visit");
+		public static final Permission	CAN_VISIT_GROUP_BOXEL	= new Permission("monoboxel.groupboxel.visit");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create.own
 		 */
-		public static final Permission	CAN_REMOVE_OWN			= new Permission(
-																		"monoboxel.boxel.remove.own");
+		public static final Permission	CAN_REMOVE_OWN			= new Permission("monoboxel.boxel.remove.own");
 		
 		// Root Template Permissions
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.create
 		 */
-		public static final Permission	ROOT_CAN_CREATE			= new Permission(
-																		"monoboxel.boxel.create");
+		public static final Permission	ROOT_CAN_CREATE			= new Permission("monoboxel.boxel.create");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.visit
 		 */
-		public static final Permission	ROOT_CAN_VISIT			= new Permission(
-																		"monoboxel.boxel.visit");
+		public static final Permission	ROOT_CAN_VISIT			= new Permission("monoboxel.boxel.visit");
 		/**
 		 * Permission Template.
 		 * monoboxel.boxel.remove
 		 */
-		public static final Permission	ROOT_CAN_REMOVE			= new Permission(
-																		"monoboxel.boxel.remove");
+		public static final Permission	ROOT_CAN_REMOVE			= new Permission("monoboxel.boxel.remove");
 		
 		private Permission				permission				= null;
 		private String					permissionNode			= "";
@@ -190,9 +184,58 @@ public class MBPermissionManager {
 	 */
 	public void SendNotAllowedMessage(CommandSender sender) {
 	
-		sender.sendMessage(master.getLocalizationManager().getMessage(
-				"private-message-prefix").toString()
+		sender.sendMessage(master.getLocalizationManager().getMessage("private-message-prefix").toString()
 				+ "You are not allowed to do this!");
 		// sender.sendMessage("A divine voice says: 'You are not allowed to do this!'");
+	}
+	
+	/**
+	 * Returns whether or not the player is allowed to visit [boxelName].
+	 * 
+	 * @param player
+	 * @param boxelName
+	 * @return true if the player is allowed, otherwise false
+	 */
+	public boolean canVisitBoxel(Player player, String boxelName) {
+	
+		if (boxelName.isEmpty())
+			boxelName = GenUtils.boxelizeName(player.getName(), master);
+		else
+			boxelName = GenUtils.boxelizeName(boxelName, master);
+		
+		// if it is the players own Boxel check for monoboxel.boxel.visit.own
+		if (GenUtils.deboxelizeName(boxelName, master).equals(player.getName())) {
+			if (player.hasPermission(MBPermission.CAN_VISIT_OWN))
+				return true;
+		}
+		if (hasPermission(player, new MBPermission(MBPermission.ROOT_CAN_VISIT, boxelName)))
+			return true;
+		
+		return false;
+	}
+	
+	/**
+	 * Returns whether or not the player is allowed to visit [boxelName].
+	 * 
+	 * @param player
+	 * @param boxelName
+	 * @return true if the player is allowed, otherwise false
+	 */
+	public boolean canCreateBoxel(Player player, String boxelName) {
+	
+		if (boxelName.isEmpty())
+			boxelName = player.getName();
+		else
+			boxelName = GenUtils.deboxelizeName(boxelName, master);
+		
+		// if it is the players own Boxel check for monoboxel.boxel.visit.own
+		if (boxelName.equals(player.getName())) {
+			if (player.hasPermission(MBPermission.CAN_CREATE_OWN))
+				return true;
+		}
+		if (hasPermission(player, new MBPermission(MBPermission.ROOT_CAN_CREATE, boxelName)))
+			return true;
+		
+		return false;
 	}
 }

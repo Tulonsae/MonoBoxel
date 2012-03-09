@@ -2,7 +2,6 @@ package com.Monofraps.MonoBoxel;
 
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -97,14 +96,6 @@ public class MonoBoxel extends JavaPlugin {
 		adventureManager = new MBAdventureWorldManager(this);
 		boxelPermManager = new MBPermissionManager(this);
 		
-		getServer().getScheduler().scheduleSyncDelayedTask(this,
-				new Runnable() {
-					
-					public void run() {
-					
-						boxelManager.LoadBoxels();
-					}
-				}, getConfig().getInt("word-load-delay") * 20);
 		
 		logger.info("MonoBoxel enabled!");
 		logger.debugLog(Level.INFO, "Plugin loaded.");
@@ -142,7 +133,7 @@ public class MonoBoxel extends JavaPlugin {
 	
 		saveConfig();
 		dataConfig.saveConfig();
-		boxelManager.SaveBoxels();
+		//boxelManager.SaveBoxels();
 		localizationManager.SaveLocalization();
 		
 		if (mvCore != null)
@@ -235,17 +226,6 @@ public class MonoBoxel extends JavaPlugin {
 	public MBLogger getLogManager() {
 	
 		return logger;
-	}
-	
-	/**
-	 * Returns the standard Java logger object of MBLogger instance.
-	 * 
-	 * @return the standard Java logger
-	 */
-	public Logger getLogger() {
-	
-		logger.debugLog(Level.SEVERE, "getLogger was called");
-		return logger.getLogger();
 	}
 	
 	/**

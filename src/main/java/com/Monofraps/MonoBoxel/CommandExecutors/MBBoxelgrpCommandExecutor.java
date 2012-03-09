@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.Monofraps.MonoBoxel.MBGroupBoxel;
 import com.Monofraps.MonoBoxel.MonoBoxel;
 import com.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
 
@@ -64,7 +63,7 @@ public class MBBoxelgrpCommandExecutor implements CommandExecutor {
 		boxelPassword = args[1];
 		
 		// check if the Boxel already exists
-		for (MBGroupBoxel box : master.getMBWorldManager().getGroupBoxels()) {
+		/*for (MBGroupBoxel box : master.getMBWorldManager().getGroupBoxels()) {
 			if (box.getCorrespondingWorldName().equals(boxelName))
 				return box.Join(player, boxelPassword);
 		}
@@ -91,7 +90,7 @@ public class MBBoxelgrpCommandExecutor implements CommandExecutor {
 				if (box.getCorrespondingWorldName().equals(boxelName))
 					return box.Join(player, boxelPassword);
 			}
-		}
+		}*/
 		
 		return false;
 	}

@@ -13,7 +13,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 
-import com.Monofraps.MonoBoxel.MBBoxel;
 import com.Monofraps.MonoBoxel.MonoBoxel;
 
 
@@ -63,21 +62,16 @@ public class MBEventListener implements Listener {
 	
 		// wait two seconds before checking for unused worlds
 		if (master.getMBWorldManager().isBoxel(event.getPlayer().getWorld())[0]) {
-			for (MBBoxel boxel : master.getMBWorldManager().getBoxels()) {
-				if (boxel.getCorrespondingWorldName().equals(
-						event.getPlayer().getWorld().getName()))
-					boxel.Leave(event.getPlayer());
-			}
+			master.getMBWorldManager().GenericLeave(event.getPlayer());
 		}
 		
-		master.getServer().getScheduler().scheduleSyncDelayedTask(master,
-				new Runnable() {
-					
-					public void run() {
-					
-						master.getMBWorldManager().CheckForUnusedWorlds();
-					}
-				}, 2 * 20);
+		master.getServer().getScheduler().scheduleSyncDelayedTask(master, new Runnable() {
+			
+			public void run() {
+			
+				master.getMBWorldManager().CheckForUnusedWorlds();
+			}
+		}, 2 * 20);
 		
 	}
 	
@@ -127,8 +121,7 @@ public class MBEventListener implements Listener {
 				}
 			
 			// Notify the player if the event is canceled (border is reached).
-			if (event.isCancelled()
-					&& lastBordercheckMessage <= System.currentTimeMillis() - 1000) {
+			if (event.isCancelled() && lastBordercheckMessage <= System.currentTimeMillis() - 1000) {
 				lastBordercheckMessage = System.currentTimeMillis();
 				player.sendMessage("[A divine voice] You reached the border of the World.");
 			}
@@ -169,8 +162,7 @@ public class MBEventListener implements Listener {
 				}
 			
 			// Notify the player if the event is canceled (border is reached).
-			if (event.isCancelled()
-					&& lastBordercheckMessage <= System.currentTimeMillis() - 1000) {
+			if (event.isCancelled() && lastBordercheckMessage <= System.currentTimeMillis() - 1000) {
 				lastBordercheckMessage = System.currentTimeMillis();
 				player.sendMessage("[A divine voice] You reached the border of the World.");
 			}

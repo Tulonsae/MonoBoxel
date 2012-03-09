@@ -1,18 +1,21 @@
 package com.Monofraps.MonoBoxel.CommandExecutors;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.Monofraps.MonoBoxel.MBBoxel;
-import com.Monofraps.MonoBoxel.MBGroupBoxel;
 import com.Monofraps.MonoBoxel.MonoBoxel;
+import com.Monofraps.MonoBoxel.Utils.GenUtils;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
 
 /**
- * Executor class for /boxinfo commands.
+ * Executor class for /boxinfo commands. (@TODO: this code here is a little bit messy)
  * 
  * @author Monofraps
  */
@@ -26,72 +29,52 @@ public class MBBoxelinfoCommandExecutor implements CommandExecutor {
 	}
 	
 	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String lable, String[] args) {
+	public boolean onCommand(CommandSender sender, Command command, String lable, String[] args) {
 	
-		master.getMBWorldManager().LoadBoxels();
+		sender.sendMessage(ChatColor.RED + "=====[ MonoBoxel v" + master.getDescription().getVersion()
+				+ " Info ] =====");
 		
-		sender.sendMessage(ChatColor.RED + "=====[ MonoBoxel v"
-				+ master.getDescription().getVersion() + " Info ] =====");
+		List<String> worldNames = new ArrayList<String>();
+		for (MultiverseWorld world : master.getMVCore().getMVWorldManager().getMVWorlds())
+			worldNames.add(world.getName());
+		for (String worldName : master.getMVCore().getMVWorldManager().getUnloadedWorlds())
+			worldNames.add(worldName);
+		int numBoxels = 0;
 		
 		sender.sendMessage(ChatColor.WHITE + "Boxels:");
-		for (MBBoxel box : master.getMBWorldManager().getBoxels()) {
-			String msg = "";
+		for (String worldName : worldNames) {
+			boolean[] boxResult = master.getMBWorldManager().isBoxel(worldName);
 			
-			if (box.isLoaded())
+			// not a loaded nor an unloaded Boxel
+			if (!boxResult[0] && !boxResult[1])
+				continue;
+			
+			String msg = "";
+			numBoxels++;
+			
+			if (boxResult[1])
 				msg += ChatColor.WHITE;
 			else
 				msg += ChatColor.GRAY;
 			
-			msg += box.getCorrespondingWorldName() + " - ";
+			msg += GenUtils.deboxelizeName(worldName, master) + " - ";
 			
-			if (box.isLoaded()) {
-				if (box.isEmpty())
+			if (boxResult[1]) {
+				if (master.getMVCore().getMVWorldManager().getMVWorld(worldName).getCBWorld().getPlayers().size() == 0)
 					msg += ChatColor.AQUA + "No players inside. UnloadThread: "
-							+ box.getUnloadTaskId();
+							+ master.getMBWorldManager().getUnloadId(worldName);
 				else
-					if (!box.isEmpty())
-						msg += ChatColor.GREEN + "Players inside.";
+					msg += ChatColor.GREEN + "Players inside.";
 			} else
 				msg += ChatColor.GOLD + "UNLOADED";
 			
 			sender.sendMessage(msg);
 		}
 		
-		sender.sendMessage(ChatColor.WHITE + "Group Boxels:");
-		for (MBGroupBoxel box : master.getMBWorldManager().getGroupBoxels()) {
-			String msg = "";
-			
-			if (box.isLoaded())
-				msg += ChatColor.WHITE;
-			else
-				msg += ChatColor.GRAY;
-			
-			msg += box.getCorrespondingWorldName() + " - ";
-			
-			if (box.isLoaded()) {
-				if (box.isEmpty())
-					msg += ChatColor.AQUA + "No players inside. UnloadThread: "
-							+ box.getUnloadTaskId();
-				else
-					if (!box.isEmpty())
-						msg += ChatColor.GREEN + "Players inside.";
-			} else
-				msg += ChatColor.GOLD + "UNLOADED";
-			
-			sender.sendMessage(msg);
-		}
+		sender.sendMessage(String.valueOf(numBoxels) + " Boxels are currently registered on this server.");
 		
-		sender.sendMessage(String.valueOf(master.getMBWorldManager().getNumBoxels())
-				+ " Boxels are currently registered on this server.");
-		
-		sender.sendMessage(String.valueOf(master.getMBWorldManager().getNumGroupBoxels())
-				+ " group Boxels are currently registered on this server.");
-		
-		sender.sendMessage("The current Boxel prefix is: "
-				+ master.getBoxelPrefix());
-		sender.sendMessage("The current group Boxel prefix is: "
-				+ master.getBoxelGroupPrefix());
+		sender.sendMessage("The current Boxel prefix is: " + master.getBoxelPrefix());
+		sender.sendMessage("The current group Boxel prefix is: " + master.getBoxelGroupPrefix());
 		
 		return true;
 	}

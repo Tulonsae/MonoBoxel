@@ -8,7 +8,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.Monofraps.MonoBoxel.MBBoxel;
 import com.Monofraps.MonoBoxel.MonoBoxel;
 import com.Monofraps.MonoBoxel.MBPermissionManager.MBPermission;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
@@ -29,8 +28,7 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 	}
 	
 	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String lable, String[] args) {
+	public boolean onCommand(CommandSender sender, Command command, String lable, String[] args) {
 	
 		boolean senderIsPlayer = false;
 		Player player = null;
@@ -66,16 +64,13 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		if (senderIsPlayer) {
 			// is this the players own boxel?
 			if (boxelName.equals(boxelPrefix + player.getName())) {
-				if (!master.getPermissionManager().hasPermission(player,
-						new MBPermission(MBPermission.CAN_REMOVE_OWN))) {
+				if (!master.getPermissionManager().hasPermission(player, new MBPermission(MBPermission.CAN_REMOVE_OWN))) {
 					master.getPermissionManager().SendNotAllowedMessage(player);
 					return false;
 				}
 			} else { // no, it's not
-				if (!master.getPermissionManager().hasPermission(
-						player,
-						new MBPermission(MBPermission.ROOT_CAN_REMOVE,
-								boxelOwner))) {
+				if (!master.getPermissionManager().hasPermission(player,
+						new MBPermission(MBPermission.ROOT_CAN_REMOVE, boxelOwner))) {
 					master.getPermissionManager().SendNotAllowedMessage(player);
 					return false;
 				}
@@ -105,20 +100,11 @@ public class MBBoxelremoveCommandExecutor implements CommandExecutor {
 		}
 		
 		if (wm.deleteWorld(boxelName)) {
-			master.getLogManager().info(
-					"Successfully removed boxel \"" + boxelName + "\".");
+			master.getLogManager().info("Successfully removed boxel \"" + boxelName + "\".");
 			
 			if (senderIsPlayer) {
-				sender.sendMessage("Successfully removed boxel \"" + boxelName
-						+ "\".");
+				sender.sendMessage("Successfully removed boxel \"" + boxelName + "\".");
 			}
-			
-			MBBoxel box = null;
-			for (MBBoxel b : master.getMBWorldManager().getBoxels()) {
-				if (b.getCorrespondingWorldName().equals(boxelName))
-					box = b;
-			}
-			master.getMBWorldManager().getBoxels().remove(box);
 			
 			return true;
 		}
